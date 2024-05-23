@@ -1,2 +1,2 @@
 # TP-Final
-Ttrabajo Práctico Final de pensamiento computacional
+Trabajo Práctico Final de Pensamiento Computacional
