@@ -1,6 +1,7 @@
 import random
 from utils.pokemon import Pokemon
 from utils.move import Move
+from utils.team import Team
 
 
 '''
@@ -15,7 +16,7 @@ que no entendi como hacerlo.
 def definir_moves():
     with open("data/moves.csv", "r") as f:
         move_dict = {}
-        moves = []
+        moves = {}
         parametros = ["name", "type", "category", "pp", "power", "accuracy"]
         tipos = [str, str, str, int, int, int]
         f.readline()
@@ -31,40 +32,56 @@ def definir_moves():
                 move_dict["power"],
                 move_dict["accuracy"]
             )
-            moves.append(move)
-    return moves  
+            moves[move_dict["name"]] = move
+    return moves
 definir_moves()
 
 def crear_pokemon():
     with open("data/pokemons.csv", "r") as f:
         f.readline()
-        pokemon = {}
+        pokemon_dicc = {}
         pokemons = []
         parametros = ["pokedex_number", "name", "type1", "type2", "hp", "attack", "defense", "sp_attack", "sp_defense", "speed", "generation", "height_m", "weight_kg", "is_legendary", "moves"]
-        tipos = [int, str, str, str, int, int, int, int, int, int, int, float, float, int, list] 
+        tipos = [int, str, str, str, int, int, int, int, int, int, int, float, float, int, list]
+        lista_moviemintos = definir_moves()
         for line in f:
             valor_parametro = line.split(",")
-            for i in range(len(parametros)):
-                pokemon[parametros[i]] = tipos[i](valor_parametro[i]) # Convertir a tipo de dato correspondiente
+            for i in range(len(parametros)-1):
+                pokemon_dicc[parametros[i]] = tipos[i](valor_parametro[i]) if valor_parametro[i] else 0 # Convertir a tipo de dato correspondiente
+            movs_pokemon = []
+            for movimiento in valor_parametro[-1].strip().split(";"):
+                if movimiento:
+                    movs_pokemon.append(lista_moviemintos[movimiento])
+            pokemon_dicc["moves"] = movs_pokemon
+
             pokemon = Pokemon(
-                pokemon["pokedex_number"],
-                pokemon["name"],
-                pokemon["type1"],
-                pokemon["type2"],
-                pokemon["hp"],
-                pokemon["attack"],
-                pokemon["defense"],
-                pokemon["sp_attack"],
-                pokemon["sp_defense"],
-                pokemon["speed"],
-                pokemon["generation"],
-                pokemon["height_m"],
-                pokemon["weight_kg"],
-                pokemon["is_legendary"],
-                pokemon["moves"]
+                pokemon_dicc["pokedex_number"],
+                pokemon_dicc["name"],
+                pokemon_dicc["type1"],
+                pokemon_dicc["type2"],
+                pokemon_dicc["hp"],
+                pokemon_dicc["attack"],
+                pokemon_dicc["defense"],
+                pokemon_dicc["sp_attack"],
+                pokemon_dicc["sp_defense"],
+                pokemon_dicc["speed"],
+                pokemon_dicc["generation"],
+                pokemon_dicc["height_m"],
+                pokemon_dicc["weight_kg"],
+                pokemon_dicc["is_legendary"],
+                pokemon_dicc["moves"]
             )
             pokemons.append(pokemon)
     return pokemons
     
 #moves = definir_moves()
 pokemons = crear_pokemon()
+
+def crear_equipo(nombre_equipo):
+    lista_pokemons = []
+    pokemons = crear_pokemon()
+    for i in range(6):
+        lista_pokemons.append(pokemons[random.randint(0, len(pokemons))])
+    return Team(nombre_equipo, lista_pokemons)
+
+print(crear_equipo("Equipo random").pokemons)
