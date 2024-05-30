@@ -3,8 +3,29 @@ from utils.pokemon import Pokemon
 
 def crear_pokemon():
     with open("data/pokemons.csv", "r") as f:
-        num_pokemon = random.randint(1, len(f.readlines())-1)
-        pokedex_number,name,type1,type2,hp,attack,defense,sp_attack,sp_defense,speed,generation,height_m,weight_kg,is_legendary,moves = f.readline(num_pokemon).split(",")
-    print(f[num_pokemon])
+        pokemon = {}
+        pokemons = []
+        f.readline()
+        for line in f:
+            info = line.split(",")
+            pokemon["pokedex_numer"] = int(info[0])
+            pokemon["name"] = str(info[1])
+            pokemon["type1"] = str(info[2])
+            pokemon["type2"] = str(info[3])
+            pokemon["hp"] = int(info[4])
+            pokemon["attack"] = int(info[5])
+            pokemon["defense"] = int(info[6])
+            pokemon["sp_attack"] = int(info[7])
+            pokemon["sp_defense"] = int(info[8])
+            pokemon["speed"] = int(info[9])
+            pokemon["generation"] = int(info[10])
+            pokemon["height_m"] = float(info[11])
+            pokemon["weight_kg"] = float(info[12])
+            pokemon["is_legendary"] = int(info[13])
+            pokemon["moves"] = list(info[14])
+            Pokemon()
+            pokemons.append(Pokemon)
+        print(pokemons)
+    
 
 crear_pokemon()
