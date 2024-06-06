@@ -76,8 +76,10 @@ def crear_pokemon():
 def crear_equipo(nombre_equipo):
     lista_pokemons = []
     pokemons = crear_pokemon()
-    for i in range(6):
-        lista_pokemons.append(pokemons[random.randint(0, len(pokemons))])
+    while len(lista_pokemons) < 6:
+        pokemon_agregado = pokemons[random.randint(0, len(pokemons))]
+        if pokemon_agregado.is_legendary and pokemon_agregado not in lista_pokemons:
+            lista_pokemons.append(pokemon_agregado)
     return Team(nombre_equipo, lista_pokemons)
 
 pokemon_list = crear_equipo("Equipo random").pokemons
