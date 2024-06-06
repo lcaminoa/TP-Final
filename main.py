@@ -85,14 +85,14 @@ pokemon_list = crear_equipo("Equipo random").pokemons
 for pokemon in pokemon_list:
     print(pokemon.name)
 
-def poblacion_inicial(num_equipos:int)->list:
-    """crea una lista con una cantidad indicada de equipos pokemon
-
-        Args: num_equipos int, cantidad de equipos que se deseen generar
-
-        Return: list, lista con todods los equipos
+def poblacion(num_equipos:int)->list:
     """
-    poblacion_list = []
-    for n in range(num_equipos):
-        poblacion_list.append(crear_equipo(f"Equipo N°{n}"))
-    return poblacion_list
+    Crea una lista con una cantidad indicada de equipos pokemon.
+
+    Args:
+        num_equipos: Cantidad de equipos que se deseen generar.
+
+    Returns:
+        list: Lista con todods los equipos.
+    """
+    return [crear_equipo(f"Equipo N°{n}") for n in range(num_equipos)]
