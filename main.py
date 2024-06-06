@@ -4,7 +4,7 @@ from utils.move import Move
 from utils.team import Team
 from utils.combat import get_winner
 
-def definir_moves():
+def definir_moves() -> dict[str : object]:
     """
     Lee un archivo CSV con datos de movimientos y devuelve un diccionario de objetos Move.
 
@@ -41,7 +41,7 @@ def definir_moves():
             moves[move_dict["name"]] = move
     return moves
 
-def crear_pokemon():
+def crear_pokemon() -> list[object]:
     """
     Lee un archivo CSV con datos de Pokémon y devuelve una lista de objetos Pokémon.
 
@@ -113,7 +113,7 @@ def crear_pokemon():
             pokemons.append(pokemon)
     return pokemons
     
-def crear_equipo(nombre_equipo):
+def crear_equipo(nombre_equipo: str) -> object:
     """
     Crea un equipo de Pokémon no legendarios aleatorios.
 
@@ -163,3 +163,20 @@ def aptitud(mi_equipo:object,cant_adversarios:int)->int:
     """  
     adversarios = poblacion(cant_adversarios)
     return sum(1 for i in range(cant_adversarios) if get_winner(mi_equipo, adversarios[i], effectiveness) == mi_equipo)
+
+
+def efectividad():
+    """
+    Crea el diccionario con las efectividades de cada tipo de pokemon contra los otros.
+    """
+    dict_efectividades = {}
+    with open("data/effectiveness_chart.csv", "r") as f:
+        f.readline()
+        tipos = ["normal","fire","water","electric","grass","ice","fighting","poison","ground","flying","psychic","bug","rock","ghost","dragon","dark","steel","fairy"]
+        for line in f:
+            dic_pokemon = {}
+            valores = line.strip().split(",")
+            for i in range(len(tipos)):
+                dic_pokemon[tipos[i]] = valores[i+1]
+            dict_efectividades[valores[0]] = dic_pokemon
+    return dict_efectividades
