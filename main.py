@@ -3,17 +3,22 @@ from utils.pokemon import Pokemon
 from utils.move import Move
 from utils.team import Team
 
-
-'''
-Nota: 
-Creo que definir_moves anda bien, aunque no entendi porque tuve
-que poner move_dict en vez de usar move directamente.
-
-En crear_pokemon, solo faltaria implementar la parte de los moves
-que no entendi como hacerlo.
-'''
-
 def definir_moves():
+    """
+    Lee un archivo CSV con datos de movimientos y devuelve un diccionario de objetos Move.
+
+    Esta función abre el archivo "data/moves.csv", lee su contenido y lo procesa para crear un diccionario de movimientos.
+    Cada movimiento es representado por un objeto de la clase `Move` y se almacena en un diccionario donde la clave es 
+    el nombre del movimiento.
+
+    Formato del archivo CSV:
+        La primera línea del archivo CSV es un encabezado que se ignora.
+        Las líneas siguientes contienen los datos de los movimientos separados por comas.
+        Los campos en cada línea representan los siguientes parámetros en orden: "name", "type", "category", "pp", "power", "accuracy".
+
+    Returns:
+        dict: Un diccionario donde las claves son los nombres de los movimientos (str) y los valores son objetos `Move`.
+    """
     with open("data/moves.csv", "r") as f:
         move_dict = {}
         moves = {}
@@ -36,6 +41,40 @@ def definir_moves():
     return moves
 
 def crear_pokemon():
+    """
+    Lee un archivo CSV con datos de Pokémon y devuelve una lista de objetos Pokémon.
+
+    Esta función abre el archivo "data/pokemons.csv", lee su contenido y lo procesa para crear una lista de Pokémon.
+    Cada Pokémon es representado por un objeto de la clase `Pokemon` y se almacena en una lista.
+
+    Formato del archivo CSV:
+        La primera línea del archivo CSV es un encabezado que se ignora.
+        Las líneas siguientes contienen los datos de los Pokémon separados por comas.
+        Los campos en cada línea representan los siguientes parámetros en orden: 
+        "pokedex_number", "name", "type1", "type2", "hp", "attack", "defense", 
+        "sp_attack", "sp_defense", "speed", "generation", "height_m", "weight_kg", 
+        "is_legendary", "moves".
+
+    Parámetros de los campos:
+        - pokedex_number: int
+        - name: str
+        - type1: str
+        - type2: str
+        - hp: int
+        - attack: int
+        - defense: int
+        - sp_attack: int
+        - sp_defense: int
+        - speed: int
+        - generation: int
+        - height_m: float
+        - weight_kg: float
+        - is_legendary: int (0 o 1)
+        - moves: list (lista de objetos `Move`)
+
+    Returns:
+        list: Una lista de objetos `Pokemon`.
+    """
     with open("data/pokemons.csv", "r") as f:
         f.readline()
         pokemon_dicc = {}
@@ -74,6 +113,19 @@ def crear_pokemon():
     return pokemons
     
 def crear_equipo(nombre_equipo):
+    """
+    Crea un equipo de Pokémon no legendarios aleatorios.
+
+    Esta función genera un equipo de 6 Pokémon seleccionados aleatoriamente de una lista de Pokémon creada a partir 
+    de los datos leídos del archivo "data/pokemons.csv". Solo se incluyen Pokémon no legendarios y sin duplicados 
+    en el equipo.
+
+    Parámetros:
+        nombre_equipo (str): El nombre del equipo.
+
+    Returns:
+        Team: Un objeto `Team` que contiene el nombre del equipo y una lista de 6 objetos `Pokemon`.
+    """
     lista_pokemons = []
     pokemons = crear_pokemon()
     while len(lista_pokemons) < 6:
