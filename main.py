@@ -78,7 +78,7 @@ def crear_equipo(nombre_equipo):
     pokemons = crear_pokemon()
     while len(lista_pokemons) < 6:
         pokemon_agregado = pokemons[random.randint(0, len(pokemons))]
-        if pokemon_agregado.is_legendary and pokemon_agregado not in lista_pokemons:
+        if not pokemon_agregado.is_legendary and pokemon_agregado not in lista_pokemons:
             lista_pokemons.append(pokemon_agregado)
     return Team(nombre_equipo, lista_pokemons)
 
