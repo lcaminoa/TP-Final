@@ -74,8 +74,6 @@ def crear_pokemon():
             pokemons.append(pokemon)
     return pokemons
     
-#moves = definir_moves()
-pokemons = crear_pokemon()
 
 def crear_equipo(nombre_equipo):
     lista_pokemons = []
