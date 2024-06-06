@@ -150,22 +150,6 @@ def poblacion(num_equipos:int)->list:
     """
     return [crear_equipo(f"Equipo N°{n}") for n in range(num_equipos)]
 
-def aptitud(mi_equipo:object,cant_adversarios:int)->int:
-    """
-    Calcula la aptitud de el equipo pokemon seleccionado.
-
-    Args:
-        mi_equipo: Equipo al que se le desea calcular la aptitud.
-        adversarios_aleatorios: Cantidad de equipos aleatorios contra los que se enfrentara "mi_equipo".
-
-    Returns:
-        int: Cantidad de batallas ganadas.
-    """  
-    adversarios = poblacion(cant_adversarios)
-    effectiveness = efectividad()
-    return sum(1 for i in range(cant_adversarios) if get_winner(mi_equipo, adversarios[i], effectiveness) == mi_equipo)
-
-
 def efectividad():
     """
     Crea el diccionario con las efectividades de cada tipo de pokemon contra los otros.
@@ -181,3 +165,18 @@ def efectividad():
                 dic_pokemon[tipos[i]] = valores[i+1]
             dict_efectividades[valores[0]] = dic_pokemon
     return dict_efectividades
+
+def aptitud(mi_equipo:object,cant_adversarios:int)->int:
+    """
+    Calcula la aptitud de el equipo pokemon seleccionado.
+
+    Args:
+        mi_equipo: Equipo al que se le desea calcular la aptitud.
+        adversarios_aleatorios: Cantidad de equipos aleatorios contra los que se enfrentara "mi_equipo".
+
+    Returns:
+        int: Cantidad de batallas ganadas.
+    """  
+    adversarios = poblacion(cant_adversarios)
+    effectiveness = efectividad()
+    return sum(1 for i in range(cant_adversarios) if get_winner(mi_equipo, adversarios[i], effectiveness) == mi_equipo)
