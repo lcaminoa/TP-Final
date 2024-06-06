@@ -34,7 +34,6 @@ def definir_moves():
             )
             moves[move_dict["name"]] = move
     return moves
-definir_moves()
 
 def crear_pokemon():
     with open("data/pokemons.csv", "r") as f:
@@ -74,7 +73,6 @@ def crear_pokemon():
             pokemons.append(pokemon)
     return pokemons
     
-
 def crear_equipo(nombre_equipo):
     lista_pokemons = []
     pokemons = crear_pokemon()
@@ -82,4 +80,7 @@ def crear_equipo(nombre_equipo):
         lista_pokemons.append(pokemons[random.randint(0, len(pokemons))])
     return Team(nombre_equipo, lista_pokemons)
 
-print(crear_equipo("Equipo random").pokemons)
+pokemon_list = crear_equipo("Equipo random").pokemons
+
+for pokemon in pokemon_list:
+    print(pokemon.name)
