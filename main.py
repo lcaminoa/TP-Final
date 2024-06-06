@@ -162,6 +162,7 @@ def aptitud(mi_equipo:object,cant_adversarios:int)->int:
         int: Cantidad de batallas ganadas.
     """  
     adversarios = poblacion(cant_adversarios)
+    effectiveness = efectividad()
     return sum(1 for i in range(cant_adversarios) if get_winner(mi_equipo, adversarios[i], effectiveness) == mi_equipo)
 
 
