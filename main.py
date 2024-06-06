@@ -2,6 +2,7 @@ import random
 from utils.pokemon import Pokemon
 from utils.move import Move
 from utils.team import Team
+from utils.combat import get_winner
 
 
 '''
@@ -96,3 +97,17 @@ def poblacion(num_equipos:int)->list:
         list: Lista con todods los equipos.
     """
     return [crear_equipo(f"Equipo N°{n}") for n in range(num_equipos)]
+
+def aptitud(mi_equipo:object,cant_adversarios:int)->int:
+    """
+    Calcula la aptitud de el equipo pokemon seleccionado.
+
+    Args:
+        mi_equipo: Equipo al que se le desea calcular la aptitud.
+        adversarios_aleatorios: Cantidad de equipos aleatorios contra los que se enfrentara "mi_equipo".
+
+    Returns:
+        int: Cantidad de batallas ganadas.
+    """  
+    adversarios = poblacion(cant_adversarios)
+    return sum(1 for i in range(cant_adversarios) if get_winner(mi_equipo, adversarios[i], effectiveness) == mi_equipo)
