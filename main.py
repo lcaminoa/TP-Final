@@ -165,7 +165,7 @@ def aptitud(mi_equipo:object,cant_adversarios:int)->int:
     effectiveness = efectividad()
     return sum([1 for i in range(cant_adversarios-1) if get_winner(mi_equipo, adversarios[i], effectiveness) == mi_equipo])
 
-def evaluar_aptitud(list_equipos:list,cant_adversarios:int)->list:
+def evaluar_aptitud(list_equipos:list,cant_adversarios:int)->list[tuple]:
     """
     Evalúa la aptitud de una lista de equipos en función de la cantidad de adversarios.
 
@@ -186,26 +186,48 @@ def seleccion_proporcional(list_aptitudes:list[tuple])->list[tuple]:
     seleccionados = []
     for _ in list_aptitudes:
         candidato = random.choice(list_aptitudes)
-        if random.randrange(0,cant_adversarios) < candidato[0]:
+        if random.randrange(0,cant_adversarios+1) < candidato[0]:
             seleccionados.append(candidato)
     return seleccionados
 
-
+def cruce(seleccionados:list[tuple],poblacion:list[object])->list[object]:
+    hijos = []
+    for j,team in enumerate(poblacion):
+        equipo = []
+        madre = seleccionados[random.randrange(0,len(seleccionados))][1]
+        for i,pokemon in enumerate(team.pokemons):
+            if random.randrange(0,2) == 1:
+                equipo.append(pokemon)
+            else:
+                equipo.append(madre.pokemons[i])
+        hijos.append(Team(f"Equipo N°{j+1}",equipo))
+    return hijos
+    
 def main():
     inicio = time.time()
     lista_equipos = poblacion(num_equipos)
     generacion =evaluar_aptitud(lista_equipos,cant_adversarios)
-    for team in lista_equipos:
-        print(team.name)
-        for pokemon in team.pokemons:
-            print(pokemon.name)
-        print()
     seleccionados = seleccion_proporcional(generacion)
     print("------sellecionados------")
     print()
     for tupla in seleccionados:
         print(f"{tupla[1].name} aptitud:{tupla[0]}")
         for pokemon in tupla[1].pokemons:
+            print(pokemon.name)
+        print()
+    print()
+    print("-----padres------")
+    padres = poblacion(num_equipos)
+    for team in padres:
+        print(team.name)
+        for pokemon in team.pokemons:
+            print(pokemon.name)
+        print()
+    print("------cruza------")
+    print()     
+    for team in cruce(seleccionados,padres):
+        print(team.name)
+        for pokemon in team.pokemons:
             print(pokemon.name)
         print()
     fin = time.time()
