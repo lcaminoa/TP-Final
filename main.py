@@ -5,6 +5,9 @@ from utils.move import Move
 from utils.team import Team
 from utils.combat import get_winner
 
+cant_adversarios = 10
+num_equipos = 20
+
 def definir_moves() -> dict[str : object]:
     """
     Lee un archivo CSV con datos de movimientos y devuelve un diccionario de objetos Move.
@@ -162,7 +165,7 @@ def aptitud(mi_equipo:object,cant_adversarios:int)->int:
     effectiveness = efectividad()
     return sum([1 for i in range(cant_adversarios-1) if get_winner(mi_equipo, adversarios[i], effectiveness) == mi_equipo])
 
-def evaluar_aptitud(list_equipos:list,cant_adversarios:int)->list:
+def evaluar_aptitud(list_equipos:list,cant_adversarios:int)->list[tuple]:
     """
     Evalúa la aptitud de una lista de equipos en función de la cantidad de adversarios.
 
@@ -175,14 +178,65 @@ def evaluar_aptitud(list_equipos:list,cant_adversarios:int)->list:
         cant_adversarios (int): El número de adversarios que cada equipo debe enfrentar.
 
     Returns:
-        list: Una lista de valores que representan la aptitud de cada equipo en la lista proporcionada.
+        list[tuple]: Una lista de tuplas que contiene la aptitud del equipo y el nombre, para cada equipo.
     """
-    return [aptitud(team, cant_adversarios) for team in list_equipos]
+    return [(aptitud(team, cant_adversarios),team) for team in list_equipos]
 
+def seleccion_proporcional(list_aptitudes:list[tuple], cant_adversarios:int)->list[tuple]:
+    """
+    Selecciona equipos de forma aleatoria, teniendo en cuenta su aptitud.
+    Si su aptitud es más alta, entoncés su probabilidad de ser seleccionado será mayor y viceversa.
+    Args:
+        list_aptitudes: lista de tuplas que contiene la aptitud del equipo y el nombre, para cada equipo.
+        cant_adversarios (int): El número de adversarios que cada equipo debe enfrentar.
+    """
+    seleccionados = []
+    for _ in list_aptitudes:
+        candidato = random.choice(list_aptitudes)
+        if random.randrange(0,cant_adversarios+1) < candidato[0]:
+            seleccionados.append(candidato)
+    return seleccionados
 
+def cruce(seleccionados:list[tuple],poblacion:list[object])->list[object]:
+    hijos = []
+    for j,team in enumerate(poblacion):
+        equipo = []
+        madre = seleccionados[random.randrange(0,len(seleccionados))][1]
+        for i,pokemon in enumerate(team.pokemons):
+            if random.randrange(0,2) == 1:
+                equipo.append(pokemon)
+            else:
+                equipo.append(madre.pokemons[i])
+        hijos.append(Team(f"Equipo N°{j+1}",equipo))
+    return hijos
+    
 def main():
     inicio = time.time()
-    print(evaluar_aptitud(poblacion(1),400))
+    lista_equipos = poblacion(num_equipos)
+    generacion =evaluar_aptitud(lista_equipos,cant_adversarios)
+    seleccionados = seleccion_proporcional(generacion,cant_adversarios)
+    print("------sellecionados------")
+    print()
+    for tupla in seleccionados:
+        print(f"{tupla[1].name} aptitud:{tupla[0]}")
+        for pokemon in tupla[1].pokemons:
+            print(pokemon.name)
+        print()
+    print()
+    print("-----padres------")
+    padres = poblacion(num_equipos)
+    for team in padres:
+        print(team.name)
+        for pokemon in team.pokemons:
+            print(pokemon.name)
+        print()
+    print("------cruza------")
+    print()     
+    for team in cruce(seleccionados,padres):
+        print(team.name)
+        for pokemon in team.pokemons:
+            print(pokemon.name)
+        print()
     fin = time.time()
     print(f"La función tardó {fin - inicio} segundos en ejecutarse.")
 
