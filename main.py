@@ -165,7 +165,7 @@ def aptitud(mi_equipo:object,cant_adversarios:int)->int:
     effectiveness = efectividad()
     return sum([1 for i in range(cant_adversarios-1) if get_winner(mi_equipo, adversarios[i], effectiveness) == mi_equipo])
 
-def evaluar_aptitud(list_equipos:list,cant_adversarios:int)->list:
+def evaluar_aptitud(list_equipos:list,cant_adversarios:int)->list[tuple]:
     """
     Evalúa la aptitud de una lista de equipos en función de la cantidad de adversarios.
 
@@ -178,11 +178,18 @@ def evaluar_aptitud(list_equipos:list,cant_adversarios:int)->list:
         cant_adversarios (int): El número de adversarios que cada equipo debe enfrentar.
 
     Returns:
-        list: Una lista de valores que representan la aptitud de cada equipo en la lista proporcionada.
+        list[tuple]: Una lista de tuplas que contiene la aptitud del equipo y el nombre, para cada equipo.
     """
     return [(aptitud(team, cant_adversarios),team) for team in list_equipos]
 
-def seleccion_proporcional(list_aptitudes:list)->list[tuple]:
+def seleccion_proporcional(list_aptitudes:list[tuple], cant_adversarios:int)->list[tuple]:
+    """
+    Selecciona equipos de forma aleatoria, teniendo en cuenta su aptitud.
+    Si su aptitud es más alta, entoncés su probabilidad de ser seleccionado será mayor y viceversa.
+    Args:
+        list_aptitudes: lista de tuplas que contiene la aptitud del equipo y el nombre, para cada equipo.
+        cant_adversarios (int): El número de adversarios que cada equipo debe enfrentar.
+    """
     seleccionados = []
     for _ in list_aptitudes:
         candidato = random.choice(list_aptitudes)
