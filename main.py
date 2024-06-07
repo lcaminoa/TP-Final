@@ -153,7 +153,7 @@ def aptitud(mi_equipo:object,cant_adversarios:int)->int:
 
     Args:
         mi_equipo: Equipo al que se le desea calcular la aptitud.
-        adversarios_aleatorios: Cantidad de equipos aleatorios contra los que se enfrentara "mi_equipo".
+        cant_adversarios: Cantidad de equipos aleatorios contra los que se enfrentara "mi_equipo".
 
     Returns:
         int: Cantidad de batallas ganadas.
