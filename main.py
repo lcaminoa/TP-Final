@@ -1,4 +1,5 @@
 import random
+import time
 from utils.pokemon import Pokemon
 from utils.move import Move
 from utils.team import Team
@@ -118,7 +119,7 @@ def crear_equipo(nombre_equipo: str) -> object:
 
     return Team(nombre_equipo, equipo_pokemons)
 
-def poblacion(num_equipos:int)->list:
+def poblacion(num_equipos:int)->list[object]:
     """
     Crea una lista con una cantidad indicada de equipos pokemon.
 
@@ -159,16 +160,31 @@ def aptitud(mi_equipo:object,cant_adversarios:int)->int:
     """  
     adversarios = poblacion(cant_adversarios)
     effectiveness = efectividad()
-    print()
     return sum([1 for i in range(cant_adversarios-1) if get_winner(mi_equipo, adversarios[i], effectiveness) == mi_equipo])
 
-def evaluar_aptitud(list_equipos):
-    pass
-def seleccion():
-    pass
+def evaluar_aptitud(list_equipos:list,cant_adversarios:int)->list:
+    """
+    Evalúa la aptitud de una lista de equipos en función de la cantidad de adversarios.
+
+    Esta función calcula la aptitud de cada equipo en la lista proporcionada, basándose en el número de adversarios
+    especificado. 
+
+    Parámetros:
+        list_equipos (list): Una lista de equipos, donde cada equipo es un objeto que puede ser evaluado por la 
+        función `aptitud`.
+        cant_adversarios (int): El número de adversarios que cada equipo debe enfrentar.
+
+    Returns:
+        list: Una lista de valores que representan la aptitud de cada equipo en la lista proporcionada.
+    """
+    return [aptitud(team, cant_adversarios) for team in list_equipos]
+
 
 def main():
-    print(aptitud(crear_equipo("Team1"),10))
+    inicio = time.time()
+    print(evaluar_aptitud(poblacion(1),400))
+    fin = time.time()
+    print(f"La función tardó {fin - inicio} segundos en ejecutarse.")
 
 if __name__ == "__main__":
     main()
