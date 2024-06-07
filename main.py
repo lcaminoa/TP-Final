@@ -21,25 +21,19 @@ def definir_moves() -> dict[str : object]:
         dict: Un diccionario donde las claves son los nombres de los movimientos (str) y los valores son objetos `Move`.
     """
     with open("data/moves.csv", "r") as f:
-        move_dict = {}
-        moves = {}
-        parametros = ["name", "type", "category", "pp", "power", "accuracy"]
-        tipos = [str, str, str, int, int, int]
+        moves_data = {}
+        move = {}
+        parametros = ["type", "category", "pp", "power", "accuracy"]
+        tipos = [str, str, int, int, int]
         f.readline()
         for line in f:
             valor_parametro = line.split(",")
-            for i in range(len(parametros)):
-                move_dict[parametros[i]] = tipos[i](valor_parametro[i]) # Convertir a tipo de dato correspondiente
-            move = Move(
-                move_dict["name"],
-                move_dict["type"],
-                move_dict["category"],
-                move_dict["pp"],
-                move_dict["power"],
-                move_dict["accuracy"]
-            )
-            moves[move_dict["name"]] = move
-    return moves
+            name = valor_parametro.pop(0)
+            for i,parametro in enumerate(parametros):
+                move[parametro] = tipos[i](valor_parametro[i])
+            moves_data[name] = move
+            
+    return moves_data
 
 def crear_pokemon() -> list[object]:
     """
@@ -78,38 +72,23 @@ def crear_pokemon() -> list[object]:
     """
     with open("data/pokemons.csv", "r") as f:
         f.readline()
-        pokemon_dicc = {}
+        data = {}
         pokemons = []
         parametros = ["pokedex_number", "name", "type1", "type2", "hp", "attack", "defense", "sp_attack", "sp_defense", "speed", "generation", "height_m", "weight_kg", "is_legendary", "moves"]
         tipos = [int, str, str, str, int, int, int, int, int, int, int, float, float, int, list]
-        lista_moviemintos = definir_moves()
+        moves_data = definir_moves()
         for line in f:
-            valor_parametro = line.split(",")
-            for i in range(len(parametros)-1):
-                pokemon_dicc[parametros[i]] = tipos[i](valor_parametro[i]) if valor_parametro[i] else 0 # Convertir a tipo de dato correspondiente
-            movs_pokemon = []
-            for movimiento in valor_parametro[-1].strip().split(";"):
-                if movimiento:
-                    movs_pokemon.append(lista_moviemintos[movimiento])
-            pokemon_dicc["moves"] = movs_pokemon
+            valor_parametro = line.strip().split(",")
 
-            pokemon = Pokemon(
-                pokemon_dicc["pokedex_number"],
-                pokemon_dicc["name"],
-                pokemon_dicc["type1"],
-                pokemon_dicc["type2"],
-                pokemon_dicc["hp"],
-                pokemon_dicc["attack"],
-                pokemon_dicc["defense"],
-                pokemon_dicc["sp_attack"],
-                pokemon_dicc["sp_defense"],
-                pokemon_dicc["speed"],
-                pokemon_dicc["generation"],
-                pokemon_dicc["height_m"],
-                pokemon_dicc["weight_kg"],
-                pokemon_dicc["is_legendary"],
-                pokemon_dicc["moves"]
-            )
+            for i,parametro in enumerate(parametros):
+                if parametro != "name" and parametro != "moves":
+                    data[parametro] = tipos[i](valor_parametro[i]) if valor_parametro[i] else None # Convertir a tipo de dato correspondiente
+                elif parametro == "name":
+                    name = valor_parametro[i]
+                else:
+                    moves = valor_parametro[i].strip().split(";")
+                    data[parametro] = tipos[i](moves) if valor_parametro[i] else ""
+            pokemon = Pokemon.from_dict(name,data,moves_data)
             pokemons.append(pokemon)
     return pokemons
     
@@ -127,16 +106,17 @@ def crear_equipo(nombre_equipo: str) -> object:
     Returns:
         Team: Un objeto `Team` que contiene el nombre del equipo y una lista de 6 objetos `Pokemon`.
     """
-    lista_pokemons = []
     pokemons = crear_pokemon()
-    for i in range(6):
-        lista_pokemons.append(pokemons[random.randint(0, len(pokemons))])
-    return Team(nombre_equipo, lista_pokemons)
+    equipo_pokemons = []
+    pokemon_names = set()
 
-pokemon_list = crear_equipo("Equipo random").pokemons
+    while len(equipo_pokemons) < 6:
+        pokemon = random.choice(pokemons)
+        if pokemon.name not in pokemon_names and not pokemon.is_legendary:
+            equipo_pokemons.append(pokemon)
+            pokemon_names.add(pokemon.name)
 
-for pokemon in pokemon_list:
-    print(pokemon.name)
+    return Team(nombre_equipo, equipo_pokemons)
 
 def poblacion(num_equipos:int)->list:
     """
@@ -148,7 +128,7 @@ def poblacion(num_equipos:int)->list:
     Returns:
         list: Lista con todods los equipos.
     """
-    return [crear_equipo(f"Equipo N°{n}") for n in range(num_equipos)]
+    return [crear_equipo(f"Equipo N°{n+1}") for n in range(num_equipos)]
 
 def efectividad():
     """
@@ -162,7 +142,7 @@ def efectividad():
             dic_pokemon = {}
             valores = line.strip().split(",")
             for i in range(len(tipos)):
-                dic_pokemon[tipos[i]] = valores[i+1]
+                dic_pokemon[tipos[i]] = float(valores[i+1])
             dict_efectividades[valores[0]] = dic_pokemon
     return dict_efectividades
 
@@ -179,4 +159,16 @@ def aptitud(mi_equipo:object,cant_adversarios:int)->int:
     """  
     adversarios = poblacion(cant_adversarios)
     effectiveness = efectividad()
-    return sum(1 for i in range(cant_adversarios) if get_winner(mi_equipo, adversarios[i], effectiveness) == mi_equipo)
+    print()
+    return sum([1 for i in range(cant_adversarios-1) if get_winner(mi_equipo, adversarios[i], effectiveness) == mi_equipo])
+
+def evaluar_aptitud(list_equipos):
+    pass
+def seleccion():
+    pass
+
+def main():
+    print(aptitud(crear_equipo("Team1"),10))
+
+if __name__ == "__main__":
+    main()
