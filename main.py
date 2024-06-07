@@ -5,8 +5,8 @@ from utils.move import Move
 from utils.team import Team
 from utils.combat import get_winner
 
-cant_adversarios = 10
-num_equipos = 20
+cant_adversarios = 50
+num_equipos = 400
 
 def definir_moves() -> dict[str : object]:
     """
@@ -39,12 +39,11 @@ def definir_moves() -> dict[str : object]:
             
     return moves_data
 
-def crear_pokemon() -> list[object]:
+def crear_pokemon() -> object:
     """
-    Lee un archivo CSV con datos de Pokémon y devuelve una lista de objetos Pokémon.
+    Lee un archivo CSV con datos de Pokémon y devuelve un objeto Pokémon aleatorio.
 
-    Esta función abre el archivo "data/pokemons.csv", lee su contenido y lo procesa para crear una lista de Pokémon.
-    Cada Pokémon es representado por un objeto de la clase `Pokemon` y se almacena en una lista.
+    Esta función abre el archivo "data/pokemons.csv", lee su contenido y lo procesa para crear un objeto Pokémon.
 
     Formato del archivo CSV:
         La primera línea del archivo CSV es un encabezado que se ignora.
@@ -72,35 +71,34 @@ def crear_pokemon() -> list[object]:
         - moves: list (lista de objetos `Move`)
 
     Returns:
-        list: Una lista de objetos `Pokemon`.
+        list: Un objeto `Pokemon`.
     """
     with open("data/pokemons.csv", "r") as f:
         f.readline()
         data = {}
-        pokemons = []
+        moves_data = definir_moves()
+        moves = []
         parametros = ["pokedex_number", "name", "type1", "type2", "hp", "attack", "defense", "sp_attack", "sp_defense", "speed", "generation", "height_m", "weight_kg", "is_legendary", "moves"]
         tipos = [int, str, str, str, int, int, int, int, int, int, int, float, float, int, list]
-        moves_data = definir_moves()
-        for line in f:
-            valor_parametro = line.strip().split(",")
+        line = random.choice(f.readlines())
+        valor_parametro = line.strip().split(",")
 
-            for i,parametro in enumerate(parametros):
-                if parametro != "name" and parametro != "moves":
-                    data[parametro] = tipos[i](valor_parametro[i]) if valor_parametro[i] else None # Convertir a tipo de dato correspondiente
-                elif parametro == "name":
-                    name = valor_parametro[i]
-                else:
-                    moves = valor_parametro[i].strip().split(";")
-                    data[parametro] = tipos[i](moves) if valor_parametro[i] else ""
-            pokemon = Pokemon.from_dict(name,data,moves_data)
-            pokemons.append(pokemon)
-    return pokemons
+        for i,parametro in enumerate(parametros):
+            if parametro != "name" and parametro != "moves":
+                data[parametro] = tipos[i](valor_parametro[i]) if valor_parametro[i] else None # Convertir a tipo de dato correspondiente
+            elif parametro == "name":
+                name = valor_parametro[i]
+            else:
+                moves = valor_parametro[i].strip().split(";")
+                data[parametro] = tipos[i](moves) if valor_parametro[i] else []
+        pokemon = Pokemon.from_dict(name,data,moves_data)
+    return pokemon
     
 def crear_equipo(nombre_equipo: str) -> object:
     """
     Crea un equipo de Pokémon no legendarios aleatorios.
 
-    Esta función genera un equipo de 6 Pokémon seleccionados aleatoriamente de una lista de Pokémon creada a partir 
+    Esta función genera un equipo de 6 Pokémon seleccionados aleatoriamente generados de la funcion crear_pokemon() la cual crea un objeto pokemon creado a partir 
     de los datos leídos del archivo "data/pokemons.csv". Solo se incluyen Pokémon no legendarios y sin duplicados 
     en el equipo.
 
@@ -110,12 +108,11 @@ def crear_equipo(nombre_equipo: str) -> object:
     Returns:
         Team: Un objeto `Team` que contiene el nombre del equipo y una lista de 6 objetos `Pokemon`.
     """
-    pokemons = crear_pokemon()
     equipo_pokemons = []
     pokemon_names = set()
 
     while len(equipo_pokemons) < 6:
-        pokemon = random.choice(pokemons)
+        pokemon = crear_pokemon()
         if pokemon.name not in pokemon_names and not pokemon.is_legendary:
             equipo_pokemons.append(pokemon)
             pokemon_names.add(pokemon.name)
@@ -203,13 +200,16 @@ def cruce(seleccionados:list[tuple],poblacion:list[object])->list[object]:
         equipo = []
         madre = seleccionados[random.randrange(0,len(seleccionados))][1]
         for i,pokemon in enumerate(team.pokemons):
-            if random.randrange(0,2) == 1:
+            if random.randrange(0,101)<3:
+                equipo.append(crear_pokemon())
+            elif random.randrange(0,2) == 1:
                 equipo.append(pokemon)
             else:
                 equipo.append(madre.pokemons[i])
         hijos.append(Team(f"Equipo N°{j+1}",equipo))
     return hijos
-    
+
+
 def main():
     inicio = time.time()
     lista_equipos = poblacion(num_equipos)
