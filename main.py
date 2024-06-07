@@ -214,7 +214,7 @@ def main():
     inicio = time.time()
     lista_equipos = poblacion(num_equipos)
     generacion =evaluar_aptitud(lista_equipos,cant_adversarios)
-    seleccionados = seleccion_proporcional(generacion)
+    seleccionados = seleccion_proporcional(generacion,cant_adversarios)
     print("------sellecionados------")
     print()
     for tupla in seleccionados:
