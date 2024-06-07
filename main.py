@@ -5,6 +5,9 @@ from utils.move import Move
 from utils.team import Team
 from utils.combat import get_winner
 
+cant_adversarios = 10
+num_equipos = 20
+
 def definir_moves() -> dict[str : object]:
     """
     Lee un archivo CSV con datos de movimientos y devuelve un diccionario de objetos Move.
@@ -177,12 +180,34 @@ def evaluar_aptitud(list_equipos:list,cant_adversarios:int)->list:
     Returns:
         list: Una lista de valores que representan la aptitud de cada equipo en la lista proporcionada.
     """
-    return [aptitud(team, cant_adversarios) for team in list_equipos]
+    return [(aptitud(team, cant_adversarios),team) for team in list_equipos]
+
+def seleccion_proporcional(list_aptitudes:list[tuple])->list[tuple]:
+    seleccionados = []
+    for _ in list_aptitudes:
+        candidato = random.choice(list_aptitudes)
+        if random.randrange(0,cant_adversarios) < candidato[0]:
+            seleccionados.append(candidato)
+    return seleccionados
 
 
 def main():
     inicio = time.time()
-    print(evaluar_aptitud(poblacion(1),400))
+    lista_equipos = poblacion(num_equipos)
+    generacion =evaluar_aptitud(lista_equipos,cant_adversarios)
+    for team in lista_equipos:
+        print(team.name)
+        for pokemon in team.pokemons:
+            print(pokemon.name)
+        print()
+    seleccionados = seleccion_proporcional(generacion)
+    print("------sellecionados------")
+    print()
+    for tupla in seleccionados:
+        print(f"{tupla[1].name} aptitud:{tupla[0]}")
+        for pokemon in tupla[1].pokemons:
+            print(pokemon.name)
+        print()
     fin = time.time()
     print(f"La función tardó {fin - inicio} segundos en ejecutarse.")
 
