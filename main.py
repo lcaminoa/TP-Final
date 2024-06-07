@@ -182,14 +182,13 @@ def evaluar_aptitud(list_equipos:list,cant_adversarios:int)->list:
     """
     return [(aptitud(team, cant_adversarios),team) for team in list_equipos]
 
-def seleccion_proporcional(list_aptitudes:list[tuple])->list[tuple]:
+def seleccion_proporcional(list_aptitudes:list)->list[tuple]:
     seleccionados = []
     for _ in list_aptitudes:
         candidato = random.choice(list_aptitudes)
         if random.randrange(0,cant_adversarios) < candidato[0]:
             seleccionados.append(candidato)
     return seleccionados
-
 
 def main():
     inicio = time.time()
