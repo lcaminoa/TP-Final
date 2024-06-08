@@ -197,39 +197,40 @@ def seleccion_proporcional(list_aptitudes:list[tuple], cant_adversarios:int)->li
 def cruce(seleccionados:list[tuple],poblacion:list[object])->list[object]:
     hijos = []
     for i, team in enumerate(poblacion):
-            equipo = []
-            madre = seleccionados[random.randrange(0, len(seleccionados))][1]
-            pokemon_names = set()
-
-            for j, padre in enumerate(team.pokemons):
-                if random.randrange(0, 101) < 3:
+        starter = 0
+        equipo = []
+        madre = seleccionados[random.randrange(0, len(seleccionados))][1]
+        pokemon_names = set()
+        for j, padre in enumerate(team.pokemons):
+            if random.randrange(0, 101) < 3:
+                nuevo = crear_pokemon()
+                while nuevo.name in pokemon_names:
+                    nuevo = crear_pokemon()
+                equipo.append(nuevo)
+                pokemon_names.add(nuevo.name)
+            elif random.randrange(0, 2) == 1:
+                if padre.name not in pokemon_names:
+                    equipo.append(padre)
+                    pokemon_names.add(padre.name)
+                else:
                     nuevo = crear_pokemon()
                     while nuevo.name in pokemon_names:
                         nuevo = crear_pokemon()
                     equipo.append(nuevo)
                     pokemon_names.add(nuevo.name)
-                elif random.randrange(0, 2) == 1:
-                    if padre.name not in pokemon_names:
-                        equipo.append(padre)
-                        pokemon_names.add(padre.name)
-                    else:
-                        nuevo = crear_pokemon()
-                        while nuevo.name in pokemon_names:
-                            nuevo = crear_pokemon()
-                        equipo.append(nuevo)
-                        pokemon_names.add(nuevo.name)
+            else:
+                if madre.pokemons[j].name not in pokemon_names:
+                    equipo.append(madre.pokemons[j])
+                    pokemon_names.add(madre.pokemons[j].name)
                 else:
-                    if madre.pokemons[j].name not in pokemon_names:
-                        equipo.append(madre.pokemons[j])
-                        pokemon_names.add(madre.pokemons[j].name)
-                    else:
+                    nuevo = crear_pokemon()
+                    while nuevo.name in pokemon_names:
                         nuevo = crear_pokemon()
-                        while nuevo.name in pokemon_names:
-                            nuevo = crear_pokemon()
-                        equipo.append(nuevo)
-                        pokemon_names.add(nuevo.name)
-
-            hijos.append(Team(f"Equipo N°{i + 1}", equipo))
+                    equipo.append(nuevo)
+                    pokemon_names.add(nuevo.name)
+        if random.randrange(0, 101) < 3:
+            starter = random.randrange(1, 7)
+        hijos.append(Team(f"Equipo N°{i + 1}", equipo,starter))
     return hijos
 
 
