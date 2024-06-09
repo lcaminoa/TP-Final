@@ -201,44 +201,31 @@ def cruce(seleccionados:list[tuple],poblacion:list[object])->list[object]:
         list[object]: Una lista de nuevos equipos (objetos) generados a partir del cruce genético.
     """
     hijos = []
-    for i, team in enumerate(poblacion):
-        starter = 0
-        equipo = []
-        padre = seleccionados[random.randrange(0, len(seleccionados))][1]
+    for i, equipo in enumerate(poblacion):
+        nuevo_equipo = []
+        padre = random.choice(seleccionados)[1]
         pokemon_names = set()
-        for j, madre in enumerate(team.pokemons):
-            if random.randrange(0, 101) < 3:
-                nuevo = crear_pokemon()
-                while nuevo.name in pokemon_names:
-                    nuevo = crear_pokemon()
-                equipo.append(nuevo)
-                pokemon_names.add(nuevo.name)
-            elif random.randrange(0, 2) == 1:
-                if madre.name not in pokemon_names:
-                    equipo.append(madre)
-                    pokemon_names.add(madre.name)
-                else:
-                    nuevo = crear_pokemon()
-                    while nuevo.name in pokemon_names:
-                        nuevo = crear_pokemon()
-                    equipo.append(nuevo)
-                    pokemon_names.add(nuevo.name)
+        
+        for madre in equipo.pokemons:
+            if random.random() < 0.03:  
+                nuevo_pokemon = crear_pokemon()
+            elif random.random() < 0.5:  
+                nuevo_pokemon = madre
             else:
-                if padre.pokemons[j].name not in pokemon_names:
-                    equipo.append(padre.pokemons[j])
-                    pokemon_names.add(padre.pokemons[j].name)
-                else:
-                    nuevo = crear_pokemon()
-                    while nuevo.name in pokemon_names:
-                        nuevo = crear_pokemon()
-                    equipo.append(nuevo)
-                    pokemon_names.add(nuevo.name)
-        if random.randrange(0, 101) < 3:
-            starter = random.randrange(1,6)
-        hijos.append(Team(f"Equipo N°{i + 1}", equipo,starter))
+                nuevo_pokemon = padre.pokemons[equipo.pokemons.index(madre)]
+        
+            while nuevo_pokemon.name in pokemon_names:
+                for pokemon in [madre,padre.pokemons[equipo.pokemons.index(madre)],crear_pokemon()]:
+                    nuevo_pokemon = pokemon
+            
+            nuevo_equipo.append(nuevo_pokemon)
+            pokemon_names.add(nuevo_pokemon.name)
+
+        starter = random.randint(1, 5) if random.random() < 0.03 else 0
+        hijos.append(Team(f"Equipo N°{i + 1}", nuevo_equipo, starter))
     return hijos
 
-def algoritmo_genetico(cant_equipos:int,cant_adversarios:int,cant_generaciones):
+def algoritmo_genetico(cant_equipos:int,cant_adversarios:int,cant_generaciones:int)->list[object]:
     """
     Ejecuta un algoritmo genético para evolucionar una población de equipos a lo largo de varias generaciones.
 
@@ -263,9 +250,9 @@ def algoritmo_genetico(cant_equipos:int,cant_adversarios:int,cant_generaciones):
     return nueva_poblacion
 
 def main():
-    cant_equipos = 10
-    cant_adversarios = 100
-    cant_generaciones = 10
+    cant_equipos = 50
+    cant_adversarios = 400
+    cant_generaciones = 50
     adversarios = poblacion(cant_adversarios)
     effectiveness = efectividad()
     inicio = time.time()
