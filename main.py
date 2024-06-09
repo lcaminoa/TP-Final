@@ -5,9 +5,6 @@ from utils.move import Move
 from utils.team import Team
 from utils.combat import get_winner
 
-cant_adversarios = 10
-num_equipos = 20
-
 def definir_moves() -> dict[str : object]:
     """
     Lee un archivo CSV con datos de movimientos y devuelve un diccionario de objetos Move.
@@ -147,7 +144,7 @@ def efectividad():
             dict_efectividades[valores[0]] = dic_pokemon
     return dict_efectividades
 
-def aptitud(mi_equipo:object,cant_adversarios:int)->int:
+def aptitud(mi_equipo:object,adversarios:list,effectiveness:dict)->int:
     """
     Calcula la aptitud de el equipo pokemon seleccionado.
 
@@ -158,16 +155,11 @@ def aptitud(mi_equipo:object,cant_adversarios:int)->int:
     Returns:
         int: Cantidad de batallas ganadas.
     """  
-    adversarios = poblacion(cant_adversarios)
-    effectiveness = efectividad()
-    return sum([1 for i in range(cant_adversarios-1) if get_winner(mi_equipo, adversarios[i], effectiveness) == mi_equipo])
+    return sum([1 for i in range(len(adversarios)) if get_winner(mi_equipo, adversarios[i], effectiveness) == mi_equipo])
 
-def evaluar_aptitud(list_equipos:list,cant_adversarios:int)->list[tuple]:
+def evaluar_aptitud(list_equipos:list,adversarios:list,effectiveness:dict)->list[tuple]:
     """
     Evalúa la aptitud de una lista de equipos en función de la cantidad de adversarios.
-
-    Esta función calcula la aptitud de cada equipo en la lista proporcionada, basándose en el número de adversarios
-    especificado. 
 
     Parámetros:
         list_equipos (list): Una lista de equipos, donde cada equipo es un objeto que puede ser evaluado por la 
@@ -177,7 +169,7 @@ def evaluar_aptitud(list_equipos:list,cant_adversarios:int)->list[tuple]:
     Returns:
         list[tuple]: Una lista de tuplas que contiene la aptitud del equipo y el nombre, para cada equipo.
     """
-    return [(aptitud(team, cant_adversarios),team) for team in list_equipos]
+    return [(aptitud(team, adversarios,effectiveness),team) for team in list_equipos]
 
 def seleccion_proporcional(list_aptitudes:list[tuple], cant_adversarios:int)->list[tuple]:
     """
@@ -188,8 +180,8 @@ def seleccion_proporcional(list_aptitudes:list[tuple], cant_adversarios:int)->li
         cant_adversarios (int): El número de adversarios que cada equipo debe enfrentar.
     """
     seleccionados = []
-    for _ in list_aptitudes:
-        candidato = random.choice(list_aptitudes)
+    for i in range(len(list_aptitudes)):
+        candidato = list_aptitudes[i]
         if random.randrange(0,cant_adversarios+1) < candidato[0]:
             seleccionados.append(candidato)
     return seleccionados
@@ -229,40 +221,41 @@ def cruce(seleccionados:list[tuple],poblacion:list[object])->list[object]:
                     equipo.append(nuevo)
                     pokemon_names.add(nuevo.name)
         if random.randrange(0, 101) < 3:
-            starter = random.randrange(1, 7)
+            starter = random.randrange(1,6)
         hijos.append(Team(f"Equipo N°{i + 1}", equipo,starter))
     return hijos
 
+def algoritmo_genetico(cant_equipos:int,cant_adversarios:int,cant_generaciones):
+    adversarios = poblacion(cant_adversarios)
+    effectiveness = efectividad()
+    población_inicial = poblacion(cant_equipos)
+    aptitudes = evaluar_aptitud(población_inicial,adversarios,effectiveness)
+    seleccionados = seleccion_proporcional(aptitudes,cant_adversarios)
+    for _ in range(cant_generaciones):
+        población_inicial = poblacion(cant_equipos)
+        nueva_poblacion = cruce(seleccionados,población_inicial)
+        aptitudes = evaluar_aptitud(nueva_poblacion,adversarios,effectiveness)
+        seleccionados = seleccion_proporcional(aptitudes,cant_adversarios)
+    return nueva_poblacion
 
 def main():
+    cant_equipos = 10
+    cant_adversarios = 100
+    cant_generaciones = 50
+    adversarios = poblacion(cant_adversarios)
+    effectiveness = efectividad()
     inicio = time.time()
-    lista_equipos = poblacion(num_equipos)
-    generacion =evaluar_aptitud(lista_equipos,cant_adversarios)
-    seleccionados = seleccion_proporcional(generacion,cant_adversarios)
-    print("------sellecionados------")
-    print()
-    for tupla in seleccionados:
-        print(f"{tupla[1].name} aptitud:{tupla[0]}")
-        for pokemon in tupla[1].pokemons:
-            print(pokemon.name)
-        print()
-    print()
-    print("-----padres------")
-    padres = poblacion(num_equipos)
-    for team in padres:
-        print(team.name)
-        for pokemon in team.pokemons:
-            print(pokemon.name)
-        print()
-    print("------cruza------")
-    print()     
-    for team in cruce(seleccionados,padres):
-        print(team.name)
+    dreams_teams = algoritmo_genetico(cant_equipos,cant_adversarios,cant_generaciones)
+    print("--------dreams teams--------")
+    for team in dreams_teams:
+        print(f"{team.name} aptitud:{aptitud(team,adversarios,effectiveness)}")
         for pokemon in team.pokemons:
             print(pokemon.name)
         print()
     fin = time.time()
+    print()
     print(f"La función tardó {fin - inicio} segundos en ejecutarse.")
+    print()
 
 if __name__ == "__main__":
     main()
