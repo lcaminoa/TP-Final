@@ -68,7 +68,7 @@ def crear_pokemon() -> object:
         - moves: list (lista de objetos `Move`)
 
     Returns:
-        list: Un objeto `Pokemon`.
+        object: Un objeto `Pokemon`.
     """
     with open("data/pokemons.csv", "r") as f:
         f.readline()
@@ -93,7 +93,7 @@ def crear_pokemon() -> object:
     
 def crear_equipo(nombre_equipo: str) -> object:
     """
-    Crea un equipo de Pokémon no legendarios aleatorios.
+    Crea un equipo de Pokémon no legendarios ni duplicados aleatorios.
 
     Esta función genera un equipo de 6 Pokémon seleccionados aleatoriamente generados de la funcion crear_pokemon() la cual crea un objeto pokemon creado a partir 
     de los datos leídos del archivo "data/pokemons.csv". Solo se incluyen Pokémon no legendarios y sin duplicados 
@@ -128,9 +128,12 @@ def poblacion(num_equipos:int)->list[object]:
     """
     return [crear_equipo(f"Equipo N°{n+1}") for n in range(num_equipos)]
 
-def efectividad():
+def efectividad()->dict:
     """
     Crea el diccionario con las efectividades de cada tipo de pokemon contra los otros.
+
+        Returns:
+        dict: diccionario con las efectividades de cada tipo
     """
     dict_efectividades = {}
     with open("data/effectiveness_chart.csv", "r") as f:
@@ -150,7 +153,7 @@ def aptitud(mi_equipo:object,adversarios:list,effectiveness:dict)->int:
 
     Args:
         mi_equipo: Equipo al que se le desea calcular la aptitud.
-        cant_adversarios: Cantidad de equipos aleatorios contra los que se enfrentara "mi_equipo".
+        adversarios: Equipos contra los que se enfrentara "mi_equipo".
 
     Returns:
         int: Cantidad de batallas ganadas.
@@ -164,10 +167,10 @@ def evaluar_aptitud(list_equipos:list,adversarios:list,effectiveness:dict)->list
     Parámetros:
         list_equipos (list): Una lista de equipos, donde cada equipo es un objeto que puede ser evaluado por la 
         función `aptitud`.
-        cant_adversarios (int): El número de adversarios que cada equipo debe enfrentar.
+        adversarios (list): Adversarios que cada equipo debe enfrentar.
 
     Returns:
-        list[tuple]: Una lista de tuplas que contiene la aptitud del equipo y el nombre, para cada equipo.
+        list[tuple]: Una lista de tuplas que contiene la aptitud del equipo y el objeto equipo correspondiente, para cada equipo.
     """
     return [(aptitud(team, adversarios,effectiveness),team) for team in list_equipos]
 
@@ -187,13 +190,23 @@ def seleccion_proporcional(list_aptitudes:list[tuple], cant_adversarios:int)->li
     return seleccionados
 
 def cruce(seleccionados:list[tuple],poblacion:list[object])->list[object]:
+    """
+    Realiza el cruce genético entre una lista de equipos seleccionados y una población de equipos, generando una nueva generación de equipos.
+
+    Parámetros:
+        seleccionados (list[tuple]): Una lista de tuplas donde cada tupla contiene un valor de aptitud y un equipo (padre). 
+        poblacion (list[object]): Una lista de equipos (objetos) que representan la población inicial.
+
+    Retorna:
+        list[object]: Una lista de nuevos equipos (objetos) generados a partir del cruce genético.
+    """
     hijos = []
     for i, team in enumerate(poblacion):
         starter = 0
         equipo = []
-        madre = seleccionados[random.randrange(0, len(seleccionados))][1]
+        padre = seleccionados[random.randrange(0, len(seleccionados))][1]
         pokemon_names = set()
-        for j, padre in enumerate(team.pokemons):
+        for j, madre in enumerate(team.pokemons):
             if random.randrange(0, 101) < 3:
                 nuevo = crear_pokemon()
                 while nuevo.name in pokemon_names:
@@ -201,9 +214,9 @@ def cruce(seleccionados:list[tuple],poblacion:list[object])->list[object]:
                 equipo.append(nuevo)
                 pokemon_names.add(nuevo.name)
             elif random.randrange(0, 2) == 1:
-                if padre.name not in pokemon_names:
-                    equipo.append(padre)
-                    pokemon_names.add(padre.name)
+                if madre.name not in pokemon_names:
+                    equipo.append(madre)
+                    pokemon_names.add(madre.name)
                 else:
                     nuevo = crear_pokemon()
                     while nuevo.name in pokemon_names:
@@ -211,9 +224,9 @@ def cruce(seleccionados:list[tuple],poblacion:list[object])->list[object]:
                     equipo.append(nuevo)
                     pokemon_names.add(nuevo.name)
             else:
-                if madre.pokemons[j].name not in pokemon_names:
-                    equipo.append(madre.pokemons[j])
-                    pokemon_names.add(madre.pokemons[j].name)
+                if padre.pokemons[j].name not in pokemon_names:
+                    equipo.append(padre.pokemons[j])
+                    pokemon_names.add(padre.pokemons[j].name)
                 else:
                     nuevo = crear_pokemon()
                     while nuevo.name in pokemon_names:
@@ -226,6 +239,17 @@ def cruce(seleccionados:list[tuple],poblacion:list[object])->list[object]:
     return hijos
 
 def algoritmo_genetico(cant_equipos:int,cant_adversarios:int,cant_generaciones):
+    """
+    Ejecuta un algoritmo genético para evolucionar una población de equipos a lo largo de varias generaciones.
+
+    Parámetros:
+        cant_equipos (int): La cantidad de equipos en la población inicial y en cada generación.
+        cant_adversarios (int): La cantidad de adversarios contra los cuales se evalúa la aptitud de los equipos.
+        cant_generaciones (int): El número de generaciones que el algoritmo genético debe ejecutar.
+
+    Retorna:
+        list[object]: La última generación de la población de equipos después de ejecutar el número especificado de generaciones.
+    """
     adversarios = poblacion(cant_adversarios)
     effectiveness = efectividad()
     población_inicial = poblacion(cant_equipos)
@@ -241,7 +265,7 @@ def algoritmo_genetico(cant_equipos:int,cant_adversarios:int,cant_generaciones):
 def main():
     cant_equipos = 10
     cant_adversarios = 100
-    cant_generaciones = 50
+    cant_generaciones = 10
     adversarios = poblacion(cant_adversarios)
     effectiveness = efectividad()
     inicio = time.time()
