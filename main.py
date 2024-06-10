@@ -132,7 +132,7 @@ def efectividad()->dict:
     """
     Crea el diccionario con las efectividades de cada tipo de pokemon contra los otros.
 
-    Returns:
+        Returns:
         dict: diccionario con las efectividades de cada tipo
     """
     dict_efectividades = {}
@@ -241,25 +241,27 @@ def algoritmo_genetico(cant_equipos:int,cant_adversarios:int,cant_generaciones:i
     """
     adversarios = poblacion(cant_adversarios)
     effectiveness = efectividad()
+    
     población_inicial = poblacion(cant_equipos)
     aptitudes = evaluar_aptitud(población_inicial,adversarios,effectiveness)
     seleccionados = seleccion_proporcional(aptitudes,cant_adversarios)
+    nueva_poblacion = cruce(seleccionados,población_inicial)
+
     for _ in range(cant_generaciones):
-        población_inicial = poblacion(cant_equipos)
-        nueva_poblacion = cruce(seleccionados,población_inicial)
         aptitudes = evaluar_aptitud(nueva_poblacion,adversarios,effectiveness)
         seleccionados = seleccion_proporcional(aptitudes,cant_adversarios)
+        nueva_poblacion = cruce(seleccionados,nueva_poblacion)
     return nueva_poblacion
 
 def main():
-    cant_equipos = 50
-    cant_adversarios = 400
-    cant_generaciones = 50
+    cant_equipos = 10
+    cant_adversarios = 100
+    cant_generaciones = 10
     adversarios = poblacion(cant_adversarios)
     effectiveness = efectividad()
     inicio = time.time()
     dreams_teams = algoritmo_genetico(cant_equipos,cant_adversarios,cant_generaciones)
-    print("--------dreams teams--------")
+    print("--------dream teams--------")
     for team in dreams_teams:
         print(f"{team.name} aptitud:{aptitud(team,adversarios,effectiveness)}")
         for pokemon in team.pokemons:
