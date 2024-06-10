@@ -124,7 +124,7 @@ def poblacion(num_equipos:int)->list[object]:
         num_equipos: Cantidad de equipos que se deseen generar.
 
     Returns:
-        list: Lista con todods los equipos.
+        list: Lista con todos los equipos.
     """
     return [crear_equipo(f"Equipo N°{n+1}") for n in range(num_equipos)]
 
@@ -227,6 +227,37 @@ def cruce(seleccionados:list[tuple],poblacion:list[object])->list[object]:
         hijos.append(Team(f"Equipo N°{i + 1}", nuevo_equipo, starter))
     return hijos
 
+def epochs(num_gen: int, poblacion):
+    """
+    Analiza todos los pokemon de una generación y retorna una lista con la información.
+
+    Args:
+        num_gen(int): Número de la generación
+        población: Lista con todos los equipos de una generación específica.
+    Returns:
+        Devuelve la lista con la información de la generación. Esta lista contiene tres elementos como los siguientes:
+            1. El numero de la generación
+            2. La cantidad de pokemon distintos que aparecieron en esa generación
+            3. Un diccionario donde las claves son los nombres de los distintos pokemon que aparecieron
+            y el valor es el numero de la frecuencia con que apareció dicho pokemon.
+    """
+    lista_epoch = []
+    dict_frecuencia = {}
+    pokemons_dist = set()
+    lista_epoch.append(num_gen)
+
+    for pokemon_team in poblacion:
+        for pokemon in pokemon_team:
+            pokemons_dist.add(pokemon.name)
+            if pokemon.name not in dict_frecuencia:
+                dict_frecuencia[pokemon.name] = 1
+            else:
+                dict_frecuencia[pokemon.name] += 1
+                
+        lista_epoch.append(len(pokemons_dist))
+        lista_epoch.append(dict_frecuencia)
+    return lista_epoch
+
 def algoritmo_genetico(cant_equipos:int,cant_adversarios:int,cant_generaciones:int)->list[object]:
     """
     Ejecuta un algoritmo genético para evolucionar una población de equipos a lo largo de varias generaciones.
@@ -238,20 +269,40 @@ def algoritmo_genetico(cant_equipos:int,cant_adversarios:int,cant_generaciones:i
 
     Retorna:
         list[object]: La última generación de la población de equipos después de ejecutar el número especificado de generaciones.
+        list[list]: Otra lista de listas, donde cada sublista es del mismo formato que las de la función epochs
     """
     adversarios = poblacion(cant_adversarios)
     effectiveness = efectividad()
+    lista_epochs = []
     
     población_inicial = poblacion(cant_equipos)
     aptitudes = evaluar_aptitud(población_inicial,adversarios,effectiveness)
     seleccionados = seleccion_proporcional(aptitudes,cant_adversarios)
     nueva_poblacion = cruce(seleccionados,población_inicial)
 
-    for _ in range(cant_generaciones):
+    lista_epochs.append(epochs(1, población_inicial))
+
+    for num_gen in range(cant_generaciones):
         aptitudes = evaluar_aptitud(nueva_poblacion,adversarios,effectiveness)
         seleccionados = seleccion_proporcional(aptitudes,cant_adversarios)
+
+        lista_epochs.append(num_gen,nueva_poblacion)
+
         nueva_poblacion = cruce(seleccionados,nueva_poblacion)
-    return nueva_poblacion
+
+    return nueva_poblacion, lista_epochs
+
+def csv_epochs(lista_epochs):
+    """
+    Recibe la lista de épocas que devuelve la función de algoritmo genético
+    """
+    with open("epochs.csv", "w") as f:
+        for gen in lista_epochs:
+            f.write(f"{gen[0]}" , {gen[1]})
+            for pokemon in gen[2].values():
+                f.write(" , ")
+                f.write(f"{pokemon} , {gen[2][pokemon]}")
+            f.write("\n")
 
 def main():
     cant_equipos = 10
@@ -260,7 +311,7 @@ def main():
     adversarios = poblacion(cant_adversarios)
     effectiveness = efectividad()
     inicio = time.time()
-    dreams_teams = algoritmo_genetico(cant_equipos,cant_adversarios,cant_generaciones)
+    dreams_teams = algoritmo_genetico(cant_equipos,cant_adversarios,cant_generaciones)[0]
     print("--------dream teams--------")
     for team in dreams_teams:
         print(f"{team.name} aptitud:{aptitud(team,adversarios,effectiveness)}")
