@@ -132,7 +132,7 @@ def efectividad()->dict:
     """
     Crea el diccionario con las efectividades de cada tipo de pokemon contra los otros.
 
-        Returns:
+    Returns:
         dict: diccionario con las efectividades de cada tipo
     """
     dict_efectividades = {}
@@ -216,7 +216,9 @@ def cruce(seleccionados:list[tuple],poblacion:list[object])->list[object]:
         
             while nuevo_pokemon.name in pokemon_names:
                 for pokemon in [madre,padre.pokemons[equipo.pokemons.index(madre)],crear_pokemon()]:
-                    nuevo_pokemon = pokemon
+                    if pokemon.name not in pokemon_names:
+                        nuevo_pokemon = pokemon
+                        break
             
             nuevo_equipo.append(nuevo_pokemon)
             pokemon_names.add(nuevo_pokemon.name)
