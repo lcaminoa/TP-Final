@@ -207,8 +207,10 @@ def cruce(seleccionados:list[tuple],poblacion:list[object])->list[object]:
         pokemon_names = set()
         
         for madre in equipo.pokemons:
-            if random.random() < 0.03:  
+            if random.random() < 0.03:
                 nuevo_pokemon = crear_pokemon()
+                while nuevo_pokemon.is_legendary == True:
+                    nuevo_pokemon = crear_pokemon()
             elif random.random() < 0.5:  
                 nuevo_pokemon = madre
             else:
@@ -218,6 +220,8 @@ def cruce(seleccionados:list[tuple],poblacion:list[object])->list[object]:
                 for pokemon in [madre,padre.pokemons[equipo.pokemons.index(madre)],crear_pokemon()]:
                     if pokemon.name not in pokemon_names:
                         nuevo_pokemon = pokemon
+                        while nuevo_pokemon.is_legendary == True:
+                            nuevo_pokemon = crear_pokemon()
                         break
             
             nuevo_equipo.append(nuevo_pokemon)
@@ -239,26 +243,21 @@ def algoritmo_genetico(cant_equipos:int,cant_adversarios:int,cant_generaciones:i
     Retorna:
         list[object]: La última generación de la población de equipos después de ejecutar el número especificado de generaciones.
     """
-    adversarios = poblacion(cant_adversarios)
     effectiveness = efectividad()
-    
-    población_inicial = poblacion(cant_equipos)
-    aptitudes = evaluar_aptitud(población_inicial,adversarios,effectiveness)
-    seleccionados = seleccion_proporcional(aptitudes,cant_adversarios)
-    nueva_poblacion = cruce(seleccionados,población_inicial)
-
+    nueva_poblacion = poblacion(cant_equipos)
 
     for _ in range(cant_generaciones):
         adversarios = poblacion(cant_adversarios)
-        aptitudes = evaluar_aptitud(nueva_poblacion,adversarios,effectiveness)
-        seleccionados = seleccion_proporcional(aptitudes,cant_adversarios)
-        nueva_poblacion = cruce(seleccionados,nueva_poblacion)
+        aptitudes = evaluar_aptitud(nueva_poblacion, adversarios, effectiveness)
+        seleccionados = seleccion_proporcional(aptitudes, cant_adversarios)
+        nueva_poblacion = cruce(seleccionados, nueva_poblacion)
+
     return nueva_poblacion
 
 def main():
-    cant_equipos = 50
-    cant_adversarios = 400
-    cant_generaciones = 50
+    cant_equipos = 10
+    cant_adversarios = 10
+    cant_generaciones = 10
     adversarios = poblacion(cant_adversarios)
     effectiveness = efectividad()
 
