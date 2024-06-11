@@ -302,6 +302,18 @@ def csv_epochs(lista_epochs):
                 f.write(f"{pokemon} , {gen[2][pokemon]}")
             f.write("\n")
 
+def csv_epochs(lista_epochs):
+    """
+    Recibe la lista de épocas que devuelve la función de algoritmo genético
+    """
+    with open("epochs.csv", "w") as f:
+        for gen in lista_epochs:
+            f.write(f"{gen[0]}" , {gen[1]})
+            for pokemon in gen[2].values():
+                f.write(" , ")
+                f.write(f"{pokemon} , {gen[2][pokemon]}")
+            f.write("\n")
+
 def main():
     cant_equipos = 10
     cant_adversarios = 100
