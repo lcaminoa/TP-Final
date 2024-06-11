@@ -298,6 +298,7 @@ def csv_epochs(lista_epochs):
         for gen in lista_epochs:
             f.write(f"{gen[0]} , {gen[1]}")
             for pokemon in gen[2].values():
+                f.write(" , ")
                 f.write(f"{pokemon}, {gen[2][pokemon]}")
             f.write("\n")
         
