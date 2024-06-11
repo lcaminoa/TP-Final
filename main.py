@@ -281,7 +281,6 @@ def algoritmo_genetico(cant_equipos:int,cant_adversarios:int,cant_generaciones:i
     nueva_poblacion = poblacion(cant_equipos)
 
     for _ in tqdm(range(cant_generaciones), desc="Generaciones", unit="gen",colour="blue"):
-        epoch()
         adversarios = poblacion(cant_adversarios)
         aptitudes = evaluar_aptitud(nueva_poblacion, adversarios, effectiveness)
         seleccionados = seleccion_proporcional(aptitudes, cant_adversarios)
