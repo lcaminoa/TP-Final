@@ -5,6 +5,8 @@ from utils.pokemon import Pokemon
 from utils.move import Move
 from utils.team import Team
 from utils.combat import get_winner
+import seaborn as sns
+import pandas as pd
 
 def definir_moves() -> dict[str : object]:
     """
@@ -321,6 +323,7 @@ def main():
     print()
     print(f"La función tardó {fin - inicio} segundos en ejecutarse.")
     print()
-
+    
+      
 if __name__ == "__main__":
     main()
