@@ -1,5 +1,6 @@
 import random
 import time
+from tqdm import tqdm
 from utils.pokemon import Pokemon
 from utils.move import Move
 from utils.team import Team
@@ -207,8 +208,10 @@ def cruce(seleccionados:list[tuple],poblacion:list[object])->list[object]:
         pokemon_names = set()
         
         for madre in equipo.pokemons:
-            if random.random() < 0.03:  
+            if random.random() < 0.03:
                 nuevo_pokemon = crear_pokemon()
+                while nuevo_pokemon.is_legendary == True:
+                    nuevo_pokemon = crear_pokemon()
             elif random.random() < 0.5:  
                 nuevo_pokemon = madre
             else:
@@ -218,6 +221,8 @@ def cruce(seleccionados:list[tuple],poblacion:list[object])->list[object]:
                 for pokemon in [madre,padre.pokemons[equipo.pokemons.index(madre)],crear_pokemon()]:
                     if pokemon.name not in pokemon_names:
                         nuevo_pokemon = pokemon
+                        while nuevo_pokemon.is_legendary == True:
+                            nuevo_pokemon = crear_pokemon()
                         break
             
             nuevo_equipo.append(nuevo_pokemon)
@@ -271,7 +276,6 @@ def algoritmo_genetico(cant_equipos:int,cant_adversarios:int,cant_generaciones:i
         list[object]: La última generación de la población de equipos después de ejecutar el número especificado de generaciones.
         list[list]: Otra lista de listas, donde cada sublista es del mismo formato que las de la función epochs
     """
-    adversarios = poblacion(cant_adversarios)
     effectiveness = efectividad()
     lista_epochs = []
     
@@ -310,6 +314,7 @@ def main():
     cant_generaciones = 10
     adversarios = poblacion(cant_adversarios)
     effectiveness = efectividad()
+
     inicio = time.time()
     dreams_teams = algoritmo_genetico(cant_equipos,cant_adversarios,cant_generaciones)[0]
     print("--------dream teams--------")
@@ -318,6 +323,7 @@ def main():
         for pokemon in team.pokemons:
             print(pokemon.name)
         print()
+
     fin = time.time()
     print()
     print(f"La función tardó {fin - inicio} segundos en ejecutarse.")
