@@ -277,24 +277,16 @@ def algoritmo_genetico(cant_equipos:int,cant_adversarios:int,cant_generaciones:i
         list[list]: Otra lista de listas, donde cada sublista es del mismo formato que las de la función epochs
     """
     effectiveness = efectividad()
-    lista_epochs = []
-    
-    población_inicial = poblacion(cant_equipos)
-    aptitudes = evaluar_aptitud(población_inicial,adversarios,effectiveness)
-    seleccionados = seleccion_proporcional(aptitudes,cant_adversarios)
-    nueva_poblacion = cruce(seleccionados,población_inicial)
+    nueva_poblacion = poblacion(cant_equipos)
 
-    lista_epochs.append(epochs(1, población_inicial))
+    for _ in tqdm(range(cant_generaciones), desc="Generaciones", unit="gen",colour="blue"):
 
-    for num_gen in range(cant_generaciones):
-        aptitudes = evaluar_aptitud(nueva_poblacion,adversarios,effectiveness)
-        seleccionados = seleccion_proporcional(aptitudes,cant_adversarios)
+        adversarios = poblacion(cant_adversarios)
+        aptitudes = evaluar_aptitud(nueva_poblacion, adversarios, effectiveness)
+        seleccionados = seleccion_proporcional(aptitudes, cant_adversarios)
+        nueva_poblacion = cruce(seleccionados, nueva_poblacion)
 
-        lista_epochs.append(num_gen,nueva_poblacion)
-
-        nueva_poblacion = cruce(seleccionados,nueva_poblacion)
-
-    return nueva_poblacion, lista_epochs
+    return nueva_poblacion
 
 def csv_epochs(lista_epochs):
     """
