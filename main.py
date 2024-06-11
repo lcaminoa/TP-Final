@@ -308,7 +308,8 @@ def main():
     effectiveness = efectividad()
 
     inicio = time.time()
-    dreams_teams = algoritmo_genetico(cant_equipos,cant_adversarios,cant_generaciones)[0]
+
+    dreams_teams = algoritmo_genetico(cant_equipos,cant_adversarios,cant_generaciones)
     print("--------dream teams--------")
     for team in dreams_teams:
         print(f"{team.name} aptitud:{aptitud(team,adversarios,effectiveness)}")
