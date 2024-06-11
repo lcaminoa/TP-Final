@@ -1,5 +1,6 @@
 import random
 import time
+from tqdm import tqdm
 from utils.pokemon import Pokemon
 from utils.move import Move
 from utils.team import Team
@@ -246,7 +247,7 @@ def algoritmo_genetico(cant_equipos:int,cant_adversarios:int,cant_generaciones:i
     effectiveness = efectividad()
     nueva_poblacion = poblacion(cant_equipos)
 
-    for _ in range(cant_generaciones):
+    for _ in tqdm(range(cant_generaciones), desc="Generaciones", unit="gen"):
         adversarios = poblacion(cant_adversarios)
         aptitudes = evaluar_aptitud(nueva_poblacion, adversarios, effectiveness)
         seleccionados = seleccion_proporcional(aptitudes, cant_adversarios)
@@ -256,7 +257,7 @@ def algoritmo_genetico(cant_equipos:int,cant_adversarios:int,cant_generaciones:i
 
 def main():
     cant_equipos = 10
-    cant_adversarios = 10
+    cant_adversarios = 100
     cant_generaciones = 10
     adversarios = poblacion(cant_adversarios)
     effectiveness = efectividad()
