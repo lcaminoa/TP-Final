@@ -287,7 +287,8 @@ def algoritmo_genetico(cant_equipos:int,cant_adversarios:int,cant_generaciones:i
         nueva_poblacion = cruce(seleccionados, nueva_poblacion)
 
     return nueva_poblacion
-    return nueva_poblacion
+    
+
 
 def csv_epochs(lista_epochs):
     """
@@ -295,23 +296,11 @@ def csv_epochs(lista_epochs):
     """
     with open("epochs.csv", "w") as f:
         for gen in lista_epochs:
-            f.write(f"{gen[0]}" , {gen[1]})
+            f.write(f"{gen[0]} , {gen[1]}")
             for pokemon in gen[2].values():
-                f.write(" , ")
-                f.write(f"{pokemon} , {gen[2][pokemon]}")
+                f.write(f"{pokemon}, {gen[2][pokemon]}")
             f.write("\n")
-
-def csv_epochs(lista_epochs):
-    """
-    Recibe la lista de épocas que devuelve la función de algoritmo genético
-    """
-    with open("epochs.csv", "w") as f:
-        for gen in lista_epochs:
-            f.write(f"{gen[0]}" , {gen[1]})
-            for pokemon in gen[2].values():
-                f.write(" , ")
-                f.write(f"{pokemon} , {gen[2][pokemon]}")
-            f.write("\n")
+        
 
 def main():
     cant_equipos = 10
@@ -323,6 +312,7 @@ def main():
     inicio = time.time()
 
     dreams_teams = algoritmo_genetico(cant_equipos,cant_adversarios,cant_generaciones)
+
     print("--------dream teams--------")
     for team in dreams_teams:
         print(f"{team.name} aptitud:{aptitud(team,adversarios,effectiveness)}")
