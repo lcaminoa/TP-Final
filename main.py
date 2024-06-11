@@ -232,7 +232,7 @@ def cruce(seleccionados:list[tuple],poblacion:list[object])->list[object]:
         hijos.append(Team(f"Equipo N°{i + 1}", nuevo_equipo, starter))
     return hijos
 
-def epochs(num_gen: int, poblacion):
+def epoch(num_gen: int, poblacion):
     """
     Analiza todos los pokemon de una generación y retorna una lista con la información.
 
@@ -258,9 +258,11 @@ def epochs(num_gen: int, poblacion):
                 dict_frecuencia[pokemon.name] = 1
             else:
                 dict_frecuencia[pokemon.name] += 1
+            
+            diccionario_ordenado = dict(sorted(dict_frecuencia.items(), key=lambda item: item[1], reverse=True))
                 
         lista_epoch.append(len(pokemons_dist))
-        lista_epoch.append(dict_frecuencia)
+        lista_epoch.append(diccionario_ordenado)
     return lista_epoch
 
 def algoritmo_genetico(cant_equipos:int,cant_adversarios:int,cant_generaciones:int)->list[object]:
@@ -274,13 +276,12 @@ def algoritmo_genetico(cant_equipos:int,cant_adversarios:int,cant_generaciones:i
 
     Retorna:
         list[object]: La última generación de la población de equipos después de ejecutar el número especificado de generaciones.
-        list[list]: Otra lista de listas, donde cada sublista es del mismo formato que las de la función epochs
     """
     effectiveness = efectividad()
     nueva_poblacion = poblacion(cant_equipos)
 
     for _ in tqdm(range(cant_generaciones), desc="Generaciones", unit="gen",colour="blue"):
-
+        epoch()
         adversarios = poblacion(cant_adversarios)
         aptitudes = evaluar_aptitud(nueva_poblacion, adversarios, effectiveness)
         seleccionados = seleccion_proporcional(aptitudes, cant_adversarios)
