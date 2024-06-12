@@ -263,7 +263,7 @@ def algoritmo_genetico(cant_equipos:int,cant_adversarios:int,cant_generaciones:i
         diferentes_pokemons = set(epoch_pokemons) # Conjunto de pokemons únicos
         n_diferentes_pokemons = len(diferentes_pokemons)
         lista_epoch.append(n_diferentes_pokemons)
-        
+
         for pokemon in diferentes_pokemons: # Itero sobre los distintos pokemons sin repetir
             repeticion_pokemon = epoch_pokemons.count(pokemon)
             lista_epoch.append(pokemon)
@@ -271,7 +271,6 @@ def algoritmo_genetico(cant_equipos:int,cant_adversarios:int,cant_generaciones:i
 
         lista_epochs.append(lista_epoch)
         lista_epoch = []
-        print(lista_epochs)
     return nueva_poblacion, lista_epochs
     
 
