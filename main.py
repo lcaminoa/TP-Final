@@ -1,5 +1,7 @@
 import random
 import time
+import matplotlib.pyplot as plt
+import pandas as pd
 from tqdm import tqdm
 from utils.pokemon import Pokemon
 from utils.move import Move
@@ -261,8 +263,8 @@ def algoritmo_genetico(cant_equipos:int,cant_adversarios:int,cant_generaciones:i
         lista_epoch.append(gen)
         epoch_pokemons = [pokemon.name for team in nueva_poblacion for pokemon in team.pokemons]
         diferentes_pokemons = set(epoch_pokemons) # Conjunto de pokemons únicos
-        n_diferentes_pokemons = len(diferentes_pokemons)
-        lista_epoch.append(n_diferentes_pokemons)
+        diversidad_pokemons = len(diferentes_pokemons)
+        lista_epoch.append(diversidad_pokemons)
 
         for pokemon in diferentes_pokemons: # Itero sobre los distintos pokemons sin repetir
             repeticion_pokemon = epoch_pokemons.count(pokemon)
@@ -277,11 +279,30 @@ def algoritmo_genetico(cant_equipos:int,cant_adversarios:int,cant_generaciones:i
 
 def csv_epochs(lista_epochs):
     with open("epochs.csv", "w") as f:
+        f.write("Generacion,Diversidad,Pokemon,Repeticiones\n")
+
         for epoch in lista_epochs:
             # Convertir todos los elementos a string
             epoch = [str(element) for element in epoch]
             # Unir los elementos con comas y escribir en el archivo
             f.write(",".join(epoch) + "\n")
+
+def grafico_epochs():
+    archivo = pd.read_csv("epochs.csv")
+
+    archivo['Generacion'] = pd.to_numeric(archivo['Generacion'], errors='coerce')
+    archivo['Diversidad'] = pd.to_numeric(archivo['Diversidad'], errors='coerce')
+    # Leer epoch y diversidad
+    n_epoch = archivo['Generacion']
+    diversidad = archivo['Diversidad']
+    
+    # Crear grafico
+    plt.plot(n_epoch, diversidad)
+    plt.xlabel('Epoch')
+    plt.ylabel('Diversidad')
+    plt.title('Diversidad de pokemons por epoch')
+    plt.show()
+
 
 def main():
     cant_equipos = 10
@@ -294,6 +315,7 @@ def main():
 
     dreams_teams, lista_epochs = algoritmo_genetico(cant_equipos,cant_adversarios,cant_generaciones)
     csv_epochs(lista_epochs)
+    grafico_epochs()
     print("--------dream teams--------")
     for team in dreams_teams:
         print(f"{team.name} aptitud:{aptitud(team,adversarios,effectiveness)}")
