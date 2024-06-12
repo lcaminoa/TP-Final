@@ -232,38 +232,7 @@ def cruce(seleccionados:list[tuple],poblacion:list[object])->list[object]:
         hijos.append(Team(f"Equipo N°{i + 1}", nuevo_equipo, starter))
     return hijos
 
-def epoch(num_gen: int, poblacion):
-    """
-    Analiza todos los pokemon de una generación y retorna una lista con la información.
 
-    Args:
-        num_gen(int): Número de la generación
-        población: Lista con todos los equipos de una generación específica.
-    Returns:
-        Devuelve la lista con la información de la generación. Esta lista contiene tres elementos como los siguientes:
-            1. El numero de la generación
-            2. La cantidad de pokemon distintos que aparecieron en esa generación
-            3. Un diccionario donde las claves son los nombres de los distintos pokemon que aparecieron
-            y el valor es el numero de la frecuencia con que apareció dicho pokemon.
-    """
-    lista_epoch = []
-    dict_frecuencia = {}
-    pokemons_dist = set()
-    lista_epoch.append(num_gen)
-
-    for pokemon_team in poblacion:
-        for pokemon in pokemon_team:
-            pokemons_dist.add(pokemon.name)
-            if pokemon.name not in dict_frecuencia:
-                dict_frecuencia[pokemon.name] = 1
-            else:
-                dict_frecuencia[pokemon.name] += 1
-            
-            diccionario_ordenado = dict(sorted(dict_frecuencia.items(), key=lambda item: item[1], reverse=True))
-                
-        lista_epoch.append(len(pokemons_dist))
-        lista_epoch.append(diccionario_ordenado)
-    return lista_epoch
 
 def algoritmo_genetico(cant_equipos:int,cant_adversarios:int,cant_generaciones:int)->list[object]:
     """
@@ -279,29 +248,41 @@ def algoritmo_genetico(cant_equipos:int,cant_adversarios:int,cant_generaciones:i
     """
     effectiveness = efectividad()
     nueva_poblacion = poblacion(cant_equipos)
+    lista_epochs = []
+    lista_epoch = []
 
-    for _ in tqdm(range(cant_generaciones), desc="Generaciones", unit="gen",colour="blue"):
+    for gen in tqdm(range(cant_generaciones), desc="Generaciones", unit="gen",colour="blue"):
         adversarios = poblacion(cant_adversarios)
         aptitudes = evaluar_aptitud(nueva_poblacion, adversarios, effectiveness)
         seleccionados = seleccion_proporcional(aptitudes, cant_adversarios)
         nueva_poblacion = cruce(seleccionados, nueva_poblacion)
 
-    return nueva_poblacion
+        # Registrar datos de la generacion para el csv de epochs
+        lista_epoch.append(gen)
+        epoch_pokemons = [pokemon.name for team in nueva_poblacion for pokemon in team.pokemons]
+        diferentes_pokemons = set(epoch_pokemons) # Conjunto de pokemons únicos
+        n_diferentes_pokemons = len(diferentes_pokemons)
+        lista_epoch.append(n_diferentes_pokemons)
+        
+        for pokemon in diferentes_pokemons: # Itero sobre los distintos pokemons sin repetir
+            repeticion_pokemon = epoch_pokemons.count(pokemon)
+            lista_epoch.append(pokemon)
+            lista_epoch.append(repeticion_pokemon)
+
+        lista_epochs.append(lista_epoch)
+        lista_epoch = []
+        print(lista_epochs)
+    return nueva_poblacion, lista_epochs
     
 
 
 def csv_epochs(lista_epochs):
-    """
-    Recibe la lista de épocas que devuelve la función de algoritmo genético
-    """
     with open("epochs.csv", "w") as f:
-        for gen in lista_epochs:
-            f.write(f"{gen[0]} , {gen[1]}")
-            for pokemon in gen[2].values():
-                f.write(" , ")
-                f.write(f"{pokemon}, {gen[2][pokemon]}")
-            f.write("\n")
-        
+        for epoch in lista_epochs:
+            # Convertir todos los elementos a string
+            epoch = [str(element) for element in epoch]
+            # Unir los elementos con comas y escribir en el archivo
+            f.write(",".join(epoch) + "\n")
 
 def main():
     cant_equipos = 10
@@ -312,8 +293,8 @@ def main():
 
     inicio = time.time()
 
-    dreams_teams = algoritmo_genetico(cant_equipos,cant_adversarios,cant_generaciones)
-
+    dreams_teams, lista_epochs = algoritmo_genetico(cant_equipos,cant_adversarios,cant_generaciones)
+    csv_epochs(lista_epochs)
     print("--------dream teams--------")
     for team in dreams_teams:
         print(f"{team.name} aptitud:{aptitud(team,adversarios,effectiveness)}")
