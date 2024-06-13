@@ -287,17 +287,16 @@ def csv_best_team(lista_teams):
     with open("lista_teams.csv", "w") as f:
 
         for epoch in lista_teams:
-            epoch,aptitude,team_name,starter,pokemon_1,pokemon_2,pokemon_3,pokemon_4,pokemon_5,pokemon_6
             num_gen = epoch[0]
-            aptitude = epoch[1][0]
-            team_name = epoch[1][1].name
-            starter = epoch[1][1].starter
-            pokemon_1 = epoch[1][1].pokemons[0].name
-            pokemon_2 = epoch[1][1].pokemons[1].name
-            pokemon_3 = epoch[1][1].pokemons[2].name
-            pokemon_4 = epoch[1][1].pokemons[3].name
-            pokemon_5 = epoch[1][1].pokemons[4].name
-            pokemon_6 = epoch[1][1].pokemons[5].name
+            aptitude = epoch[1][0][0]
+            starter = epoch[1][1][1].current_pokemon_index
+            team_name = epoch[1][1][1].name
+            pokemon_1 = epoch[1][1][1].pokemons[0].name
+            pokemon_2 = epoch[1][1][1].pokemons[1].name
+            pokemon_3 = epoch[1][1][1].pokemons[2].name
+            pokemon_4 = epoch[1][1][1].pokemons[3].name
+            pokemon_5 = epoch[1][1][1].pokemons[4].name
+            pokemon_6 = epoch[1][1][1].pokemons[5].name
             f.write(f"{num_gen},{aptitude},{team_name},{starter},{pokemon_1},{pokemon_2},{pokemon_3},{pokemon_4},{pokemon_5},{pokemon_6}")
             f.write("\n")
 
