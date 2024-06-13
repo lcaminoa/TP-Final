@@ -307,6 +307,7 @@ def main():
     cant_equipos = 10
     cant_adversarios = 100
     cant_generaciones = 10
+
     adversarios = poblacion(cant_adversarios)
     effectiveness = efectividad()
 
@@ -314,7 +315,7 @@ def main():
 
     dreams_teams, lista_epochs = algoritmo_genetico(cant_equipos,cant_adversarios,cant_generaciones)
     csv_epochs(lista_epochs)
-    grafico_epochs()
+
     print("--------dream teams--------")
     for team in dreams_teams:
         print(f"{team.name} aptitud:{aptitud(team,adversarios,effectiveness)}")
@@ -323,9 +324,9 @@ def main():
         print()
 
     fin = time.time()
-    print()
     print(f"La función tardó {fin - inicio} segundos en ejecutarse.")
-    print()
+
+    grafico_epochs()
 
 if __name__ == "__main__":
     main()
