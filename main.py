@@ -266,12 +266,15 @@ def algoritmo_genetico(cant_equipos:int,cant_adversarios:int,cant_generaciones:i
         diversidad_pokemons = len(diferentes_pokemons)
         lista_epoch.append(diversidad_pokemons)
 
-        for pokemon in diferentes_pokemons: # Itero sobre los distintos pokemons sin repetir
-            repeticion_pokemon = epoch_pokemons.count(pokemon)
-            lista_epoch.append(pokemon)
-            lista_epoch.append(repeticion_pokemon)
-
-        lista_epochs.append(lista_epoch)
+        frecuencia_pokemons = {}
+        for pokemon in epoch_pokemons:
+            if pokemon in frecuencia_pokemons:
+                frecuencia_pokemons[pokemon] += 1
+            else:
+                frecuencia_pokemons[pokemon] = 1
+        frecuencia_pokemons = dict(sorted(frecuencia_pokemons.items(), key=lambda item: item[1], reverse=True))
+        lista_epoch.append(frecuencia_pokemons)
+        lista_epochs.append(tuple(lista_epoch))
         lista_epoch = []
     return nueva_poblacion, lista_epochs
     
@@ -281,10 +284,12 @@ def csv_epochs(lista_epochs):
     with open("epochs.csv", "w") as f:
 
         for epoch in lista_epochs:
-            # Convertir todos los elementos a string
-            epoch = [str(element) for element in epoch]
-            # Unir los elementos con comas y escribir en el archivo
-            f.write(",".join(epoch) + "\n")
+            print(epoch)
+            num_gen, diversidad, pokemon_dict = epoch
+            f.write(f"{num_gen},{diversidad}")
+            for pokemon, freq in pokemon_dict.items():
+                f.write(f",{pokemon},{freq}")
+            f.write("\n")
 
 def grafico_epochs():
 
