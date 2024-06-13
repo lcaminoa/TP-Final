@@ -290,8 +290,10 @@ def csv_epochs(lista_epochs):
 def grafico_epochs():
     archivo = pd.read_csv("epochs.csv")
 
+    # Convertir a numerico
     archivo['Generacion'] = pd.to_numeric(archivo['Generacion'], errors='coerce')
     archivo['Diversidad'] = pd.to_numeric(archivo['Diversidad'], errors='coerce')
+
     # Leer epoch y diversidad
     n_epoch = archivo['Generacion']
     diversidad = archivo['Diversidad']
