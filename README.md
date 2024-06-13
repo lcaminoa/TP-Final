@@ -53,6 +53,8 @@ Contiene las funciones necesarias para simular los combates entre equipos pokém
 
 ### Funciones
 
+---
+
 #### `__faint_change__(team1: Team, team2: Team, effectiveness: dict[str, dict[str, float]]) -> None`
 Cambia el pokémon actual del equipo que tiene un pokémon debilitado. El otro equipo también puede cambiar su pokémon después del equipo que tiene el pokémon debilitado.
 
@@ -92,6 +94,8 @@ Contiene la clase para definir un objeto `Move` y sus respectivas funciones.
 
 ### Clases y Funciones
 
+---
+
 #### `class Move`
 Representa un movimiento de pokémon.
 
@@ -117,14 +121,16 @@ Crea un objeto `Move` a partir de un diccionario.
 - `Move`: El movimiento creado a partir del diccionario.
 
 **Ejemplo:**
-```python
+```python```
 data = {'type': 'fire', 'category': 'special', 'pp': 10, 'power': 90, 'accuracy': 100}
 move = Move.from_dict('Flamethrower', data)
 
 
-#### pokemon.py
+## pokemon.py
 Contiene la clase para definir un objeto `Pokemon` y sus respectivas funciones.
 ### Clases y Funciones
+
+---
 
 #### `class Pokemon`
 Representa un pokémon.
@@ -188,11 +194,13 @@ moves_data = {
 pokemon = Pokemon.from_dict('Bulbasaur', data, moves_data)
 
 
-#### team.py
+## team.py
 Contiene la clase para definir un objeto `Team` y sus respectivas funciones.
 ### Clases y Funciones
 
-#### `class Team`
+---
+
+### `class Team`
 Representa un equipo de pokémon.
 
 ##### `__init__(self, name: str, pokemons: list[Pokemon], starter: int=0)`
