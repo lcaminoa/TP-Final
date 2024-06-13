@@ -279,7 +279,6 @@ def algoritmo_genetico(cant_equipos:int,cant_adversarios:int,cant_generaciones:i
 
 def csv_epochs(lista_epochs):
     with open("epochs.csv", "w") as f:
-        f.write("Generacion,Diversidad,Pokemon,Repeticiones\n")
 
         for epoch in lista_epochs:
             # Convertir todos los elementos a string
@@ -288,16 +287,14 @@ def csv_epochs(lista_epochs):
             f.write(",".join(epoch) + "\n")
 
 def grafico_epochs():
-    archivo = pd.read_csv("epochs.csv")
 
-    # Convertir a numerico
-    archivo['Generacion'] = pd.to_numeric(archivo['Generacion'], errors='coerce')
-    archivo['Diversidad'] = pd.to_numeric(archivo['Diversidad'], errors='coerce')
+    # Leer el archivo CSV
+    csv = pd.read_csv("epochs.csv")
 
-    # Leer epoch y diversidad
-    n_epoch = archivo['Generacion']
-    diversidad = archivo['Diversidad']
-    
+    # Obtener los datos de las columnas
+    n_epoch = pd.to_numeric(csv.iloc[:, 0], errors ='coerce')  # Primera columna
+    diversidad = pd.to_numeric(csv.iloc[:, 1], errors ='coerce')  # Segunda columna
+ 
     # Crear grafico
     plt.plot(n_epoch, diversidad)
     plt.xlabel('Epoch')
