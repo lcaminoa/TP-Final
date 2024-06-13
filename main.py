@@ -235,9 +235,7 @@ def cruce(seleccionados:list[tuple],poblacion:list[object])->list[object]:
         hijos.append(Team(f"Equipo N{i + 1}", nuevo_equipo, starter))
     return hijos
 
-
-
-def algoritmo_genetico(cant_equipos:int,cant_adversarios:int,cant_generaciones:int)->list[object]:
+def algoritmo_genetico(cant_equipos: int, cant_adversarios: int, cant_generaciones: int) -> tuple[list[object], list[tuple[int, int, dict]], list[tuple[int, object]]]:
     """
     Ejecuta un algoritmo genético para evolucionar una población de equipos a lo largo de varias generaciones.
 
@@ -247,26 +245,26 @@ def algoritmo_genetico(cant_equipos:int,cant_adversarios:int,cant_generaciones:i
         cant_generaciones (int): El número de generaciones que el algoritmo genético debe ejecutar.
 
     Retorna:
-        list[object]: La última generación de la población de equipos después de ejecutar el número especificado de generaciones.
+        tuple[list[object], list[tuple[int, int, dict]], list[tuple[int, object]]]:
+            - La última generación de la población de equipos después de ejecutar el número especificado de generaciones.
+            - Lista de tuplas con datos de diversidad y frecuencia de pokemons por generación.
+            - Lista de tuplas con el mejor equipo por generación.
     """
     effectiveness = efectividad()
     nueva_poblacion = poblacion(cant_equipos)
     lista_epochs = []
-    lista_epoch = []
     lista_teams = []
-    for gen in tqdm(range(cant_generaciones), desc="Generaciones", unit="gen",colour="blue"):
+
+    for gen in tqdm(range(cant_generaciones), desc="Generaciones", unit="gen", colour="blue"):
         adversarios = poblacion(cant_adversarios)
         aptitudes = evaluar_aptitud(nueva_poblacion, adversarios, effectiveness)
         seleccionados = seleccion_proporcional(aptitudes, cant_adversarios)
         nueva_poblacion = cruce(seleccionados, nueva_poblacion)
 
-        # Registrar datos de la generacion para el csv de epochs
-        lista_epoch.append(gen)
+        # Registrar datos de la generación para el csv de epochs
         epoch_pokemons = [pokemon.name for team in nueva_poblacion for pokemon in team.pokemons]
-        diferentes_pokemons = set(epoch_pokemons) # Conjunto de pokemons únicos
+        diferentes_pokemons = set(epoch_pokemons)  # Conjunto de pokemons únicos
         diversidad_pokemons = len(diferentes_pokemons)
-        lista_epoch.append(diversidad_pokemons)
-        lista_teams.append([gen,best_team(aptitudes)])
 
         frecuencia_pokemons = {}
         for pokemon in epoch_pokemons:
@@ -275,20 +273,19 @@ def algoritmo_genetico(cant_equipos:int,cant_adversarios:int,cant_generaciones:i
             else:
                 frecuencia_pokemons[pokemon] = 1
         frecuencia_pokemons = dict(sorted(frecuencia_pokemons.items(), key=lambda item: item[1], reverse=True))
-        lista_epoch.append(frecuencia_pokemons)
-        lista_epochs.append(tuple(lista_epoch))
-        lista_epoch = []
-    return nueva_poblacion, lista_epochs , lista_teams
+
+        lista_epochs.append((gen, diversidad_pokemons, frecuencia_pokemons))
+        lista_teams.append((gen, best_team(aptitudes)))
+
+    return nueva_poblacion, lista_epochs, lista_teams
         
 def best_team(aptitudes):
     aptitudes_ord = sorted(aptitudes, key=lambda item: item[0], reverse = True)
     return aptitudes_ord
 
 def csv_best_team(lista_teams):
-    with open("lista_teams.csv", "w", newline='') as f:
+    with open("best_teams.csv", "w", newline='') as f:
         writer = csv.writer(f)
-        header = ["num_gen", "aptitude", "team_name", "starter"] + [f"pokemon_{i+1}" for i in range(6)]
-        writer.writerow(header)
         
         for epoch in lista_teams:
             num_gen = epoch[0]
@@ -304,12 +301,27 @@ def csv_epochs(lista_epochs):
     with open("epochs.csv", "w") as f:
 
         for epoch in lista_epochs:
-            print(epoch)
             num_gen, diversidad, pokemon_dict = epoch
             f.write(f"{num_gen},{diversidad}")
             for pokemon, freq in pokemon_dict.items():
                 f.write(f",{pokemon},{freq}")
             f.write("\n")
+
+def grafico_aptitud():
+
+    # Leer el archivo CSV
+    csv = pd.read_csv("best_teams.csv")
+
+    # Obtener los datos de las columnas
+    n_epoch = pd.to_numeric(csv.iloc[:, 0], errors ='coerce')  # Primera columna
+    aptitud = pd.to_numeric(csv.iloc[:, 1], errors ='coerce')  # Segunda columna
+ 
+    # Crear grafico
+    plt.plot(n_epoch, aptitud)
+    plt.xlabel('Epoch')
+    plt.ylabel('Aptitud')
+    plt.title('Aptitud de pokemons por epoch')
+    plt.show()
 
 def grafico_epochs():
 
@@ -319,7 +331,7 @@ def grafico_epochs():
     # Obtener los datos de las columnas
     n_epoch = pd.to_numeric(csv.iloc[:, 0], errors ='coerce')  # Primera columna
     diversidad = pd.to_numeric(csv.iloc[:, 1], errors ='coerce')  # Segunda columna
- 
+
     # Crear grafico
     plt.plot(n_epoch, diversidad)
     plt.xlabel('Epoch')
@@ -327,11 +339,14 @@ def grafico_epochs():
     plt.title('Diversidad de pokemons por epoch')
     plt.show()
 
+def grafico_dis_pokemon():
+    csv = pd.read_csv("epochs.csv") 
+    pass
 
 def main():
     cant_equipos = 10
     cant_adversarios = 100
-    cant_generaciones = 50
+    cant_generaciones = 10
 
     adversarios = poblacion(cant_adversarios)
     effectiveness = efectividad()
@@ -353,6 +368,7 @@ def main():
     print(f"La función tardó {fin - inicio} segundos en ejecutarse.")
 
     grafico_epochs()
+    grafico_aptitud()
 
 if __name__ == "__main__":
     main()
