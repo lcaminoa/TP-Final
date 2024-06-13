@@ -288,14 +288,15 @@ def csv_best_team(lista_teams):
         writer = csv.writer(f)
         
         for epoch in lista_teams:
-            num_gen = epoch[0]
-            aptitude = epoch[1][0][0]
-            team = epoch[1][1][1]
-            starter = team.current_pokemon_index
-            team_name = team.name
-            pokemons = [pokemon.name for pokemon in team.pokemons]
-            row = [num_gen, aptitude, team_name, starter] + pokemons
-            writer.writerow(row)
+            for tupla_team in epoch[1]:
+                num_gen = epoch[0]
+                aptitude = tupla_team[0]
+                team = tupla_team[1]
+                starter = team.current_pokemon_index
+                team_name = team.name
+                pokemons = [pokemon.name for pokemon in team.pokemons]
+                row = [num_gen, aptitude, team_name, starter] + pokemons
+                writer.writerow(row)
 
 def csv_epochs(lista_epochs):
     with open("epochs.csv", "w") as f:
@@ -308,19 +309,18 @@ def csv_epochs(lista_epochs):
             f.write("\n")
 
 def grafico_aptitud():
+    column_names = ["epoch", "aptitude", "team_name", "starter", "pokemon_1", "pokemon_2", "pokemon_3", "pokemon_4", "pokemon_5", "pokemon_6"]
+    # Leer los datos en un DataFrame sin encabezado y asignar los nombres de las columnas
+    df = pd.read_csv("best_teams.csv", header=None, names=column_names)
 
-    # Leer el archivo CSV
-    csv = pd.read_csv("best_teams.csv")
+    # Agrupar por la columna 'epoch' y calcular el promedio de la columna 'aptitude'
+    aptitud_promedio = df.groupby('epoch')['aptitude'].mean()
 
-    # Obtener los datos de las columnas
-    n_epoch = pd.to_numeric(csv.iloc[:, 0], errors ='coerce')  # Primera columna
-    aptitud = pd.to_numeric(csv.iloc[:, 1], errors ='coerce')  # Segunda columna
- 
-    # Crear grafico
-    plt.plot(n_epoch, aptitud)
-    plt.xlabel('Epoch')
-    plt.ylabel('Aptitud')
-    plt.title('Aptitud de pokemons por epoch')
+    # Graficar los resultados
+    plt.plot(aptitud_promedio.index, aptitud_promedio.values)
+    plt.xlabel('época')
+    plt.ylabel('Promedio de Aptitud')
+    plt.title('Promedio de Aptitud por época')
     plt.show()
 
 def grafico_epochs():
@@ -339,33 +339,29 @@ def grafico_epochs():
     plt.title('Diversidad de pokemons por epoch')
     plt.show()
 
-def grafico_dis_pokemon():
-    csv = pd.read_csv("epochs.csv") 
-    pass
-
 def main():
-    cant_equipos = 10
-    cant_adversarios = 100
-    cant_generaciones = 10
+    # cant_equipos = 10
+    # cant_adversarios = 100
+    # cant_generaciones = 50
 
-    adversarios = poblacion(cant_adversarios)
-    effectiveness = efectividad()
+    # adversarios = poblacion(cant_adversarios)
+    # effectiveness = efectividad()
 
-    inicio = time.time()
+    # inicio = time.time()
 
-    dreams_teams, lista_epochs, lista_teams = algoritmo_genetico(cant_equipos,cant_adversarios,cant_generaciones)
-    csv_epochs(lista_epochs)
-    csv_best_team(lista_teams)
+    # dreams_teams, lista_epochs, lista_teams = algoritmo_genetico(cant_equipos,cant_adversarios,cant_generaciones)
+    # csv_epochs(lista_epochs)
+    # csv_best_team(lista_teams)
 
-    print("--------dream teams--------")
-    for team in dreams_teams:
-        print(f"{team.name} aptitud:{aptitud(team,adversarios,effectiveness)}")
-        for pokemon in team.pokemons:
-            print(pokemon.name)
-        print()
+    # print("--------dream teams--------")
+    # for team in dreams_teams:
+    #     print(f"{team.name} aptitud:{aptitud(team,adversarios,effectiveness)}")
+    #     for pokemon in team.pokemons:
+    #         print(pokemon.name)
+    #     print()
 
-    fin = time.time()
-    print(f"La función tardó {fin - inicio} segundos en ejecutarse.")
+    # fin = time.time()
+    # print(f"La función tardó {fin - inicio} segundos en ejecutarse.")
 
     grafico_epochs()
     grafico_aptitud()
