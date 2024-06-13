@@ -284,7 +284,6 @@ def csv_epochs(lista_epochs):
     with open("epochs.csv", "w") as f:
 
         for epoch in lista_epochs:
-            print(epoch)
             num_gen, diversidad, pokemon_dict = epoch
             f.write(f"{num_gen},{diversidad}")
             for pokemon, freq in pokemon_dict.items():
