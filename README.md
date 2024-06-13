@@ -25,6 +25,7 @@
 
 - **pokemons.csv**
   - Archivo CSV que contiene la información de cada pokémon:
+
 | Campo       | Descripción                 |
 | ----------- | --------------------------- |
 | `name`      | Nombre del pokémon          |
