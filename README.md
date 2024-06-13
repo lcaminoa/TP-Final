@@ -1,9 +1,9 @@
 # Trabajo Práctico Final de Pensamiento Computacional
 ### Autores: Lautaro Caminoa, Álvaro Guerrero y Nicolás Heuser
 
-## Estructura de Carpetas y Archivos
+# Estructura de Carpetas y Archivos
 
-### Data
+## Data
 
 - **Imgs**
     - Carpeta que contiene las imágenes de cada pokémon en formato `.png`.
@@ -72,6 +72,8 @@ Simula una pelea entre dos equipos. La pelea termina cuando todos los pokémon d
 **Retorna:**
 - `Team`: El equipo que ganó la pelea.
 
+---
+
 #### `get_winner(team1: Team, team2: Team, effectiveness: dict[str, dict[str, float]]) -> Team`
 Simula una pelea entre dos equipos. La pelea termina cuando todos los pokémon de uno de los equipos han sido debilitados. Los pokémon de los equipos se restauran a su estado inicial después de la pelea.
 
@@ -82,6 +84,8 @@ Simula una pelea entre dos equipos. La pelea termina cuando todos los pokémon d
 
 **Retorna:**
 - `Team`: El equipo que ganó la pelea.
+
+---
 
 ## move.py
 Contiene la clase para definir un objeto `Move` y sus respectivas funciones.
