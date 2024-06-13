@@ -45,6 +45,37 @@ Archivo CSV que contiene la información de cada pokémon:
 
 #### combat.py
 Contiene las funciones necesarias para simular los combates entre equipos pokémon.
+### Funciones
+
+#### `__faint_change__(team1: Team, team2: Team, effectiveness: dict[str, dict[str, float]]) -> None`
+Cambia el pokémon actual del equipo que tiene un pokémon debilitado. El otro equipo también puede cambiar su pokémon después del equipo que tiene el pokémon debilitado.
+
+**Parámetros:**
+- `team1 (Team)`: Uno de los equipos.
+- `team2 (Team)`: El otro equipo.
+- `effectiveness (dict[str, dict[str, float]])`: Un diccionario que contiene la efectividad de cada tipo contra otro.
+
+#### `__fight__(team1: Team, team2: Team, effectiveness: dict[str, dict[str, float]]) -> Team`
+Simula una pelea entre dos equipos. La pelea termina cuando todos los pokémon de uno de los equipos han sido debilitados.
+
+**Parámetros:**
+- `team1 (Team)`: Uno de los equipos.
+- `team2 (Team)`: El otro equipo.
+- `effectiveness (dict[str, dict[str, float]])`: Un diccionario que contiene la efectividad de cada tipo contra otro.
+
+**Retorna:**
+- `Team`: El equipo que ganó la pelea.
+
+#### `get_winner(team1: Team, team2: Team, effectiveness: dict[str, dict[str, float]]) -> Team`
+Simula una pelea entre dos equipos. La pelea termina cuando todos los pokémon de uno de los equipos han sido debilitados. Los pokémon de los equipos se restauran a su estado inicial después de la pelea.
+
+**Parámetros:**
+- `team1 (Team)`: Uno de los equipos.
+- `team2 (Team)`: El otro equipo.
+- `effectiveness (dict[str, dict[str, float]])`: Un diccionario que contiene la efectividad de cada tipo contra otro.
+
+**Retorna:**
+- `Team`: El equipo que ganó la pelea.
 
 #### move.py
 Contiene la clase para definir un objeto `Move` y sus respectivas funciones.
