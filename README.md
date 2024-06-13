@@ -179,6 +179,56 @@ pokemon = Pokemon.from_dict('Bulbasaur', data, moves_data)
 
 #### team.py
 Contiene la clase para definir un objeto `Team` y sus respectivas funciones.
+### Clases y Funciones
+
+#### `class Team`
+Representa un equipo de pokémon.
+
+##### `__init__(self, name: str, pokemons: list[Pokemon], starter: int=0)`
+Constructor para inicializar un objeto `Team`.
+
+**Parámetros:**
+- `name (str)`: El nombre del equipo.
+- `pokemons (list[Pokemon])`: Los pokémons que tiene el equipo.
+- `starter (int)`: El índice del pokémon que comienza la batalla. Por defecto es 0.
+
+##### `get_current_pokemon(self) -> Pokemon`
+Retorna el pokémon actual del equipo.
+
+**Retorna:**
+- `Pokemon`: El pokémon actual del equipo.
+
+##### `change_pokemon(self, index: int) -> None`
+Cambia el pokémon actual del equipo.
+
+**Parámetros:**
+- `index (int)`: El índice del pokémon que se convertirá en el pokémon actual.
+
+##### `recieve_damage(self, damage: float) -> None`
+Reduce los puntos de vida actuales del pokémon actual por el daño recibido.
+
+**Parámetros:**
+- `damage (float)`: El daño que el pokémon recibirá.
+
+##### `get_next_action(self, defending_team: 'Team', effectiveness: dict[str, dict[str, float]]) -> tuple[str, Move|int|None]`
+Retorna la próxima acción que el equipo realizará.
+
+**Parámetros:**
+- `defending_team (Team)`: El equipo al que el equipo atacará.
+- `effectiveness (dict[str, dict[str, float]])`: Un diccionario que contiene la efectividad de cada tipo contra otro.
+
+**Retorna:**
+- `str`: La acción que el equipo realizará. Puede ser 'attack', 'switch' o 'skip'.
+- `Move|int|None`: El movimiento que el equipo usará si la acción es 'attack', el índice del pokémon al que el equipo cambiará si la acción es 'switch' o None si la acción es 'skip'.
+
+##### `do_action(self, action: str, target: Move|int|None, defender: 'Team', effectiveness: dict[str, dict[str, float]]) -> None`
+Ejecuta una acción.
+
+**Parámetros:**
+- `action (str)`: La acción que el equipo realizará. Puede ser 'attack' o 'switch'.
+- `target (Move|int|None)`: El movimiento que el equipo usará si la acción es 'attack', el índice del pokémon al que el equipo cambiará si la acción es 'switch' o None si la acción es 'skip'.
+- `defender (Team)`: El equipo que recibirá la acción.
+- `effectiveness (dict[str, dict[str, float]])`: Un diccionario que contiene la efectividad de cada tipo contra otro.
 
 #### main.py
 Archivo principal para ejecutar el programa.
