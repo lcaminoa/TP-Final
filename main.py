@@ -340,28 +340,18 @@ def grafico_epochs():
     plt.show()
 
 def main():
-    # cant_equipos = 10
-    # cant_adversarios = 100
-    # cant_generaciones = 50
+    cant_equipos = 10
+    cant_adversarios = 100
+    cant_generaciones = 10
 
-    # adversarios = poblacion(cant_adversarios)
-    # effectiveness = efectividad()
+    inicio = time.time()
 
-    # inicio = time.time()
+    ult_gen, lista_epochs, lista_teams = algoritmo_genetico(cant_equipos,cant_adversarios,cant_generaciones)
+    csv_epochs(lista_epochs)
+    csv_best_team(lista_teams)
 
-    # dreams_teams, lista_epochs, lista_teams = algoritmo_genetico(cant_equipos,cant_adversarios,cant_generaciones)
-    # csv_epochs(lista_epochs)
-    # csv_best_team(lista_teams)
-
-    # print("--------dream teams--------")
-    # for team in dreams_teams:
-    #     print(f"{team.name} aptitud:{aptitud(team,adversarios,effectiveness)}")
-    #     for pokemon in team.pokemons:
-    #         print(pokemon.name)
-    #     print()
-
-    # fin = time.time()
-    # print(f"La función tardó {fin - inicio} segundos en ejecutarse.")
+    fin = time.time()
+    print(f"La función tardó {fin - inicio} segundos en ejecutarse.")
 
     grafico_epochs()
     grafico_aptitud()
