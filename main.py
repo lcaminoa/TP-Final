@@ -326,10 +326,6 @@ def graf_epochs():
     plt.title('Diversidad de pokemons por epoch')
     plt.show()
 
-def graf_ultima_epoch():
-    csv = pd.read_csv("epochs.csv")
-    
-
 
 def main():
     cant_equipos = 10
@@ -356,6 +352,6 @@ def main():
     print(f"La función tardó {fin - inicio} segundos en ejecutarse.")
 
     graf_epochs()
-    graf_ultima_epoch()
+
 if __name__ == "__main__":
     main()
