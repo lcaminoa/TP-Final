@@ -1,4 +1,5 @@
 import random
+import csv
 import time
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -129,7 +130,7 @@ def poblacion(num_equipos:int)->list[object]:
     Returns:
         list: Lista con todos los equipos.
     """
-    return [crear_equipo(f"Equipo N°{n+1}") for n in range(num_equipos)]
+    return [crear_equipo(f"Equipo N{n+1}") for n in range(num_equipos)]
 
 def efectividad()->dict:
     """
@@ -231,7 +232,7 @@ def cruce(seleccionados:list[tuple],poblacion:list[object])->list[object]:
             pokemon_names.add(nuevo_pokemon.name)
 
         starter = random.randint(1, 5) if random.random() < 0.03 else 0
-        hijos.append(Team(f"Equipo N°{i + 1}", nuevo_equipo, starter))
+        hijos.append(Team(f"Equipo N{i + 1}", nuevo_equipo, starter))
     return hijos
 
 
@@ -284,21 +285,20 @@ def best_team(aptitudes):
     return aptitudes_ord
 
 def csv_best_team(lista_teams):
-    with open("lista_teams.csv", "w") as f:
-
+    with open("lista_teams.csv", "w", newline='') as f:
+        writer = csv.writer(f)
+        header = ["num_gen", "aptitude", "team_name", "starter"] + [f"pokemon_{i+1}" for i in range(6)]
+        writer.writerow(header)
+        
         for epoch in lista_teams:
             num_gen = epoch[0]
             aptitude = epoch[1][0][0]
-            starter = epoch[1][1][1].current_pokemon_index
-            team_name = epoch[1][1][1].name
-            pokemon_1 = epoch[1][1][1].pokemons[0].name
-            pokemon_2 = epoch[1][1][1].pokemons[1].name
-            pokemon_3 = epoch[1][1][1].pokemons[2].name
-            pokemon_4 = epoch[1][1][1].pokemons[3].name
-            pokemon_5 = epoch[1][1][1].pokemons[4].name
-            pokemon_6 = epoch[1][1][1].pokemons[5].name
-            f.write(f"{num_gen},{aptitude},{team_name},{starter},{pokemon_1},{pokemon_2},{pokemon_3},{pokemon_4},{pokemon_5},{pokemon_6}")
-            f.write("\n")
+            team = epoch[1][1][1]
+            starter = team.current_pokemon_index
+            team_name = team.name
+            pokemons = [pokemon.name for pokemon in team.pokemons]
+            row = [num_gen, aptitude, team_name, starter] + pokemons
+            writer.writerow(row)
 
 def csv_epochs(lista_epochs):
     with open("epochs.csv", "w") as f:
@@ -310,7 +310,7 @@ def csv_epochs(lista_epochs):
                 f.write(f",{pokemon},{freq}")
             f.write("\n")
 
-def grafico_epochs():
+def graf_epochs():
 
     # Leer el archivo CSV
     csv = pd.read_csv("epochs.csv")
@@ -330,7 +330,7 @@ def grafico_epochs():
 def main():
     cant_equipos = 10
     cant_adversarios = 100
-    cant_generaciones = 10
+    cant_generaciones = 50
 
     adversarios = poblacion(cant_adversarios)
     effectiveness = efectividad()
@@ -351,7 +351,7 @@ def main():
     fin = time.time()
     print(f"La función tardó {fin - inicio} segundos en ejecutarse.")
 
-    grafico_epochs()
+    graf_epochs()
 
 if __name__ == "__main__":
     main()
