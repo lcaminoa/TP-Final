@@ -1,10 +1,50 @@
-0,84,Equipo N°2,0,Tranquill,Hypno,Golisopod,Staryu,Seviper,Probopass
-1,96,Equipo N°8,0,Tranquill,Hypno,Wobbuffet,Staryu,Wooper,Meowstic-F
-2,72,Equipo N°4,0,Muk,Combusken,Walrein,Lampent,Machamp,Shieldon
-3,90,Equipo N°8,0,Starly,Combusken,Sylveon,Dragonite,Simisage,Flareon
-4,95,Equipo N°10,0,Starly,Hypno,Bellossom,Dragonite,Rhyhorn,Shedinja
-5,87,Equipo N°3,0,Minun,Combusken,Walrein,Dragonite,Simisage,Flareon
-6,67,Equipo N°3,0,Muk,Tentacool,Walrein,Dragonite,Wooper,Flareon
-7,77,Equipo N°4,0,Starly,Tentacool,Wailord,Dragonite,Simisage,Flareon
-8,81,Equipo N°1,0,Minun,Tentacool,Bellossom,Dragonite,Simisage,Flareon
-9,95,Equipo N°9,0,Sunflora,Tentacool,Bellossom,Dragonite,Simisage,Flareon
+0,398,Equipo N20,0,Slowbro,Aurorus,Grumpig,Stantler,Vivillon,Lotad
+1,397,Equipo N45,0,Wimpod,Ludicolo,Metagross,Lumineon,Machamp,Charizard
+2,399,Equipo N46,0,Masquerain,Mawile,Metagross,Lumineon,Machamp,Blissey
+3,400,Equipo N5,0,Blissey,Castform,Metagross,Ledian,Machamp,Dewgong
+4,399,Equipo N39,0,Duosion,Ludicolo,Metagross,Mightyena,Rampardos,Vaporeon
+5,398,Equipo N19,0,Slowbro,Blastoise,Electabuzz,Sealeo,Rufflet,Mandibuzz
+6,399,Equipo N9,0,Slowbro,Ludicolo,Skorupi,Granbull,Kecleon,Slowking
+7,399,Equipo N2,0,Slowbro,Blastoise,Electabuzz,Sealeo,Krabby,Charizard
+8,398,Equipo N13,0,Slowbro,Ludicolo,Electabuzz,Axew,Slakoth,Slowking
+9,397,Equipo N23,0,Slowbro,Amaura,Electabuzz,Gengar,Slakoth,Charizard
+10,399,Equipo N8,0,Bronzong,Blastoise,Skorupi,Slaking,Roggenrola,Slowking
+11,400,Equipo N48,0,Slowbro,Solrock,Tangrowth,Snorlax,Slakoth,Slowking
+12,400,Equipo N33,0,Slowbro,Altaria,Sawsbuck,Gengar,Slakoth,Slowking
+13,398,Equipo N41,0,Slowbro,Ludicolo,Mismagius,Gengar,Slakoth,Slowking
+14,397,Equipo N7,0,Metagross,Bagon,Lilligant,Slaking,Slakoth,Vaporeon
+15,396,Equipo N38,0,Metagross,Ludicolo,Goodra,Magnezone,Slakoth,Vaporeon
+16,398,Equipo N12,0,Metagross,Klefki,Goodra,Chesnaught,Kecleon,Hawlucha
+17,400,Equipo N47,0,Slowbro,Amaura,Nidoking,Snorlax,Heliolisk,Vaporeon
+18,396,Equipo N47,0,Slowbro,Solrock,Nidoking,Venonat,Heliolisk,Vaporeon
+19,397,Equipo N44,0,Slowbro,Ludicolo,Lilligant,Gengar,Kecleon,Vaporeon
+20,398,Equipo N19,0,Slowbro,Blastoise,Goodra,Krokorok,Kecleon,Dewgong
+21,399,Equipo N44,0,Slowbro,Ludicolo,Nidoking,Gothorita,Kecleon,Vaporeon
+22,400,Equipo N19,0,Slowbro,Blastoise,Lilligant,Gengar,Noctowl,Vaporeon
+23,399,Equipo N43,0,Slowbro,Blastoise,Lilligant,Gengar,Noctowl,Vaporeon
+24,400,Equipo N26,0,Slowbro,Manectric,Gallade,Dhelmise,Vivillon,Vaporeon
+25,399,Equipo N12,0,Swampert,Ludicolo,Gallade,Snorlax,Mamoswine,Vaporeon
+26,400,Equipo N12,0,Slowbro,Ludicolo,Goodra,Gengar,Noctowl,Vaporeon
+27,398,Equipo N37,0,Slowbro,Blastoise,Tropius,Nidoran-F,Noctowl,Vaporeon
+28,399,Equipo N6,0,Slowbro,Blastoise,Dratini,Clawitzer,Mamoswine,Togekiss
+29,398,Equipo N37,0,Slowbro,Blastoise,Tropius,Slaking,Glaceon,Hawlucha
+30,396,Equipo N33,0,Slowbro,Ludicolo,Tropius,Sealeo,Kecleon,Hawlucha
+31,398,Equipo N40,0,Slowbro,Solrock,Fennekin,Slaking,Noctowl,Elekid
+32,398,Equipo N23,0,Slowbro,Blastoise,Nincada,Snorlax,Mamoswine,Charizard
+33,398,Equipo N34,0,Slowbro,Manectric,Kricketune,Slaking,Noctowl,Vaporeon
+34,398,Equipo N6,0,Slowbro,Blastoise,Dartrix,Bruxish,Panpour,Stufful
+35,398,Equipo N34,0,Slowbro,Manectric,Kricketune,Bruxish,Noctowl,Wishiwashi
+36,397,Equipo N36,0,Slowbro,Manectric,Abomasnow,Clamperl,Gothorita,Charizard
+37,399,Equipo N49,1,Slowbro,Garchomp,Rhyperior,Slaking,Kecleon,Charizard
+38,393,Equipo N19,0,Silvally,Manectric,Abomasnow,Bruxish,Gothorita,Charizard
+39,388,Equipo N36,0,Swampert,Manectric,Dartrix,Bruxish,Gothorita,Charizard
+40,395,Equipo N35,0,Mr. Mime,Conkeldurr,Dartrix,Snorlax,Gothorita,Vaporeon
+41,392,Equipo N14,2,Mr. Mime,Conkeldurr,Nincada,Slaking,Gothorita,Vaporeon
+42,387,Equipo N14,0,Mr. Mime,Blastoise,Electabuzz,Slaking,Mareanie,Charizard
+43,398,Equipo N50,0,Swampert,Solrock,Rhyperior,Snorlax,Gothorita,Charizard
+44,395,Equipo N21,0,Mr. Mime,Blastoise,Rotom,Snorlax,Gothorita,Venonat
+45,391,Equipo N21,0,Mr. Mime,Blastoise,Nincada,Salamence,Gothorita,Venonat
+46,399,Equipo N2,4,Mr. Mime,Blastoise,Rotom,Salamence,Gothorita,Vaporeon
+47,398,Equipo N19,0,Mr. Mime,Garchomp,Pidgeotto,Salamence,Kecleon,Vaporeon
+48,387,Equipo N29,0,Mr. Mime,Conkeldurr,Delibird,Snorlax,Mamoswine,Vaporeon
+49,395,Equipo N14,0,Ivysaur,Blastoise,Electabuzz,Salamence,Gothorita,Charizard
