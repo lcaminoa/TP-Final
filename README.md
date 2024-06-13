@@ -1,4 +1,4 @@
-# Trabajo Práctico Final de Pensamiento Computacional
+<h1 style="color: #00698f; font-size: 36px;">Trabajo Práctico Final de Pensamiento Computacional</h1>
 ### Autores: Lautaro Caminoa, Álvaro Guerrero y Nicolás Heuser
 
 # Estructura de Carpetas y Archivos
@@ -25,6 +25,7 @@
 | `pp`        | Puntos de poder del movimiento            |
 | `power`    | Poder del movimiento          |
 | `accuracy`   | Precisión del movimiento         |
+
 
 - **pokemons.csv**
   - Archivo CSV que contiene la información de cada pokémon:
@@ -63,6 +64,8 @@ Cambia el pokémon actual del equipo que tiene un pokémon debilitado. El otro e
 - `team2 (Team)`: El otro equipo.
 - `effectiveness (dict[str, dict[str, float]])`: Un diccionario que contiene la efectividad de cada tipo contra otro.
 
+---
+
 #### `__fight__(team1: Team, team2: Team, effectiveness: dict[str, dict[str, float]]) -> Team`
 Simula una pelea entre dos equipos. La pelea termina cuando todos los pokémon de uno de los equipos han sido debilitados.
 
@@ -86,8 +89,6 @@ Simula una pelea entre dos equipos. La pelea termina cuando todos los pokémon d
 
 **Retorna:**
 - `Team`: El equipo que ganó la pelea.
-
----
 
 ## move.py
 Contiene la clase para definir un objeto `Move` y sus respectivas funciones.
@@ -121,9 +122,10 @@ Crea un objeto `Move` a partir de un diccionario.
 - `Move`: El movimiento creado a partir del diccionario.
 
 **Ejemplo:**
-```python```
+```
 data = {'type': 'fire', 'category': 'special', 'pp': 10, 'power': 90, 'accuracy': 100}
 move = Move.from_dict('Flamethrower', data)
+```
 
 
 ## pokemon.py
@@ -139,22 +141,24 @@ Representa un pokémon.
 Constructor para inicializar un objeto `Pokemon`.
 
 **Parámetros:**
-- `pokedex_number (int)`: El número en la pokédex del pokémon.
-- `name (str)`: El nombre del pokémon.
-- `type1 (str)`: El tipo primario del pokémon.
-- `type2 (str|None)`: El tipo secundario del pokémon. Si el pokémon tiene solo un tipo, debe ser None.
-- `hp (int)`: Los puntos de vida base del pokémon.
-- `attack (int)`: El ataque base del pokémon.
-- `defense (int)`: La defensa base del pokémon.
-- `sp_attack (int)`: El ataque especial base del pokémon.
-- `sp_defense (int)`: La defensa especial base del pokémon.
-- `speed (int)`: La velocidad base del pokémon.
-- `generation (int)`: La generación del pokémon.
-- `height (float)`: La altura del pokémon en metros.
-- `weight (float)`: El peso del pokémon en kilogramos.
-- `is_legendary (bool)`: Si el pokémon es legendario o no.
-- `moves (list[Move])`: Los movimientos que el pokémon puede usar.
-- `level (int)`: El nivel del pokémon. Por defecto es 50.
+| Parámetro | Tipo | Descripción |
+| --- | --- | --- |
+| `pokedex_number` | `int` | El número en la pokédex del pokémon. |
+| `name` | `str` | El nombre del pokémon. |
+| `type1` | `str` | El tipo primario del pokémon. |
+| `type2` | `str|None` | El tipo secundario del pokémon. Si el pokémon tiene solo un tipo, debe ser None. |
+| `hp` | `int` | Los puntos de vida base del pokémon. |
+| `attack` | `int` | El ataque base del pokémon. |
+| `defense` | `int` | La defensa base del pokémon. |
+| `sp_attack` | `int` | El ataque especial base del pokémon. |
+| `sp_defense` | `int` | La defensa especial base del pokémon. |
+| `speed` | `int` | La velocidad base del pokémon. |
+| `generation` | `int` | La generación del pokémon. |
+| `height` | `float` | La altura del pokémon en metros. |
+| `weight` | `float` | El peso del pokémon en kilogramos. |
+| `is_legendary` | `bool` | Si el pokémon es legendario o no. |
+| `moves` | `list[Move]` | Los movimientos que el pokémon puede usar. |
+| `level` | `int` | El nivel del pokémon. Por defecto es 50. |
 
 ##### `@staticmethod from_dict(name: str, data: dict[str, str|int|float|bool|None], moves_data: dict[str, dict[str, str|int]]) -> Pokemon`
 Crea un objeto `Pokemon` a partir de un diccionario.
@@ -168,7 +172,7 @@ Crea un objeto `Pokemon` a partir de un diccionario.
 - `Pokemon`: El pokémon creado a partir del diccionario.
 
 **Ejemplo:**
-```python```
+```
 data = {
     'pokedex_number': 1,
     'type1': 'grass',
@@ -192,7 +196,7 @@ moves_data = {
     'vine whip': {'type': 'grass', 'category': 'physical', 'pp': 25, 'power': 45, 'accuracy': 100}
 }
 pokemon = Pokemon.from_dict('Bulbasaur', data, moves_data)
-
+```
 
 ## team.py
 Contiene la clase para definir un objeto `Team` y sus respectivas funciones.
@@ -249,5 +253,5 @@ Ejecuta una acción.
 - `defender (Team)`: El equipo que recibirá la acción.
 - `effectiveness (dict[str, dict[str, float]])`: Un diccionario que contiene la efectividad de cada tipo contra otro.
 
-#### main.py
+## main.py
 Archivo principal para ejecutar el programa.
