@@ -339,32 +339,59 @@ def grafico_epochs():
     plt.title('Diversidad de pokemons por epoch')
     plt.show()
 
+def graph_distribution_last_epoch() -> None:
+    """
+    Crea un gráfico de barras que muestra la distribución de los pokémon en los equipos de la última época.
+    Usando pandas y matplotlib.
+    Args:
+        last_epoch: List with the data of the last epoch.
+    """
+    # Create a DataFrame from the list of data
+    columns=["num_gen", "aptitude", "team_name", "starter", "pokemon_1", "pokemon_2", "pokemon_3", "pokemon_4", "pokemon_5", "pokemon_6"]
+    df = pd.read_csv("best_teams.csv", header=None, names = columns)
+
+    # Obtener la frecuencia de los pokémon en los equipos
+    pokemons = df.iloc[:, 4:].values.flatten()
+    pokemon_freq = pd.Series(pokemons).value_counts()
+
+    # Filtrar pokémon que aparecen más de una vez
+    pokemon_freq_filtered = pokemon_freq.loc[pokemon_freq > 1]
+    
+    # Crear un gráfico de barras
+    plt.figure(figsize=(10, 10))
+    pokemon_freq_filtered.plot(kind='bar')
+    plt.title("Distribución de pokémon en los equipos de la última época")
+    plt.xlabel("Pokémon")
+    plt.ylabel("Frecuencia")
+    plt.show()
 
 def main():
     cant_equipos = 10
     cant_adversarios = 100
-    cant_generaciones = 50
+    cant_generaciones = 10
 
-    # adversarios = poblacion(cant_adversarios)
-    # effectiveness = efectividad()
+    adversarios = poblacion(cant_adversarios)
+    effectiveness = efectividad()
 
-    # inicio = time.time()
+    inicio = time.time()
 
-    # dreams_teams, lista_epochs, lista_teams = algoritmo_genetico(cant_equipos,cant_adversarios,cant_generaciones)
-    # csv_epochs(lista_epochs)
-    # csv_best_team(lista_teams)
+    dreams_teams, lista_epochs, lista_teams = algoritmo_genetico(cant_equipos,cant_adversarios,cant_generaciones)
+    csv_epochs(lista_epochs)
+    csv_best_team(lista_teams)
 
-    # print("--------dream teams--------")
-    # for team in dreams_teams:
-    #     print(f"{team.name} aptitud:{aptitud(team,adversarios,effectiveness)}")
-    #     for pokemon in team.pokemons:
-    #         print(pokemon.name)
-    #     print()
+    print("--------dream teams--------")
+    for team in dreams_teams:
+        print(f"{team.name} aptitud:{aptitud(team,adversarios,effectiveness)}")
+        for pokemon in team.pokemons:
+            print(pokemon.name)
+        print()
 
-    # fin = time.time()
-    # print(f"La función tardó {fin - inicio} segundos en ejecutarse.")
+    fin = time.time()
+    print(f"La función tardó {fin - inicio} segundos en ejecutarse.")
 
-    graf_epochs()
+    grafico_epochs()
+    grafico_aptitud()
+    graph_distribution_last_epoch()
 
 if __name__ == "__main__":
     main()
