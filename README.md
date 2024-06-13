@@ -5,26 +5,26 @@
 
 ### Data
 
-#### Imgs
-Contiene las imágenes de cada pokémon en formato `.png`.
+- **Imgs**
+  - Contiene las imágenes de cada pokémon en formato `.png`.
 
-#### effectiveness_graph.png
-Gráfico de efectividades de los distintos tipos de pokémon contra otros tipos.
+- **effectiveness_graph.png**
+  - Gráfico de efectividades de los distintos tipos de pokémon contra otros tipos.
 
-#### effectiveness_chart.csv
-Archivo CSV que contiene la misma información que `effectiveness_graph.png`, pero ordenada en formato CSV.
+- **effectiveness_chart.csv**
+  - Archivo CSV que contiene la misma información que `effectiveness_graph.png`, pero ordenada en formato CSV.
 
-#### moves.csv
-Archivo CSV que contiene la información de todos los distintos movimientos pokémon:
-- `name`: Nombre del movimiento.
-- `type`: Tipo del movimiento.
-- `category`: Categoría del movimiento.
-- `pp`: Puntos de poder del movimiento.
-- `power`: Poder del movimiento.
-- `accuracy`: Precisión del movimiento.
+- **moves.csv**
+  - Archivo CSV que contiene la información de todos los distintos movimientos pokémon:
+    - `name`: Nombre del movimiento.
+    - `type`: Tipo del movimiento.
+    - `category`: Categoría del movimiento.
+    - `pp`: Puntos de poder del movimiento.
+    - `power`: Poder del movimiento.
+    - `accuracy`: Precisión del movimiento.
 
-#### pokemons.csv
-Archivo CSV que contiene la información de cada pokémon:
+- **pokemons.csv**
+  - Archivo CSV que contiene la información de cada pokémon:
 | Campo       | Descripción                 |
 | ----------- | --------------------------- |
 | `name`      | Nombre del pokémon          |
