@@ -5,17 +5,17 @@
 
 ### Data
 
-**Imgs**
-  - Contiene las imágenes de cada pokémon en formato `.png`.
+- **Imgs**
+    - Carpeta que contiene las imágenes de cada pokémon en formato `.png`.
 
 - **effectiveness_graph.png**
-  - Gráfico de efectividades de los distintos tipos de pokémon contra otros tipos.
+    - Gráfico de efectividades de los distintos tipos de pokémon contra otros tipos.
 
 - **effectiveness_chart.csv**
-  - Archivo CSV que contiene la misma información que `effectiveness_graph.png`, pero ordenada en formato CSV.
+    - Archivo CSV que contiene la misma información que `effectiveness_graph.png`, pero ordenada en formato CSV.
 
 - **moves.csv**
-  - Archivo CSV que contiene la información de todos los distintos movimientos pokémon:
+    - Archivo CSV que contiene la información de todos los distintos movimientos pokémon:
 
 | Campo       | Descripción                 |
 | ----------- | --------------------------- |
@@ -46,10 +46,11 @@
 | `is_legendary` | Indica si el pokémon es legendario |
 | `moves`     | Movimientos que puede aprender el pokémon |
 
-### Utils
+# Utils
 
-#### combat.py
+## combat.py
 Contiene las funciones necesarias para simular los combates entre equipos pokémon.
+
 ### Funciones
 
 #### `__faint_change__(team1: Team, team2: Team, effectiveness: dict[str, dict[str, float]]) -> None`
@@ -82,8 +83,9 @@ Simula una pelea entre dos equipos. La pelea termina cuando todos los pokémon d
 **Retorna:**
 - `Team`: El equipo que ganó la pelea.
 
-#### move.py
+## move.py
 Contiene la clase para definir un objeto `Move` y sus respectivas funciones.
+
 ### Clases y Funciones
 
 #### `class Move`
@@ -100,18 +102,18 @@ Constructor para inicializar un objeto `Move`.
 - `power (int)`: Poder del movimiento.
 - `accuracy (int)`: Precisión del movimiento.
 
-##### `@staticmethod from_dict(name: str, data: dict[str, str|int]) -> Move`
+##### `@staticmethod from_dict(name: str, data: dict[str, str | int]) -> Move`
 Crea un objeto `Move` a partir de un diccionario.
 
 **Parámetros:**
 - `name (str)`: El nombre del movimiento.
-- `data (dict[str, str|int])`: Un diccionario que contiene el tipo, categoría, pp, poder y precisión del movimiento.
+- `data (dict[str, str | int])`: Un diccionario que contiene el tipo, categoría, pp, poder y precisión del movimiento.
 
 **Retorna:**
 - `Move`: El movimiento creado a partir del diccionario.
 
 **Ejemplo:**
-```python```
+```python
 data = {'type': 'fire', 'category': 'special', 'pp': 10, 'power': 90, 'accuracy': 100}
 move = Move.from_dict('Flamethrower', data)
 
