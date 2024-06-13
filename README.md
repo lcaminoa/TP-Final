@@ -2,6 +2,8 @@
 
 ### Autores: Lautaro Caminoa, Álvaro Guerrero y Nicolás Heuser
 
+![Portada Pokémon](https://www.lared.cl/wp-content/uploads/2016/02/portada-pokemon.jpg "Portada Pokémon")
+
 # Estructura de Carpetas y Archivos
 
 ## Data
