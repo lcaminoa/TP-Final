@@ -25,21 +25,22 @@ Archivo CSV que contiene la información de todos los distintos movimientos pok�
 
 #### pokemons.csv
 Archivo CSV que contiene la información de cada pokémon:
-- `pokedex_number`: Número del pokémon en la Pokédex.
-- `name`: Nombre del pokémon.
-- `type1`: Primer tipo del pokémon.
-- `type2`: Segundo tipo del pokémon (si tiene).
-- `hp`: Vida del pokémon.
-- `attack`: Ataque del pokémon.
-- `defense`: Defensa del pokémon.
-- `sp_attack`: Ataque especial del pokémon.
-- `sp_defense`: Defensa especial del pokémon.
-- `speed`: Velocidad del pokémon.
-- `generation`: Generación del pokémon.
-- `height_m`: Altura del pokémon en metros.
-- `weight_kg`: Peso del pokémon en kilogramos.
-- `is_legendary`: Indica si el pokémon es legendario.
-- `moves`: Movimientos que puede aprender el pokémon.
+| Campo       | Descripción                 |
+| ----------- | --------------------------- |
+| `name`      | Nombre del pokémon          |
+| `type1`     | Primer tipo del pokémon     |
+| `type2`     | Segundo tipo del pokémon    |
+| `hp`        | Vida del pokémon            |
+| `attack`    | Ataque del pokémon          |
+| `defense`   | Defensa del pokémon         |
+| `sp_attack` | Ataque especial del pokémon|
+| `sp_defense`| Defensa especial del pokémon|
+| `speed`     | Velocidad del pokémon        |
+| `generation`| Generación del pokémon      |
+| `height_m`  | Altura del pokémon en metros |
+| `weight_kg` | Peso del pokémon en kilogramos |
+| `is_legendary` | Indica si el pokémon es legendario |
+| `moves`     | Movimientos que puede aprender el pokémon |
 
 ### Utils
 
