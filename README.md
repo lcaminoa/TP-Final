@@ -1,4 +1,5 @@
-<h1 style="color: #00698f; font-size: 36px;">Trabajo Práctico Final de Pensamiento Computacional</h1>
+<h1 style="color: #00698f; font-size: 40px;">Trabajo Práctico Final de Pensamiento Computacional</h1>
+
 ### Autores: Lautaro Caminoa, Álvaro Guerrero y Nicolás Heuser
 
 # Estructura de Carpetas y Archivos
