@@ -370,21 +370,11 @@ def main():
     cant_adversarios = 100
     cant_generaciones = 10
 
-    adversarios = poblacion(cant_adversarios)
-    effectiveness = efectividad()
-
     inicio = time.time()
 
-    dreams_teams, lista_epochs, lista_teams = algoritmo_genetico(cant_equipos,cant_adversarios,cant_generaciones)
+    ult_gen, lista_epochs, lista_teams = algoritmo_genetico(cant_equipos,cant_adversarios,cant_generaciones)
     csv_epochs(lista_epochs)
     csv_best_team(lista_teams)
-
-    print("--------dream teams--------")
-    for team in dreams_teams:
-        print(f"{team.name} aptitud:{aptitud(team,adversarios,effectiveness)}")
-        for pokemon in team.pokemons:
-            print(pokemon.name)
-        print()
 
     fin = time.time()
     print(f"La función tardó {fin - inicio} segundos en ejecutarse.")
