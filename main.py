@@ -285,7 +285,6 @@ def best_team(aptitudes):
 
 def csv_best_team(lista_teams):
     with open("lista_teams.csv", "w") as f:
-
         for epoch in lista_teams:
             num_gen = epoch[0]
             aptitude = epoch[1][0][0]
@@ -300,6 +299,10 @@ def csv_best_team(lista_teams):
             f.write(f"{num_gen},{aptitude},{team_name},{starter},{pokemon_1},{pokemon_2},{pokemon_3},{pokemon_4},{pokemon_5},{pokemon_6}")
             f.write("\n")
 
+
+
+
+
 def csv_epochs(lista_epochs):
     with open("epochs.csv", "w") as f:
 
@@ -310,7 +313,7 @@ def csv_epochs(lista_epochs):
                 f.write(f",{pokemon},{freq}")
             f.write("\n")
 
-def grafico_epochs():
+def graf_epochs():
 
     # Leer el archivo CSV
     csv = pd.read_csv("epochs.csv")
@@ -325,6 +328,10 @@ def grafico_epochs():
     plt.ylabel('Diversidad')
     plt.title('Diversidad de pokemons por epoch')
     plt.show()
+
+def graf_ultima_epoch():
+    csv = pd.read_csv("epochs.csv")
+    
 
 
 def main():
@@ -351,7 +358,7 @@ def main():
     fin = time.time()
     print(f"La función tardó {fin - inicio} segundos en ejecutarse.")
 
-    grafico_epochs()
-
+    graf_epochs()
+    graf_ultima_epoch()
 if __name__ == "__main__":
     main()
