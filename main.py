@@ -9,6 +9,9 @@ from utils.move import Move
 from utils.team import Team
 from utils.combat import get_winner
 
+TYPES = ['normal', 'fire', 'water', 'electric', 'grass', 'ice', 'fighting', 'poison', 'ground', 'flying', 'psychic', 'bug', 'rock', 'ghost', 'dragon', 'dark', 'steel', 'fairy']
+TYPES_COLORS = ['#A8A77A', '#EE8130', '#6390F0', '#F7D02C', '#7AC74C', '#96D9D6', '#C22E28', '#A33EA1', '#E2BF65', '#A98FF3', '#F95587', '#A6B91A', '#B6A136', '#735797', '#6F35FC', '#705746', '#B7B7CE', '#D685AD']
+
 def definir_moves() -> dict[str : object]:
     """
     Lee un archivo CSV con datos de movimientos y devuelve un diccionario de objetos Move.
@@ -297,6 +300,26 @@ def csv_best_team(lista_teams):
                 pokemons = [pokemon.name for pokemon in team.pokemons]
                 row = [num_gen, aptitude, team_name, starter] + pokemons
                 writer.writerow(row)
+def get_types(pokemon):
+    pokemon_types = []
+    df = pd.read_csv('data/pokemons.csv')
+     # Buscar el Pokémon en el DataFrame
+    pokemon_row = df[df['name'] == pokemon]
+
+    # Obtener los valores de las columnas 'type1' y 'type2'
+    type1 = pokemon_row['type1'].values[0]
+    type2 = pokemon_row['type2'].values[0]
+
+    # Si 'type2' es nulo, devolver solo 'type1'
+    if pd.isnull(type2):
+        pokemon_types = [type1]
+    else: 
+        pokemon_types = [type1, type2]
+
+    
+    return pokemon_types
+
+
 
 def csv_epochs(lista_epochs) -> None:
     with open("epochs.csv", "w") as f:
@@ -365,6 +388,45 @@ def graph_distribution_last_epoch() -> None:
     plt.ylabel("Frecuencia")
     plt.show()
 
+
+def types_distribution_last_epoch(cant_generaciones):
+    columns=["num_gen", "aptitude", "team_name", "starter", "pokemon_1", "pokemon_2", "pokemon_3", "pokemon_4", "pokemon_5", "pokemon_6"]
+    df = pd.read_csv("best_teams.csv", header=None, names = columns)
+
+    # Seleccionar la ultima epoch
+    empieza_last_epoch = df[df["num_gen"].astype(str).str.startswith(str(cant_generaciones-1))].index[0]
+    last_epoch = df.loc[empieza_last_epoch:,:]
+
+    # Obtener pokemons de ultima epoch
+    pokemons_last_epoch = last_epoch.iloc[:, 4:].values.flatten()
+
+    # Obtener los tipos de los pokémon
+    types = []
+    for pokemon in pokemons_last_epoch:
+        types.extend(get_types(pokemon))
+
+    # Contar las veces que aparece cada tipo
+    types_series = pd.Series(types)
+    type_counts = types_series.value_counts()
+
+    # Crear un diccionario de colores
+    color_dict = dict(zip(TYPES, TYPES_COLORS))
+
+    # Asegurarse de que los tipos en type_counts.index estén en el mismo formato que TYPES
+    formatted_types = [type.lower().strip() for type in type_counts.index]
+
+    # Asignar colores a las barras
+    bar_colors = [color_dict[type] for type in formatted_types]
+
+    type_counts.plot(kind='bar', color=bar_colors)
+
+    
+    plt.title('Distribución de los tipos de Pokémon en la última época')
+    plt.xlabel('Tipo de Pokémon')
+    plt.ylabel('Frecuencia')
+
+    plt.show()
+
 def main():
     cant_equipos = 10
     cant_adversarios = 100
@@ -382,6 +444,8 @@ def main():
     grafico_epochs()
     grafico_aptitud()
     graph_distribution_last_epoch()
+    types_distribution_last_epoch(cant_generaciones)
+    
 
 if __name__ == "__main__":
     main()
