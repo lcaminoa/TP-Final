@@ -300,6 +300,7 @@ def csv_best_team(lista_teams):
                 pokemons = [pokemon.name for pokemon in team.pokemons]
                 row = [num_gen, aptitude, team_name, starter] + pokemons
                 writer.writerow(row)
+                
 def get_types(pokemon):
     pokemon_types = []
     df = pd.read_csv('data/pokemons.csv')
@@ -396,24 +397,29 @@ def types_distribution_last_epoch(cant_generaciones):
     # Seleccionar la ultima epoch
     empieza_last_epoch = df[df["num_gen"].astype(str).str.startswith(str(cant_generaciones-1))].index[0]
     last_epoch = df.loc[empieza_last_epoch:,:]
+    print("last epoch: \n",last_epoch,"\n")
 
     # Obtener pokemons de ultima epoch
     pokemons_last_epoch = last_epoch.iloc[:, 4:].values.flatten()
+    print("pokemons last epoch: \n",pokemons_last_epoch,"\n")
 
     # Obtener los tipos de los pokémon
     types = []
     for pokemon in pokemons_last_epoch:
         types.extend(get_types(pokemon))
+    print("types: \n",types,"\n")
 
     # Contar las veces que aparece cada tipo
     types_series = pd.Series(types)
     type_counts = types_series.value_counts()
+    print("type counts: \n",type_counts,"\n")
 
     # Crear un diccionario de colores
     color_dict = dict(zip(TYPES, TYPES_COLORS))
 
     # Asegurarse de que los tipos en type_counts.index estén en el mismo formato que TYPES
     formatted_types = [type.lower().strip() for type in type_counts.index]
+    print("formatted types: \n",formatted_types,"\n")
 
     # Asignar colores a las barras
     bar_colors = [color_dict[type] for type in formatted_types]
@@ -430,7 +436,7 @@ def types_distribution_last_epoch(cant_generaciones):
 def main():
     cant_equipos = 10
     cant_adversarios = 100
-    cant_generaciones = 10
+    cant_generaciones = 100
 
     inicio = time.time()
 
@@ -445,6 +451,7 @@ def main():
     grafico_aptitud()
     graph_distribution_last_epoch()
     types_distribution_last_epoch(cant_generaciones)
+    
     
 
 if __name__ == "__main__":
