@@ -1,7 +1,7 @@
 from utils.pokemon import Pokemon
 from utils.team import Team
 from utils.combat import __faint_change__
-from funcs import definir_moves, efectividad
+from funcs import definir_moves
 
 def crear_equipo_personalizado(nombre_equipo:str, pokedex_nums:list[int]) -> object:
     """
@@ -61,10 +61,10 @@ def simulacion_pelea(team1: Team, team2: Team, effectiveness: dict[str, dict[str
 
         action_2, target_2 = team2.get_next_action(team1, effectiveness)
 
-        if action_1 == 'attack':
+        if action_2 == 'attack':
             print(f"El {team2.get_current_pokemon().name} de {team2.name} ataca al {team1.get_current_pokemon().name} de {team1.name}, utilizando {target_2.name} y generando {target_2.get_damage(team2.get_current_pokemon(), team1.get_current_pokemon(), effectiveness):.2f} de daño.")
             print(f"Vida de {team1.get_current_pokemon().name}: {team1.get_current_pokemon().current_hp:.2f} HP\n")
-        elif action_1 == 'switch':
+        elif action_2 == 'switch':
             print(f"{team2.name} cambia a {team2.pokemons[target_2].name} por {team2.get_current_pokemon().name}\n")
         else:
             print(f"{team2.name} salta el turno\n")
@@ -139,11 +139,3 @@ def simulacion_pelea(team1: Team, team2: Team, effectiveness: dict[str, dict[str
     
     return team1 if any(pokemon.current_hp > 0 for pokemon in team1.pokemons) else team2
 
-elite_four_member_1 = crear_equipo_personalizado("Will", [437, 124, 326, 80, 282, 178]) # Bronzong, Jynx, Grumpig, Slowbro, Gardevoir, Xatu
-elite_four_member_2 = crear_equipo_personalizado("Koga", [435, 454, 317, 49, 89, 169]) # Skunktank, Toxicroak, Swalot, Venomoth, Muk, Crobat
-elite_four_member_3 = crear_equipo_personalizado("Bruno", [237, 106, 297, 68, 448, 107]) # Hitmontop, Hitmonlee, Hariyama, Machamp, Lucario, Hitmonchan
-elite_four_member_4 = crear_equipo_personalizado("Karen", [461, 442, 430, 197, 229, 359]) # Weavile, Spiritomb, Honchkrow, Umbreon, Houndoom, Absol
-champion = crear_equipo_personalizado("Lance", [373, 445, 149, 6, 334, 130]) # Salamence, Garchomp, Dragonite, Charizard, Altaria, Gyarados
-
-dict_efectividad = efectividad()
-simulacion_pelea(elite_four_member_4, champion, dict_efectividad)
