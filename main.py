@@ -335,8 +335,6 @@ def get_types(pokemon):
     
     return pokemon_types
 
-
-
 def csv_epochs(lista_epochs) -> None:
     with open("epochs.csv", "w") as f:
 
@@ -385,30 +383,35 @@ def grafico_epochs():
 
 def graph_distribution_last_epoch() -> None:
     """
-    Crea un gráfico de barras que muestra la distribución de los pokémon en los equipos de la última época.
+    Crea un gráfico de barras que muestra la distribución de los Pokémon en los equipos de la última epoch.
     Usando pandas y matplotlib.
-    Args:
-        last_epoch: List with the data of the last epoch.
     """
-    # Create a DataFrame from the list of data
-    columns=["num_gen", "aptitude", "team_name", "starter", "pokemon_1", "pokemon_2", "pokemon_3", "pokemon_4", "pokemon_5", "pokemon_6"]
-    df = pd.read_csv("best_teams.csv", header=None, names = columns)
+    # Definir los nombres de las columnas
+    columns = ["epoch", "aptitud", "team_name", "victorias", "pokemon1", "pokemon2", "pokemon3", "pokemon4", "pokemon5", "pokemon6"]
 
-    # Obtener la frecuencia de los pokémon en los equipos
-    pokemons = df.iloc[:, 4:].values.flatten()
+    # Leer los datos desde el archivo CSV sin encabezado y asignar los nombres de las columnas
+    df = pd.read_csv("best_teams.csv", header=None, names=columns)
+    
+    # Encontrar la última epoch
+    last_epoch = df['epoch'].max()
+
+    # Filtrar los datos para obtener solo las filas de la última epoch
+    last_epoch_df = df[df['epoch'] == last_epoch]
+
+    # Obtener la frecuencia de los pokémon en los equipos de la última epoch
+    pokemons = last_epoch_df.iloc[:, 4:].values.flatten()
     pokemon_freq = pd.Series(pokemons).value_counts()
 
     # Filtrar pokémon que aparecen más de una vez
     pokemon_freq_filtered = pokemon_freq.loc[pokemon_freq > 1]
-    
+
     # Crear un gráfico de barras
     plt.figure(figsize=(10, 10))
     pokemon_freq_filtered.plot(kind='bar')
-    plt.title("Distribución de pokémon en los equipos de la última época")
+    plt.title("Distribución de Pokémon en los equipos de la última epoch")
     plt.xlabel("Pokémon")
     plt.ylabel("Frecuencia")
     plt.show()
-
 
 def types_distribution_last_epoch(cant_generaciones):
     """
@@ -461,7 +464,7 @@ def types_distribution_last_epoch(cant_generaciones):
 def main():
     cant_equipos = 10
     cant_adversarios = 100
-    cant_generaciones = 100
+    cant_generaciones = 10
 
     inicio = time.time()
 
@@ -471,13 +474,26 @@ def main():
 
     fin = time.time()
     print(f"La función tardó {fin - inicio} segundos en ejecutarse.")
-
-    grafico_epochs()
-    grafico_aptitud()
-    graph_distribution_last_epoch()
-    types_distribution_last_epoch(cant_generaciones)
-    
-    
+    k = "1"
+    while k != "0":
+        print("seleccione grafico a visualizar:")
+        print("1-grafico_epochs")
+        print("2-grafico_aptitud")
+        print("3-graph_distribution_last_epoch")
+        print("4-types_distribution_last_epoch")
+        print("0-exit")
+        k = input(">")
+        if k == "1":
+            grafico_epochs()
+        elif k == "2":
+            grafico_aptitud()
+        elif k == "3":
+            graph_distribution_last_epoch()
+        elif k == "4":
+            types_distribution_last_epoch(cant_generaciones)
+        elif k == "0":
+            break
 
 if __name__ == "__main__":
     main()
+    
