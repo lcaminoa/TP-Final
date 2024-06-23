@@ -46,6 +46,9 @@ def simulacion_pelea(team1: Team, team2: Team, effectiveness: dict[str, dict[str
     Team: The team that won the fight.
     """
     turn = 0
+    print(team1.pokemons[team1.current_pokemon_index].name)
+    print(team2.pokemons[team2.current_pokemon_index].name)
+    
     while any(pokemon.current_hp > 0 for pokemon in team1.pokemons) and any(pokemon.current_hp > 0 for pokemon in team2.pokemons):            
         action_1, target_1 = team1.get_next_action(team2, effectiveness)
         print(f"{action_1}, {target_1}")
@@ -93,4 +96,4 @@ elite_four_member_4 = crear_equipo_personalizado("Elite Four Member 4", [461, 44
 champion = crear_equipo_personalizado("Champion", [373, 445, 149, 6, 334, 130]) # Salamence, Garchomp, Dragonite, Charizard, Altaria, Gyarados
 
 dict_efectividad = efectividad()
-simulacion_pelea(elite_four_member_1, elite_four_member_2, dict_efectividad)
+simulacion_pelea(elite_four_member_4, champion, dict_efectividad)
