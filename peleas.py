@@ -97,21 +97,27 @@ def simulacion_pelea(team1: Team, team2: Team, effectiveness: dict[str, dict[str
                 print(f"Quedan {contador_muertes_team1} pokemones en el equipo {team1.name}." if contador_muertes_team1 != 1 else f"Queda {contador_muertes_team1} pokemon en el equipo {team1.name}.")
                 team2_old_pokemon = team2.get_current_pokemon()
                 __faint_change__(team1, team2, effectiveness)
-                if team2.get_current_pokemon() != team2_old_pokemon:
-                    print(f"Entra el {team1.get_current_pokemon().name} de {team1.name} y {team2.name} cambia a {team1_old_pokemon.name} por {team2.get_current_pokemon().name}\n")
+                if contador_muertes_team1 > 0:
+                    if team2.get_current_pokemon() != team2_old_pokemon:
+                        print(f"Entra el {team1.get_current_pokemon().name} de {team1.name} y {team2.name} cambia a {team1_old_pokemon.name} por {team2.get_current_pokemon().name}\n")
+                    else:
+                        print(f"Entra el {team1.get_current_pokemon().name} de {team1.name} y continua el {team2.get_current_pokemon().name} de {team2.name}\n")
                 else:
-                    print(f"Entra el {team1.get_current_pokemon().name} de {team1.name} y continua el {team2.get_current_pokemon().name} de {team2.name}\n")
-            
+                    print(f"El equipo {team2.name} ganó la batalla.")
+
             else:
                 contador_muertes_team2 -= 1
                 print(f"Fue derrotado el {team2.get_current_pokemon().name} de {team2.name}.")
                 print(f"Quedan {contador_muertes_team2} pokemones en el equipo {team2.name}." if contador_muertes_team2 != 1 else f"Queda {contador_muertes_team2} pokemon en el equipo {team2.name}.")
                 team1_old_pokemon = team1.get_current_pokemon()
                 __faint_change__(team1, team2, effectiveness)
-                if team1.get_current_pokemon() != team1_old_pokemon:
-                    print(f"Entra el {team2.get_current_pokemon().name} de {team2.name} y {team1.name} cambia a {team2_old_pokemon.name} por {team1.get_current_pokemon().name}\n")
+                if contador_muertes_team2 > 0:
+                    if team1.get_current_pokemon() != team1_old_pokemon:
+                        print(f"Entra el {team2.get_current_pokemon().name} de {team2.name} y {team1.name} cambia a {team2_old_pokemon.name} por {team1.get_current_pokemon().name}\n")
+                    else:
+                        print(f"Entra el {team2.get_current_pokemon().name} de {team2.name} y continua el {team1.get_current_pokemon().name} de {team1.name}\n")
                 else:
-                    print(f"Entra el {team2.get_current_pokemon().name} de {team2.name} y continua el {team1.get_current_pokemon().name} de {team1.name}\n")
+                    print(f"El equipo {team1.name} ganó la batalla.")
 
         else:
             if action_2 == 'attack' and target_2 is None:
@@ -123,17 +129,19 @@ def simulacion_pelea(team1: Team, team2: Team, effectiveness: dict[str, dict[str
                     contador_muertes_team1 -= 1
                     print(f"Fue derrotado el {team1.get_current_pokemon().name} de {team1.name}.")
                     print(f"Quedan {contador_muertes_team1} pokemones en el equipo {team1.name}.")
-                    print(f"El equipo {team2.name} ganó la batalla.")
-                    team2_old_pokemon = team2.get_current_pokemon()
-                    __faint_change__(team1, team2, effectiveness)
+                    if contador_muertes_team2 > 0:
+                        print(f"El equipo {team1.name} ganó la batalla.")
+                        team2_old_pokemon = team2.get_current_pokemon()
+                        __faint_change__(team1, team2, effectiveness)
                     
                 else:
                     contador_muertes_team2 -= 1
                     print(f"Fue derrotado el {team2.get_current_pokemon().name} de {team2.name}.")
                     print(f"Quedan {contador_muertes_team2} pokemones en el equipo {team2.name}.")
-                    print(f"El equipo {team1.name} ganó la batalla.")
-                    team1_old_pokemon = team1.get_current_pokemon()
-                    __faint_change__(team1, team2, effectiveness)
+                    if contador_muertes_team1 > 0:
+                        print(f"El equipo {team2.name} ganó la batalla.")
+                        team1_old_pokemon = team1.get_current_pokemon()
+                        __faint_change__(team1, team2, effectiveness)
                     
         turn += 1
     
