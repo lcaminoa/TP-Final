@@ -41,6 +41,8 @@ def main():
             types_distribution_last_epoch(cant_generaciones)
         elif k == "0":
             break
+        else:
+            print("\nopcion no valida\n")
 
 if __name__ == "__main__":
     main()
