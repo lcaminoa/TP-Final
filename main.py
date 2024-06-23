@@ -400,29 +400,24 @@ def types_distribution_last_epoch(cant_generaciones):
     # Seleccionar la ultima epoch
     empieza_last_epoch = df[df["num_gen"].astype(str).str.startswith(str(cant_generaciones-1))].index[0]
     last_epoch = df.loc[empieza_last_epoch:,:]
-    print("last epoch: \n",last_epoch,"\n")
 
     # Obtener pokemons de ultima epoch
     pokemons_last_epoch = last_epoch.iloc[:, 4:].values.flatten()
-    print("pokemons last epoch: \n",pokemons_last_epoch,"\n")
 
     # Obtener los tipos de los pokémon
     types = []
     for pokemon in pokemons_last_epoch:
         types.extend(get_types(pokemon))
-    print("types: \n",types,"\n")
 
     # Contar las veces que aparece cada tipo
     types_series = pd.Series(types)
     type_counts = types_series.value_counts()
-    print("type counts: \n",type_counts,"\n")
 
     # Crear un diccionario de colores
     color_dict = dict(zip(TYPES, TYPES_COLORS))
 
     # Asegurarse de que los tipos en type_counts.index estén en el mismo formato que TYPES
     formatted_types = [type.lower().strip() for type in type_counts.index]
-    print("formatted types: \n",formatted_types,"\n")
 
     # Asignar colores a las barras
     bar_colors = [color_dict[type] for type in formatted_types]
@@ -441,14 +436,14 @@ def main():
     cant_adversarios = 100
     cant_generaciones = 10
 
-    inicio = time.time()
+    # inicio = time.time()
 
-    ult_gen, lista_epochs, lista_teams = algoritmo_genetico(cant_equipos,cant_adversarios,cant_generaciones)
-    csv_epochs(lista_epochs)
-    csv_best_team(lista_teams)
+    # ult_gen, lista_epochs, lista_teams = algoritmo_genetico(cant_equipos,cant_adversarios,cant_generaciones)
+    # csv_epochs(lista_epochs)
+    # csv_best_team(lista_teams)
 
-    fin = time.time()
-    print(f"La función tardó {fin - inicio} segundos en ejecutarse.")
+    # fin = time.time()
+    # print(f"La función tardó {fin - inicio} segundos en ejecutarse.")
     k = "1"
     while k != "0":
         print("seleccione grafico a visualizar:")
@@ -456,6 +451,7 @@ def main():
         print("2-grafico_aptitud")
         print("3-graph_distribution_last_epoch")
         print("4-types_distribution_last_epoch")
+        print("5-Todos los graficos")
         print("0-exit")
         k = input(">")
         if k == "1":
@@ -465,6 +461,11 @@ def main():
         elif k == "3":
             graph_distribution_last_epoch()
         elif k == "4":
+            types_distribution_last_epoch(cant_generaciones)
+        elif k == "5":
+            grafico_epochs()
+            grafico_aptitud()
+            graph_distribution_last_epoch()
             types_distribution_last_epoch(cant_generaciones)
         elif k == "0":
             break
