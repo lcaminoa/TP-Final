@@ -84,7 +84,7 @@ def main():
                 break
             else:
                 print("\nopcion no valida\n")
-        else:
+        elif k!= "1" and k!= "2" and k!= "0":
             print("\nopcion no valida\n")
 
 if __name__ == "__main__":
