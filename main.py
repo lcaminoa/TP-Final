@@ -282,11 +282,21 @@ def algoritmo_genetico(cant_equipos: int, cant_adversarios: int, cant_generacion
 
     return nueva_poblacion, lista_epochs, lista_teams
         
-def best_team(aptitudes) -> None:
+def best_team(aptitudes):
+    """
+    Ordena los equipos por aptitud de mayor a menor.
+    Args:
+        aptitudes: lista de tuplas que contiene la aptitud del equipo y el nombre, para cada equipo.
+    """
     aptitudes_ord = sorted(aptitudes, key=lambda item: item[0], reverse = True)
     return aptitudes_ord
 
 def csv_best_team(lista_teams):
+    """
+    Escribe en un archivo CSV los datos de los mejores equipos por generación.
+    Args:
+        lista_teams: lista de tuplas que contiene el número de generación y el mejor equipo, para cada generación.
+    """
     with open("best_teams.csv", "w", newline='') as f:
         writer = csv.writer(f)
         
@@ -302,6 +312,11 @@ def csv_best_team(lista_teams):
                 writer.writerow(row)
                 
 def get_types(pokemon):
+    """
+    Devuelve los tipos de un Pokémon.
+    Args:
+        pokemon: Nombre del Pokémon.
+    """
     pokemon_types = []
     df = pd.read_csv('data/pokemons.csv')
      # Buscar el Pokémon en el DataFrame
@@ -333,6 +348,9 @@ def csv_epochs(lista_epochs) -> None:
             f.write("\n")
 
 def grafico_aptitud():
+    """
+    Grafica la aptitud promedio por época.
+    """
     column_names = ["epoch", "aptitude", "team_name", "starter", "pokemon_1", "pokemon_2", "pokemon_3", "pokemon_4", "pokemon_5", "pokemon_6"]
     # Leer los datos en un DataFrame sin encabezado y asignar los nombres de las columnas
     df = pd.read_csv("best_teams.csv", header=None, names=column_names)
@@ -348,7 +366,9 @@ def grafico_aptitud():
     plt.show()
 
 def grafico_epochs():
-
+    """
+    Crea un gráfico de la diversidad de pokémons por cada epoch.
+    """
     # Leer el archivo CSV
     csv = pd.read_csv("epochs.csv")
 
@@ -391,6 +411,11 @@ def graph_distribution_last_epoch() -> None:
 
 
 def types_distribution_last_epoch(cant_generaciones):
+    """
+    Crea un gráfico de barras que muestra la distribución de los tipos de Pokémon en la última época.
+    Args:
+        cant_generaciones: Cantidad de generaciones.
+    """
     columns=["num_gen", "aptitude", "team_name", "starter", "pokemon_1", "pokemon_2", "pokemon_3", "pokemon_4", "pokemon_5", "pokemon_6"]
     df = pd.read_csv("best_teams.csv", header=None, names = columns)
 
