@@ -86,11 +86,11 @@ def simulacion_pelea(team1: Team, team2: Team, effectiveness: dict[str, dict[str
     
     return team1 if any(pokemon.current_hp > 0 for pokemon in team1.pokemons) else team2
 
-elite_four_member_1 = crear_pokemon_pokedex_num("Elite Four Member 1", [437, 124, 326, 80, 282, 178]) # Bronzong, Jynx, Grumpig, Slowbro, Gardevoir, Xatu
-elite_four_member_2 = crear_pokemon_pokedex_num("Elite Four Member 2", [435, 454, 317, 49, 89, 169]) # Skunktank, Toxicroak, Swalot, Venomoth, Muk, Crobat
-elite_four_member_3 = crear_pokemon_pokedex_num("Elite Four Member 3", [237, 106, 297, 68, 448, 107]) # Hitmontop, Hitmonlee, Hariyama, Machamp, Lucario, Hitmonchan
-elite_four_member_4 = crear_pokemon_pokedex_num("Elite Four Member 4", [461, 442, 430, 197, 229, 359]) # Weavile, Spiritomb, Honchkrow, Umbreon, Houndoom, Absol
-champion = crear_pokemon_pokedex_num("Champion", [373, 445, 149, 6, 334, 130]) # Salamence, Garchomp, Dragonite, Charizard, Altaria, Gyarados
+elite_four_member_1 = crear_equipo_personalizado("Elite Four Member 1", [437, 124, 326, 80, 282, 178]) # Bronzong, Jynx, Grumpig, Slowbro, Gardevoir, Xatu
+elite_four_member_2 = crear_equipo_personalizado("Elite Four Member 2", [435, 454, 317, 49, 89, 169]) # Skunktank, Toxicroak, Swalot, Venomoth, Muk, Crobat
+elite_four_member_3 = crear_equipo_personalizado("Elite Four Member 3", [237, 106, 297, 68, 448, 107]) # Hitmontop, Hitmonlee, Hariyama, Machamp, Lucario, Hitmonchan
+elite_four_member_4 = crear_equipo_personalizado("Elite Four Member 4", [461, 442, 430, 197, 229, 359]) # Weavile, Spiritomb, Honchkrow, Umbreon, Houndoom, Absol
+champion = crear_equipo_personalizado("Champion", [373, 445, 149, 6, 334, 130]) # Salamence, Garchomp, Dragonite, Charizard, Altaria, Gyarados
 
 dict_efectividad = efectividad()
 simulacion_pelea(elite_four_member_1, elite_four_member_2, dict_efectividad)
