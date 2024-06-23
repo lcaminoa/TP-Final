@@ -1,6 +1,6 @@
 from graphs import grafico_epochs, grafico_aptitud, graph_distribution_last_epoch, types_distribution_last_epoch
 from funcs import algoritmo_genetico
-from cvs import csv_epochs, csv_best_team
+from archivos_csv import csv_epochs, csv_best_team
 import time
 
 def main():
