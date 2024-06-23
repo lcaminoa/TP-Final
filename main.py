@@ -21,14 +21,14 @@ def main():
     # print(f"La función tardó {fin - inicio} segundos en ejecutarse.")
     k = ""
     while k != "0":
-        print("Opciones:")
+        print("\nOpciones:")
         print("1-simular batallas")
         print("2-graficos")
         print("0-exit")
         k = input(">")
 
         if k == "2":
-            print("seleccione grafico a visualizar:")
+            print("\nseleccione grafico a visualizar:")
             print("1-grafico_epochs")
             print("2-grafico_aptitud")
             print("3-graph_distribution_last_epoch")
@@ -54,7 +54,7 @@ def main():
             else:
                 print("\nopcion no valida\n")
         elif k == "1":
-            print("seleccione un rival")
+            print("\nseleccione un rival")
             print("1-Will")
             print("2-Koga")
             print("3-Bruno")
