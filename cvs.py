@@ -4,11 +4,12 @@ def csv_best_team(lista_teams):
     """
     Escribe en un archivo CSV los datos de los mejores equipos por generación.
     Args:
-        lista_teams: lista de tuplas que contiene el número de generación y el mejor equipo, para cada generación.
+        lista_teams: lista de tuplas que contiene el número de generación y equipos ordenados por aptitud, para cada generación.
     """
     with open("best_teams.csv", "w", newline='') as f:
         writer = csv.writer(f)
-        
+        encabezados = ["epoch", "aptitude", "team_name", "starter", "pokemon_1", "pokemon_2", "pokemon_3", "pokemon_4", "pokemon_5", "pokemon_6"]
+        writer.writerow(encabezados)
         for epoch in lista_teams:
             for tupla_team in epoch[1]:
                 num_gen = epoch[0]

@@ -8,9 +8,8 @@ def grafico_aptitud():
     """
     Grafica la aptitud promedio por época.
     """
-    column_names = ["epoch", "aptitude", "team_name", "starter", "pokemon_1", "pokemon_2", "pokemon_3", "pokemon_4", "pokemon_5", "pokemon_6"]
-    # Leer los datos en un DataFrame sin encabezado y asignar los nombres de las columnas
-    df = pd.read_csv("best_teams.csv", header=None, names=column_names)
+    # Leer los datos en un DataFrame 
+    df = pd.read_csv("best_teams.csv")
 
     # Agrupar por la columna 'epoch' y calcular el promedio de la columna 'aptitude'
     aptitud_promedio = df.groupby('epoch')['aptitude'].mean()
@@ -45,11 +44,8 @@ def graph_distribution_last_epoch() -> None:
     Crea un gráfico de barras que muestra la distribución de los Pokémon en los equipos de la última epoch.
     Usando pandas y matplotlib.
     """
-    # Definir los nombres de las columnas
-    columns = ["epoch", "aptitud", "team_name", "victorias", "pokemon1", "pokemon2", "pokemon3", "pokemon4", "pokemon5", "pokemon6"]
-
     # Leer los datos desde el archivo CSV sin encabezado y asignar los nombres de las columnas
-    df = pd.read_csv("best_teams.csv", header=None, names=columns)
+    df = pd.read_csv("best_teams.csv")
     
     # Encontrar la última epoch
     last_epoch = df['epoch'].max()
@@ -101,11 +97,10 @@ def types_distribution_last_epoch(cant_generaciones):
     Args:
         cant_generaciones: Cantidad de generaciones.
     """
-    columns=["num_gen", "aptitude", "team_name", "starter", "pokemon_1", "pokemon_2", "pokemon_3", "pokemon_4", "pokemon_5", "pokemon_6"]
-    df = pd.read_csv("best_teams.csv", header=None, names = columns)
+    df = pd.read_csv("best_teams.csv")
 
     # Seleccionar la ultima epoch
-    empieza_last_epoch = df[df["num_gen"].astype(str).str.startswith(str(cant_generaciones-1))].index[0]
+    empieza_last_epoch = df[df["epoch"].astype(str).str.startswith(str(cant_generaciones-1))].index[0]
     last_epoch = df.loc[empieza_last_epoch:,:]
 
     # Obtener pokemons de ultima epoch
