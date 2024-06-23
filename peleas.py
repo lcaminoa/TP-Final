@@ -6,6 +6,11 @@ from funcs import definir_moves
 def crear_equipo_personalizado(nombre_equipo:str, pokedex_nums:list[int]) -> object:
     """
     Lee un archivo CSV con datos de Pokémon y devuelve un objeto Pokémon aleatorio.
+    Args:
+        nombre_equipo: Nombre del equipo.
+        pokedex_nums: Lista de números de la Pokédex de los Pokémon que formarán parte del equipo.
+    Returns:
+        object: Objeto Team con los Pokémon seleccionados
     """
     equipo_pokemons = []
     with open("data/pokemons.csv", "r") as f:
@@ -34,16 +39,15 @@ def crear_equipo_personalizado(nombre_equipo:str, pokedex_nums:list[int]) -> obj
 
 def simulacion_pelea(team1: Team, team2: Team, effectiveness: dict[str, dict[str, float]]) -> Team:
     """
-    Simulates a fight between two teams. The fight ends when all the pokemons of one of the teams have fainted.
+    Simula una pelea entre dos equiós. La pelea finaliza cuando todos los pokemones de un equipo han sido derrotados.
 
-    Parameters:
-    team1 (Team): One of the teams.
-    team2 (Team): The other team.
-    effectiveness (dict[str, dict[str, float]]): A dictionary that contains the effectiveness of each type against
-    another.
+    Args:
+        team1 (Team): Uno de los equipos.
+        team2 (Team): El otro equipo.
+        effectiveness (dict[str, dict[str, float]]): Un diccionario que contiene la efectividad de los tipos de un pokemon contra otro.
 
     Returns:
-    Team: The team that won the fight.
+        Team: El equipo ganador.
     """
     turn = 0
     contador_muertes_team1 = 6
@@ -146,4 +150,3 @@ def simulacion_pelea(team1: Team, team2: Team, effectiveness: dict[str, dict[str
         turn += 1
     
     return team1 if any(pokemon.current_hp > 0 for pokemon in team1.pokemons) else team2
-

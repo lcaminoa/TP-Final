@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 TYPES = ['normal', 'fire', 'water', 'electric', 'grass', 'ice', 'fighting', 'poison', 'ground', 'flying', 'psychic', 'bug', 'rock', 'ghost', 'dragon', 'dark', 'steel', 'fairy']
 TYPES_COLORS = ['#A8A77A', '#EE8130', '#6390F0', '#F7D02C', '#7AC74C', '#96D9D6', '#C22E28', '#A33EA1', '#E2BF65', '#A98FF3', '#F95587', '#A6B91A', '#B6A136', '#735797', '#6F35FC', '#705746', '#B7B7CE', '#D685AD']
 
-def grafico_aptitud():
+def grafico_aptitud() -> None:
     """
     Grafica la aptitud promedio por época.
     """
@@ -21,7 +21,7 @@ def grafico_aptitud():
     plt.title('Promedio de Aptitud por época')
     plt.show()
 
-def grafico_epochs():
+def grafico_epochs() -> None:
     """
     Crea un gráfico de la diversidad de pokémons por cada epoch.
     """
@@ -68,11 +68,13 @@ def graph_distribution_last_epoch() -> None:
     plt.ylabel("Frecuencia")
     plt.show()
 
-def get_types(pokemon):
+def get_types(pokemon: str) -> list[str]:
     """
     Devuelve los tipos de un Pokémon.
     Args:
         pokemon: Nombre del Pokémon.
+    Returns:
+        list[str]: Lista con los tipos del Pokémon.
     """
     pokemon_types = []
     df = pd.read_csv('data/pokemons.csv')
@@ -91,7 +93,7 @@ def get_types(pokemon):
 
     return pokemon_types
 
-def types_distribution_last_epoch(cant_generaciones):
+def types_distribution_last_epoch(cant_generaciones: int) -> None:
     """
     Crea un gráfico de barras que muestra la distribución de los tipos de Pokémon en la última época.
     Args:

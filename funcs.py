@@ -271,15 +271,17 @@ def algoritmo_genetico(cant_equipos: int, cant_adversarios: int, cant_generacion
         frecuencia_pokemons = dict(sorted(frecuencia_pokemons.items(), key=lambda item: item[1], reverse=True))
 
         lista_epochs.append((gen, diversidad_pokemons, frecuencia_pokemons))
-        lista_teams.append((gen, best_team(aptitudes)))
+        lista_teams.append((gen, ordenar_aptitudes(aptitudes)))
 
     return nueva_poblacion, lista_epochs, lista_teams
         
-def best_team(aptitudes):
+def ordenar_aptitudes(aptitudes: list[tuple[int, object]]) -> object:
     """
     Ordena los equipos por aptitud de mayor a menor.
     Args:
         aptitudes: lista de tuplas que contiene la aptitud del equipo y el nombre, para cada equipo.
+    Returns:
+        list: Lista de equipos ordenados por aptitud.
     """
     aptitudes_ord = sorted(aptitudes, key=lambda item: item[0], reverse = True)
     return aptitudes_ord
