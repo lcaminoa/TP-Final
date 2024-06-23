@@ -255,7 +255,7 @@ def algoritmo_genetico(cant_equipos: int, cant_adversarios: int, cant_generacion
     lista_epochs = []
     lista_teams = []
 
-    for gen in tqdm(range(cant_generaciones), desc="Generaciones", unit="gen", colour="blue"):
+    for gen in tqdm(range(cant_generaciones), desc="Generaciones", unit="gen", colour="MAGENTA"):
         adversarios = poblacion(cant_adversarios)
         aptitudes = evaluar_aptitud(nueva_poblacion, adversarios, effectiveness)
         seleccionados = seleccion_proporcional(aptitudes, cant_adversarios)
@@ -349,7 +349,7 @@ def graph_distribution_last_epoch() -> None:
 
     # Leer los datos desde el archivo CSV sin encabezado y asignar los nombres de las columnas
     df = pd.read_csv("best_teams.csv", header=None, names=columns)
-
+    
     # Encontrar la última epoch
     last_epoch = df['epoch'].max()
 
@@ -372,22 +372,35 @@ def graph_distribution_last_epoch() -> None:
     plt.show()
 
 def main():
-    cant_equipos = 10
-    cant_adversarios = 100
-    cant_generaciones = 10
+    # cant_equipos = 10
+    # cant_adversarios = 100
+    # cant_generaciones = 10
 
-    inicio = time.time()
+    # inicio = time.time()
 
-    ult_gen, lista_epochs, lista_teams = algoritmo_genetico(cant_equipos,cant_adversarios,cant_generaciones)
-    csv_epochs(lista_epochs)
-    csv_best_team(lista_teams)
+    # ult_gen, lista_epochs, lista_teams = algoritmo_genetico(cant_equipos,cant_adversarios,cant_generaciones)
+    # csv_epochs(lista_epochs)
+    # csv_best_team(lista_teams)
 
-    fin = time.time()
+    # fin = time.time()
     print(f"La función tardó {fin - inicio} segundos en ejecutarse.")
-
-    grafico_epochs()
-    grafico_aptitud()
-    graph_distribution_last_epoch()
+    k = "1"
+    while k != "0":
+        print("seleccione grafico a visualizar:")
+        print("1-grafico_epochs")
+        print("2-grafico_aptitud")
+        print("3-graph_distribution_last_epoch")
+        print("0-exit")
+        k = input(">")
+        if k == "1":
+            grafico_epochs()
+        elif k == "2":
+            grafico_aptitud()
+        elif k == "3":
+            graph_distribution_last_epoch()
+        elif k == "0":
+            break
 
 if __name__ == "__main__":
     main()
+    
