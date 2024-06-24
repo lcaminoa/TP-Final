@@ -4,6 +4,8 @@ from utils.combat import __faint_change__
 from funcs import definir_moves
 import pygame
 import sys
+import time
+
 
 def crear_equipo_personalizado(nombre_equipo:str, pokedex_nums:list[int]) -> object:
     """
@@ -90,7 +92,7 @@ def simulacion_pelea(team1: Team, team2: Team, effectiveness: dict[str, dict[str
         screen.blit(pygame.image.load(f"data/imgs/{str(str(team1.get_current_pokemon().pokedex_number).zfill(3)).zfill(3)}.png"), pokemon_position_1)#pokemon 1
         screen.blit(pygame.image.load(f"data/imgs/{str(team2.get_current_pokemon().pokedex_number).zfill(3)}.png"), pokemon_position_2)#pokemon 2
         pygame.display.update()
-        pygame.time.wait(1000)
+        time.sleep(1)
         if action_1 == 'attack':
             print(f"El {team1.get_current_pokemon().name} de {team1.name} ataca al {team2.get_current_pokemon().name} de {team2.name}, utilizando {target_1.name} y generando {target_1.get_damage(team1.get_current_pokemon(), team2.get_current_pokemon(), effectiveness):.2f} de daño.")
             print(f"Vida de {team2.get_current_pokemon().name}: {team2.get_current_pokemon().current_hp:.2f} HP")
@@ -100,7 +102,7 @@ def simulacion_pelea(team1: Team, team2: Team, effectiveness: dict[str, dict[str
             screen.blit(pygame.image.load(f"data/imgs/{str(team1.get_current_pokemon().pokedex_number).zfill(3)}.png"), pokemon_position_1)#pokemon 1
             screen.blit(pygame.image.load(f"data/imgs/{str(team2.get_current_pokemon().pokedex_number).zfill(3)}.png"), pokemon_position_2)#pokemon 2
             pygame.display.update()
-            pygame.time.wait(1000)
+            time.sleep(1)
             
         else:
             print(f"{team1.name} salta el turno")
@@ -116,7 +118,7 @@ def simulacion_pelea(team1: Team, team2: Team, effectiveness: dict[str, dict[str
             screen.blit(pygame.image.load(f"data/imgs/{str(team1.get_current_pokemon().pokedex_number).zfill(3)}.png"), pokemon_position_1)#pokemon 1
             screen.blit(pygame.image.load(f"data/imgs/{str(team2.get_current_pokemon().pokedex_number).zfill(3)}.png"), pokemon_position_2)#pokemon 2
             pygame.display.update()
-            pygame.time.wait(1000)
+            time.sleep(1)
 
         else:
             print(f"{team2.name} salta el turno\n")
@@ -165,6 +167,8 @@ def simulacion_pelea(team1: Team, team2: Team, effectiveness: dict[str, dict[str
                         pygame.display.update()
                 else:
                     print(f"El equipo {team2.name} ganó la batalla.")
+                    time.sleep(1)
+                    sys.exit()
 
             else:
                 contador_muertes_team2 -= 1
@@ -187,6 +191,8 @@ def simulacion_pelea(team1: Team, team2: Team, effectiveness: dict[str, dict[str
                         pygame.display.update()
                 else:
                     print(f"El equipo {team1.name} ganó la batalla.")
+                    time.sleep(1)
+                    sys.exit()
 
         else:
             if action_2 == 'attack' and target_2 is None:
@@ -198,20 +204,25 @@ def simulacion_pelea(team1: Team, team2: Team, effectiveness: dict[str, dict[str
                     contador_muertes_team1 -= 1
                     print(f"Fue derrotado el {team1.get_current_pokemon().name} de {team1.name}.")
                     print(f"Quedan {contador_muertes_team1} pokemones en el equipo {team1.name}.")
-                    if contador_muertes_team2 > 0:
-                        print(f"El equipo {team1.name} ganó la batalla.")
+                    if contador_muertes_team2  == 0:
+                        print(f"El equipo {team1.name} ganó la batalla. 1")
                         team2_old_pokemon = team2.get_current_pokemon()
                         __faint_change__(team1, team2, effectiveness)
+                        time.sleep(1)
+                        sys.exit()
+
                     
                 else:
                     contador_muertes_team2 -= 1
                     print(f"Fue derrotado el {team2.get_current_pokemon().name} de {team2.name}.")
                     print(f"Quedan {contador_muertes_team2} pokemones en el equipo {team2.name}.")
-                    if contador_muertes_team1 > 0:
-                        print(f"El equipo {team2.name} ganó la batalla.")
+                    if contador_muertes_team1 == 0:
+                        print(f"El equipo {team2.name} ganó la batalla. 2")
                         team1_old_pokemon = team1.get_current_pokemon()
                         __faint_change__(team1, team2, effectiveness)
-        pygame.time.wait(2000)
+                        time.sleep(1)
+                        sys.exit()
+        time.sleep(1)
                     
         turn += 1
     pygame.quit()

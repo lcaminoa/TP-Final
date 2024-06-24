@@ -63,7 +63,7 @@ def main():
             print("0-exit")
             k = input(">")
 
-            mi_equipo = crear_equipo_personalizado("Alvi y Lauti", [150, 151, 386, 384, 385, 6]) 
+            mi_equipo = crear_equipo_personalizado("Alvi y Lauti", [1, 151, 386, 384, 385, 6]) 
 
             if k == "1":
                 elite_four_member_1 = crear_equipo_personalizado("Will", [437, 124, 326, 80, 282, 178]) # Bronzong, Jynx, Grumpig, Slowbro, Gardevoir, Xatu
