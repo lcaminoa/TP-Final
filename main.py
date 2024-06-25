@@ -19,7 +19,7 @@ def main():
     csv_best_team(lista_teams)
 
     mejor_equipo_ult_gen = lista_teams[-1][1][0][1] # Ultima generacion, mejor equipo
-
+    mejor_equipo_ult_gen.name = "Best team"
     fin = time.time()
     print(f"La función tardó {fin - inicio} segundos en ejecutarse.")
     k = ""
@@ -88,6 +88,8 @@ def main():
         elif k!= "1" and k!= "2" and k!= "0":
             print("\nopcion no valida\n")
 
+        for pokemon in mejor_equipo_ult_gen.pokemons:
+            pokemon.current_hp = pokemon.max_xp
 if __name__ == "__main__":
     main()
     
