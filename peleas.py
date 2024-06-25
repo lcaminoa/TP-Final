@@ -49,7 +49,6 @@ def wait():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-        for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 flag = False
 
@@ -98,7 +97,7 @@ def show_action(screen, action_1, target_1, first, second, effectiveness,old_pok
     else:
         return
         
-def simulacion_pelea(team1: Team, team2: Team, effectiveness: dict[str, dict[str, float]]) -> Team:
+def simulacion_pelea(team1: Team, team2: Team, effectiveness: dict[str, dict[str, float]]):
     """
     Simula una pelea entre dos equiós. La pelea finaliza cuando todos los pokemones de un equipo han sido derrotados.
 
@@ -217,6 +216,7 @@ def simulacion_pelea(team1: Team, team2: Team, effectiveness: dict[str, dict[str
         # If any of the pokemons fainted, the turn ends, and both have the chance to switch
         if team1.get_current_pokemon().current_hp == 0 or team2.get_current_pokemon().current_hp == 0:
             #faint_change 
+
             if team1.get_current_pokemon().current_hp == 0:
                 fainted_team = team1
                 contador_muertes_team1 -= 1
@@ -391,22 +391,9 @@ def simulacion_pelea(team1: Team, team2: Team, effectiveness: dict[str, dict[str
 
         turn += 1
         clock.tick(30)
-    print("Gano team1") if any(pokemon.current_hp > 0 for pokemon in team1.pokemons) else print("Gano team2")
+    print("salgo")
+    show_text(screen,f"Gano {team1.name}" , (40,510), font, (255,255,255)) if any(pokemon.current_hp > 0 for pokemon in team1.pokemons) else show_text(screen,f"Gano {team2.name}" , (40,510), font, (255,255,255))
+    print("a")
+    wait()
     pygame.quit()
 
-
-
-
-
-
-
-
-
-
-
-# # Dibuja la imagen en la ventana
-# screen.blit(background, (0, 0))
-
-#     # Dibuja la imagen adicional en la ventana
-# screen.blit(pokemon_image_1, pokemon_position_1)
-# screen.blit(pokemon_image_2, pokemon_position_2)
