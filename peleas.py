@@ -74,6 +74,21 @@ def barra_vida(screen:pygame.Surface, n_team:int, current_hp:int, max_hp:int)->N
     else:
         pygame.draw.rect(screen, RED, (barra_x, barra_y, tamaño_barra, 12))#barra 
 
+def show_action(action_1, target_1, first, second, effectiveness,old_pokemon, old_hp):
+
+    #print action
+    if action_1 == 'attack':
+        print(f"{first.get_current_pokemon().name} utiliza {target_1.name}")
+        print(f"Causo {target_1.get_damage(first.get_current_pokemon(), second.get_current_pokemon(), effectiveness):.2f} de daño")
+    elif action_1 == 'switch':
+        if old_hp == 0:
+            print(f"{old_pokemon.name} fue derrotado")
+            print(f"Entra {first.get_current_pokemon().name}")
+        else:
+            print(f"{first.name} cambia a {old_pokemon.name}")
+            print(f"Entra {first.get_current_pokemon().name}")
+    else:
+        print(f"{first.name} salta el turno")
 
 
 def simulacion_pelea(team1: Team, team2: Team, effectiveness: dict[str, dict[str, float]]) -> Team:
@@ -128,11 +143,13 @@ def simulacion_pelea(team1: Team, team2: Team, effectiveness: dict[str, dict[str
     name_position_2= (55,50)
     hp_position_1= (495,375)
     hp_position_2= (55,110)
+
     while any(pokemon.current_hp > 0 for pokemon in team1.pokemons) and any(pokemon.current_hp > 0 for pokemon in team2.pokemons): 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
-        action_1, target_1 = team1.get_next_action(team2, effectiveness)
+
+        #muestra todo
         screen.blit(background, (0, 0))#fondo
         barra_vida(screen, 1, team1.get_current_pokemon().current_hp, team1.get_current_pokemon().max_hp)#barra 1
         barra_vida(screen, 2, team2.get_current_pokemon().current_hp, team2.get_current_pokemon().max_hp)#barra 2
@@ -143,48 +160,11 @@ def simulacion_pelea(team1: Team, team2: Team, effectiveness: dict[str, dict[str
         screen.blit(pygame.image.load(f"data/imgs/{str(str(team1.get_current_pokemon().pokedex_number).zfill(3)).zfill(3)}.png"), pokemon_position_1)#pokemon 1
         screen.blit(pygame.image.load(f"data/imgs/{str(team2.get_current_pokemon().pokedex_number).zfill(3)}.png"), pokemon_position_2)#pokemon 2
         pygame.display.update()
+        print("1")
         wait()
-        if action_1 == 'attack':
-            print(f"El {team1.get_current_pokemon().name} de {team1.name} ataca al {team2.get_current_pokemon().name} de {team2.name}, utilizando {target_1.name} y generando {target_1.get_damage(team1.get_current_pokemon(), team2.get_current_pokemon(), effectiveness):.2f} de daño.")
-            print(f"Vida de {team2.get_current_pokemon().name}: {team2.get_current_pokemon().current_hp:.2f} HP")
-        elif action_1 == 'switch':
-            print(f"{team1.name} cambia a {team1.pokemons[target_1].name} por {team1.get_current_pokemon().name}")
-            screen.blit(background, (0, 0))#fondo
-            barra_vida(screen, 1, team1.get_current_pokemon().current_hp, team1.get_current_pokemon().max_hp)#barra 1
-            barra_vida(screen, 2, team2.get_current_pokemon().current_hp, team2.get_current_pokemon().max_hp)#barra 2
-            show_text(screen, f"{team1.get_current_pokemon().name}", name_position_1, font, BLACK)#nombre1
-            show_text(screen, f"{team2.get_current_pokemon().name}", name_position_2, font, BLACK)#nombre2
-            show_text(screen, f"{team1.get_current_pokemon().current_hp:.0f}/{team1.get_current_pokemon().max_hp:.0f} HP", hp_position_1, font, BLACK)#hp1
-            show_text(screen, f"{team2.get_current_pokemon().current_hp:.0f}/{team2.get_current_pokemon().max_hp:.0f} HP", hp_position_2, font, BLACK)#hp2
-            screen.blit(pygame.image.load(f"data/imgs/{str(team1.get_current_pokemon().pokedex_number).zfill(3)}.png"), pokemon_position_1)#pokemon 1
-            screen.blit(pygame.image.load(f"data/imgs/{str(team2.get_current_pokemon().pokedex_number).zfill(3)}.png"), pokemon_position_2)#pokemon 2
-            pygame.display.update()
-            wait()
-            
-        else:
-            print(f"{team1.name} salta el turno")
 
+        action_1, target_1 = team1.get_next_action(team2, effectiveness)
         action_2, target_2 = team2.get_next_action(team1, effectiveness)
-
-        if action_2 == 'attack':
-            print(f"El {team2.get_current_pokemon().name} de {team2.name} ataca al {team1.get_current_pokemon().name} de {team1.name}, utilizando {target_2.name} y generando {target_2.get_damage(team2.get_current_pokemon(), team1.get_current_pokemon(), effectiveness):.2f} de daño.")
-            print(f"Vida de {team1.get_current_pokemon().name}: {team1.get_current_pokemon().current_hp:.2f} HP\n")
-        elif action_2 == 'switch':
-            print(f"{team2.name} cambia a {team2.pokemons[target_2].name} por {team2.get_current_pokemon().name}\n")
-            screen.blit(background, (0, 0))#fondo
-            barra_vida(screen, 1, team1.get_current_pokemon().current_hp, team1.get_current_pokemon().max_hp)#barra 1
-            barra_vida(screen, 2, team2.get_current_pokemon().current_hp, team2.get_current_pokemon().max_hp)#barra 2
-            show_text(screen, f"{team1.get_current_pokemon().name}", name_position_1, font, BLACK)#nombre1
-            show_text(screen, f"{team2.get_current_pokemon().name}", name_position_2, font, BLACK)#nombre2
-            show_text(screen, f"{team1.get_current_pokemon().current_hp:.0f}/{team1.get_current_pokemon().max_hp:.0f} HP", hp_position_1, font, BLACK)#hp1
-            show_text(screen, f"{team2.get_current_pokemon().current_hp:.0f}/{team2.get_current_pokemon().max_hp:.0f} HP", hp_position_2, font, BLACK)#hp2
-            screen.blit(pygame.image.load(f"data/imgs/{str(team1.get_current_pokemon().pokedex_number).zfill(3)}.png"), pokemon_position_1)#pokemon 1
-            screen.blit(pygame.image.load(f"data/imgs/{str(team2.get_current_pokemon().pokedex_number).zfill(3)}.png"), pokemon_position_2)#pokemon 2
-            pygame.display.update()
-            wait()
-
-        else:
-            print(f"{team2.name} salta el turno\n")
         
         # Switching always happens first
         if action_1 == 'switch':
@@ -202,120 +182,148 @@ def simulacion_pelea(team1: Team, team2: Team, effectiveness: dict[str, dict[str
             first = team2
             second = team1
             action_1, target_1, action_2, target_2 = action_2, target_2, action_1, target_1
-
+        old_pokemon = first.get_current_pokemon()
+        old_hp = first.get_current_pokemon().current_hp
         first.do_action(action_1, target_1, second, effectiveness)
-        
+        show_action(action_1,target_1,first,second,effectiveness,old_pokemon,old_hp)
+
+        #actualiza todo
+        screen.blit(background, (0, 0))
+        barra_vida(screen, 1, team1.get_current_pokemon().current_hp, team1.get_current_pokemon().max_hp)#barra 1
+        barra_vida(screen, 2, team2.get_current_pokemon().current_hp, team2.get_current_pokemon().max_hp)#barra 2
+        show_text(screen, f"{team1.get_current_pokemon().name}", name_position_1, font, BLACK)#nombre1
+        show_text(screen, f"{team2.get_current_pokemon().name}", name_position_2, font, BLACK)#nombre2
+        show_text(screen, f"{team1.get_current_pokemon().current_hp:.0f}/{team1.get_current_pokemon().max_hp:.0f} HP", hp_position_1, font, BLACK)#hp1
+        show_text(screen, f"{team2.get_current_pokemon().current_hp:.0f}/{team2.get_current_pokemon().max_hp:.0f} HP", hp_position_2, font, BLACK)#hp2
+        screen.blit(pygame.image.load(f"data/imgs/{str(str(team1.get_current_pokemon().pokedex_number).zfill(3)).zfill(3)}.png"), pokemon_position_1)#pokemon 1
+        screen.blit(pygame.image.load(f"data/imgs/{str(team2.get_current_pokemon().pokedex_number).zfill(3)}.png"), pokemon_position_2)#pokemon 2
+        pygame.display.update()
+        print("2")
+        wait()
+
+
         # If any of the pokemons fainted, the turn ends, and both have the chance to switch
-        
         if team1.get_current_pokemon().current_hp == 0 or team2.get_current_pokemon().current_hp == 0:
+            #faint_change 
             if team1.get_current_pokemon().current_hp == 0:
-                contador_muertes_team1 -= 1
-                print(f"Fue derrotado el {team1.get_current_pokemon().name} de {team1.name}.")
-                print(f"Quedan {contador_muertes_team1} pokemones en el equipo {team1.name}." if contador_muertes_team1 != 1 else f"Queda {contador_muertes_team1} pokemon en el equipo {team1.name}.")
-                team2_old_pokemon = team2.get_current_pokemon()
-                __faint_change__(team1, team2, effectiveness)
-                if contador_muertes_team1 > 0:
-                    if team2.get_current_pokemon() != team2_old_pokemon:
-                        print(f"Entra el {team1.get_current_pokemon().name} de {team1.name} y {team2.name} cambia a {team1_old_pokemon.name} por {team2.get_current_pokemon().name}\n")
-                        screen.blit(background, (0, 0))#fondo
-                        barra_vida(screen, 1, team1.get_current_pokemon().current_hp, team1.get_current_pokemon().max_hp)#barra 1
-                        barra_vida(screen, 2, team2.get_current_pokemon().current_hp, team2.get_current_pokemon().max_hp)#barra 2
-                        show_text(screen, f"{team1.get_current_pokemon().name}", 500, 500, font, BLACK)#nombre1
-                        show_text(screen, f"{team2.get_current_pokemon().name}", 50, 50, font, BLACK)#nombre2
-                        show_text(screen, f"{team1.get_current_pokemon().current_hp:.0f}/{team1.get_current_pokemon().max_hp:.0f} HP", hp_position_1, font, BLACK)#hp1
-                        show_text(screen, f"{team2.get_current_pokemon().current_hp:.0f}/{team2.get_current_pokemon().max_hp:.0f} HP", hp_position_2, font, BLACK)#hp2
-                        screen.blit(pygame.image.load(f"data/imgs/{str(str(team1.get_current_pokemon().pokedex_number).zfill(3)).zfill(3)}.png"), pokemon_position_1)#pokemon 1
-                        screen.blit(pygame.image.load(f"data/imgs/{str(team2.get_current_pokemon().pokedex_number).zfill(3)}.png"), pokemon_position_2)#pokemon 2
-                        pygame.display.update()
-                        wait()
-
-                    else:
-                        print(f"Entra el {team1.get_current_pokemon().name} de {team1.name} y continua el {team2.get_current_pokemon().name} de {team2.name}\n")
-                        screen.blit(background, (0, 0))#fondo
-                        barra_vida(screen, 1, team1.get_current_pokemon().current_hp, team1.get_current_pokemon().max_hp)#barra 1
-                        barra_vida(screen, 2, team2.get_current_pokemon().current_hp, team2.get_current_pokemon().max_hp)#barra 2
-                        show_text(screen, f"{team1.get_current_pokemon().name}", name_position_1, font, BLACK)#nombre1
-                        show_text(screen, f"{team2.get_current_pokemon().name}", name_position_2, font, BLACK)#nombre2
-                        show_text(screen, f"{team1.get_current_pokemon().current_hp:.0f}/{team1.get_current_pokemon().max_hp:.0f} HP", hp_position_1, font, BLACK)#hp1
-                        show_text(screen, f"{team2.get_current_pokemon().current_hp:.0f}/{team2.get_current_pokemon().max_hp:.0f} HP", hp_position_2, font, BLACK)#hp2
-                        screen.blit(pygame.image.load(f"data/imgs/{str(str(team1.get_current_pokemon().pokedex_number).zfill(3)).zfill(3)}.png"), pokemon_position_1)#pokemon 1
-                        screen.blit(pygame.image.load(f"data/imgs/{str(team2.get_current_pokemon().pokedex_number).zfill(3)}.png"), pokemon_position_2)#pokemon 2
-                        pygame.display.update()
-                        wait()
-                else:
-                    print(f"El equipo {team2.name} ganó la batalla.")
-                    wait()
-                    sys.exit()
-
+                fainted_team = team1
+                other_team = team2
             else:
-                contador_muertes_team2 -= 1
-                print(f"Fue derrotado el {team2.get_current_pokemon().name} de {team2.name}.")
-                print(f"Quedan {contador_muertes_team2} pokemones en el equipo {team2.name}." if contador_muertes_team2 != 1 else f"Queda {contador_muertes_team2} pokemon en el equipo {team2.name}.")
-                team1_old_pokemon = team1.get_current_pokemon()
-                __faint_change__(team1, team2, effectiveness)
-                if contador_muertes_team2 > 0:
-                    if team1.get_current_pokemon() != team1_old_pokemon:
-                        print(f"Entra el {team2.get_current_pokemon().name} de {team2.name} y {team1.name} cambia a {team2_old_pokemon.name} por {team1.get_current_pokemon().name}\n")
-                        screen.blit(background, (0, 0))#fondo
-                        barra_vida(screen, 1, team1.get_current_pokemon().current_hp, team1.get_current_pokemon().max_hp)#barra 1
-                        barra_vida(screen, 2, team2.get_current_pokemon().current_hp, team2.get_current_pokemon().max_hp)#barra 2
-                        show_text(screen, f"{team1.get_current_pokemon().name}", name_position_1, font, BLACK)#nombre1
-                        show_text(screen, f"{team2.get_current_pokemon().name}", name_position_2, font, BLACK)#nombre2
-                        show_text(screen, f"{team1.get_current_pokemon().current_hp:.0f}/{team1.get_current_pokemon().max_hp:.0f} HP", hp_position_1, font, BLACK)#hp1
-                        show_text(screen, f"{team2.get_current_pokemon().current_hp:.0f}/{team2.get_current_pokemon().max_hp:.0f} HP", hp_position_2, font, BLACK)#hp2
-                        screen.blit(pygame.image.load(f"data/imgs/{str(team1.get_current_pokemon().pokedex_number).zfill(3)}.png"), pokemon_position_1)#pokemon 1
-                        screen.blit(pygame.image.load(f"data/imgs/{str(team2.get_current_pokemon().pokedex_number).zfill(3)}.png"), pokemon_position_2)#pokemon 2
-                        pygame.display.update()
-                        wait()
-                    else:
-                        print(f"Entra el {team2.get_current_pokemon().name} de {team2.name} y continua el {team1.get_current_pokemon().name} de {team1.name}\n")
-                        screen.blit(background, (0, 0))#fondo
-                        barra_vida(screen, 1, team1.get_current_pokemon().current_hp, team1.get_current_pokemon().max_hp)#barra 1
-                        barra_vida(screen, 2, team2.get_current_pokemon().current_hp, team2.get_current_pokemon().max_hp)#barra 2
-                        show_text(screen, f"{team1.get_current_pokemon().name}", name_position_1, font, BLACK)#nombre1
-                        show_text(screen, f"{team2.get_current_pokemon().name}", name_position_2, font, BLACK)#nombre2
-                        show_text(screen, f"{team1.get_current_pokemon().current_hp:.0f}/{team1.get_current_pokemon().max_hp:.0f} HP", hp_position_1, font, BLACK)#hp1
-                        show_text(screen, f"{team2.get_current_pokemon().current_hp:.0f}/{team2.get_current_pokemon().max_hp:.0f} HP", hp_position_2, font, BLACK)#hp2
-                        screen.blit(pygame.image.load(f"data/imgs/{str(team1.get_current_pokemon().pokedex_number).zfill(3)}.png"), pokemon_position_1)#pokemon 1
-                        screen.blit(pygame.image.load(f"data/imgs/{str(team2.get_current_pokemon().pokedex_number).zfill(3)}.png"), pokemon_position_2)#pokemon 2
-                        pygame.display.update()
-                        wait()
-                else:
-                    print(f"El equipo {team1.name} ganó la batalla.")
-                    wait()
-                    sys.exit()
+                fainted_team = team2
+                other_team = team1
+            action_1, target_1 = fainted_team.get_next_action(other_team, effectiveness)
+            old_pokemon = fainted_team.get_current_pokemon()
+            old_hp = fainted_team.get_current_pokemon().current_hp
+            fainted_team.do_action(action_1, target_1, other_team, effectiveness)
+            show_action(action_1,target_1,fainted_team,other_team,effectiveness,old_pokemon,old_hp)
+            action_2, target_2 = other_team.get_next_action(fainted_team, effectiveness)
 
+            #actualiza todo
+            screen.blit(background, (0, 0))
+            barra_vida(screen, 1, team1.get_current_pokemon().current_hp, team1.get_current_pokemon().max_hp)#barra 1
+            barra_vida(screen, 2, team2.get_current_pokemon().current_hp, team2.get_current_pokemon().max_hp)#barra 2
+            show_text(screen, f"{team1.get_current_pokemon().name}", name_position_1, font, BLACK)#nombre1
+            show_text(screen, f"{team2.get_current_pokemon().name}", name_position_2, font, BLACK)#nombre2
+            show_text(screen, f"{team1.get_current_pokemon().current_hp:.0f}/{team1.get_current_pokemon().max_hp:.0f} HP", hp_position_1, font, BLACK)#hp1
+            show_text(screen, f"{team2.get_current_pokemon().current_hp:.0f}/{team2.get_current_pokemon().max_hp:.0f} HP", hp_position_2, font, BLACK)#hp2
+            screen.blit(pygame.image.load(f"data/imgs/{str(str(team1.get_current_pokemon().pokedex_number).zfill(3)).zfill(3)}.png"), pokemon_position_1)#pokemon 1
+            screen.blit(pygame.image.load(f"data/imgs/{str(team2.get_current_pokemon().pokedex_number).zfill(3)}.png"), pokemon_position_2)#pokemon 2
+            pygame.display.update()
+            print("3")
+            wait()
+
+            if action_2 == 'switch':
+                old_pokemon = other_team.get_current_pokemon()
+                old_hp = other_team.get_current_pokemon().current_hp
+                other_team.do_action(action_2, target_2, fainted_team, effectiveness)
+                show_action(action_2,target_2,other_team,fainted_team,effectiveness,old_pokemon,old_hp)
+
+                #actualiza todo
+                screen.blit(background, (0, 0))
+                barra_vida(screen, 1, team1.get_current_pokemon().current_hp, team1.get_current_pokemon().max_hp)#barra 1
+                barra_vida(screen, 2, team2.get_current_pokemon().current_hp, team2.get_current_pokemon().max_hp)#barra 2
+                show_text(screen, f"{team1.get_current_pokemon().name}", name_position_1, font, BLACK)#nombre1
+                show_text(screen, f"{team2.get_current_pokemon().name}", name_position_2, font, BLACK)#nombre2
+                show_text(screen, f"{team1.get_current_pokemon().current_hp:.0f}/{team1.get_current_pokemon().max_hp:.0f} HP", hp_position_1, font, BLACK)#hp1
+                show_text(screen, f"{team2.get_current_pokemon().current_hp:.0f}/{team2.get_current_pokemon().max_hp:.0f} HP", hp_position_2, font, BLACK)#hp2
+                screen.blit(pygame.image.load(f"data/imgs/{str(str(team1.get_current_pokemon().pokedex_number).zfill(3)).zfill(3)}.png"), pokemon_position_1)#pokemon 1
+                screen.blit(pygame.image.load(f"data/imgs/{str(team2.get_current_pokemon().pokedex_number).zfill(3)}.png"), pokemon_position_2)#pokemon 2
+                pygame.display.update()
+                print("4")
+                wait()
         else:
             if action_2 == 'attack' and target_2 is None:
                 action_2, target_2 = second.get_next_action(first, effectiveness)
+            old_pokemon = second.get_current_pokemon()
+            old_hp = second.get_current_pokemon().current_hp
             second.do_action(action_2, target_2, first, effectiveness)
+            show_action(action_2,target_2,second,first,effectiveness,old_pokemon,old_hp)            
+
+            #actualiza todo
+            screen.blit(background, (0, 0))
+            barra_vida(screen, 1, team1.get_current_pokemon().current_hp, team1.get_current_pokemon().max_hp)#barra 1
+            barra_vida(screen, 2, team2.get_current_pokemon().current_hp, team2.get_current_pokemon().max_hp)#barra 2
+            show_text(screen, f"{team1.get_current_pokemon().name}", name_position_1, font, BLACK)#nombre1
+            show_text(screen, f"{team2.get_current_pokemon().name}", name_position_2, font, BLACK)#nombre2
+            show_text(screen, f"{team1.get_current_pokemon().current_hp:.0f}/{team1.get_current_pokemon().max_hp:.0f} HP", hp_position_1, font, BLACK)#hp1
+            show_text(screen, f"{team2.get_current_pokemon().current_hp:.0f}/{team2.get_current_pokemon().max_hp:.0f} HP", hp_position_2, font, BLACK)#hp2
+            screen.blit(pygame.image.load(f"data/imgs/{str(str(team1.get_current_pokemon().pokedex_number).zfill(3)).zfill(3)}.png"), pokemon_position_1)#pokemon 1
+            screen.blit(pygame.image.load(f"data/imgs/{str(team2.get_current_pokemon().pokedex_number).zfill(3)}.png"), pokemon_position_2)#pokemon 2
+            pygame.display.update()
+            print("5")
+            wait()
 
             if team1.get_current_pokemon().current_hp == 0 or team2.get_current_pokemon().current_hp == 0:
+                __faint_change__(team1, team2, effectiveness)
                 if team1.get_current_pokemon().current_hp == 0:
-                    contador_muertes_team1 -= 1
-                    print(f"Fue derrotado el {team1.get_current_pokemon().name} de {team1.name}.")
-                    print(f"Quedan {contador_muertes_team1} pokemones en el equipo {team1.name}.")
-                    if contador_muertes_team2  == 0:
-                        print(f"El equipo {team1.name} ganó la batalla. 1")
-                        team2_old_pokemon = team2.get_current_pokemon()
-                        __faint_change__(team1, team2, effectiveness)
-                        wait()
-                        sys.exit()
-
-                    
+                    fainted_team = team1
+                    other_team = team2
                 else:
-                    contador_muertes_team2 -= 1
-                    print(f"Fue derrotado el {team2.get_current_pokemon().name} de {team2.name}.")
-                    print(f"Quedan {contador_muertes_team2} pokemones en el equipo {team2.name}.")
-                    if contador_muertes_team1 == 0:
-                        print(f"El equipo {team2.name} ganó la batalla. 2")
-                        team1_old_pokemon = team1.get_current_pokemon()
-                        __faint_change__(team1, team2, effectiveness)
-                        wait()
-                        sys.exit()
-        #wait()
-        clock.tick(30)            
+                    fainted_team = team2
+                    other_team = team1
+                action_1, target_1 = fainted_team.get_next_action(other_team, effectiveness)
+                old_pokemon = fainted_team.get_current_pokemon()
+                old_hp = fainted_team.get_current_pokemon().current_hp
+                fainted_team.do_action(action_1, target_1, other_team, effectiveness)
+                show_action(action_1,target_1,fainted_team,other_team,effectiveness,old_pokemon,old_hp)
+                #actualiza todo
+                screen.blit(background, (0, 0))
+                barra_vida(screen, 1, team1.get_current_pokemon().current_hp, team1.get_current_pokemon().max_hp)#barra 1
+                barra_vida(screen, 2, team2.get_current_pokemon().current_hp, team2.get_current_pokemon().max_hp)#barra 2
+                show_text(screen, f"{team1.get_current_pokemon().name}", name_position_1, font, BLACK)#nombre1
+                show_text(screen, f"{team2.get_current_pokemon().name}", name_position_2, font, BLACK)#nombre2
+                show_text(screen, f"{team1.get_current_pokemon().current_hp:.0f}/{team1.get_current_pokemon().max_hp:.0f} HP", hp_position_1, font, BLACK)#hp1
+                show_text(screen, f"{team2.get_current_pokemon().current_hp:.0f}/{team2.get_current_pokemon().max_hp:.0f} HP", hp_position_2, font, BLACK)#hp2
+                screen.blit(pygame.image.load(f"data/imgs/{str(str(team1.get_current_pokemon().pokedex_number).zfill(3)).zfill(3)}.png"), pokemon_position_1)#pokemon 1
+                screen.blit(pygame.image.load(f"data/imgs/{str(team2.get_current_pokemon().pokedex_number).zfill(3)}.png"), pokemon_position_2)#pokemon 2
+                pygame.display.update()
+                print("6")
+                wait()
+
+                action_2, target_2 = other_team.get_next_action(fainted_team, effectiveness)
+                if action_2 == 'switch':
+                    old_pokemon = other_team.get_current_pokemon()
+                    old_hp = other_team.get_current_pokemon().current_hp
+                    other_team.do_action(action_2, target_2, fainted_team, effectiveness)
+                    show_action(action_2,target_2,other_team,fainted_team,effectiveness,old_pokemon,old_hp)
+                    #actualiza todo
+                    screen.blit(background, (0, 0))
+                    barra_vida(screen, 1, team1.get_current_pokemon().current_hp, team1.get_current_pokemon().max_hp)#barra 1
+                    barra_vida(screen, 2, team2.get_current_pokemon().current_hp, team2.get_current_pokemon().max_hp)#barra 2
+                    show_text(screen, f"{team1.get_current_pokemon().name}", name_position_1, font, BLACK)#nombre1
+                    show_text(screen, f"{team2.get_current_pokemon().name}", name_position_2, font, BLACK)#nombre2
+                    show_text(screen, f"{team1.get_current_pokemon().current_hp:.0f}/{team1.get_current_pokemon().max_hp:.0f} HP", hp_position_1, font, BLACK)#hp1
+                    show_text(screen, f"{team2.get_current_pokemon().current_hp:.0f}/{team2.get_current_pokemon().max_hp:.0f} HP", hp_position_2, font, BLACK)#hp2
+                    screen.blit(pygame.image.load(f"data/imgs/{str(str(team1.get_current_pokemon().pokedex_number).zfill(3)).zfill(3)}.png"), pokemon_position_1)#pokemon 1
+                    screen.blit(pygame.image.load(f"data/imgs/{str(team2.get_current_pokemon().pokedex_number).zfill(3)}.png"), pokemon_position_2)#pokemon 2
+                    pygame.display.update()
+                    print("7")
+                    wait()
+
         turn += 1
+        clock.tick(30)
+
+    print("team1") if any(pokemon.current_hp > 0 for pokemon in team1.pokemons) else print("team2")
     pygame.quit()
 
 
