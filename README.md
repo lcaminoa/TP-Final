@@ -149,7 +149,7 @@ Constructor para inicializar un objeto `Pokemon`.
 | `pokedex_number` | `int` | El número en la pokédex del pokémon. |
 | `name` | `str` | El nombre del pokémon. |
 | `type1` | `str` | El tipo primario del pokémon. |
-| `type2` | `str|None` | El tipo secundario del pokémon. Si el pokémon tiene solo un tipo, debe ser None. |
+| `type2` | `str` |None` | El tipo secundario del pokémon. Si el pokémon tiene solo un tipo, debe ser None. |
 | `hp` | `int` | Los puntos de vida base del pokémon. |
 | `attack` | `int` | El ataque base del pokémon. |
 | `defense` | `int` | La defensa base del pokémon. |
