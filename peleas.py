@@ -94,6 +94,17 @@ def barra_vida(screen:pygame.Surface, n_team:int, current_hp:int, max_hp:int) ->
         pygame.draw.rect(screen, RED, (barra_x, barra_y, tamaño_barra, 12))#barra 
 
 def show_action(screen, action_1, target_1, first, second, effectiveness,old_pokemon, old_hp):
+    """
+    Muestra la acción realizada por un equipo en la simulación de batallas.
+    Args:
+        action_1: Acción realizada por el equipo.
+        target_1: Objetivo de la acción.
+        first: Equipo que realizó la acción.
+        second: Equipo que recibió la acción.
+        effectiveness: Efectividad de los tipos de un pokemon contra otro.
+        old_pokemon: Pokemon que fue cambiado.
+        old_hp: Vida del pokemon que fue cambiado.
+    """
     font_path = "data/Pokemon_GB.ttf"
     font_size = 15
     font = pygame.font.Font(font_path, font_size)
