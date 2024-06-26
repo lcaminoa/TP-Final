@@ -41,11 +41,24 @@ def crear_equipo_personalizado(nombre_equipo:str, pokedex_nums:list[int]) -> obj
             equipo_pokemons.append(pokemon)
     return Team(nombre_equipo, equipo_pokemons)
 
-def show_text(screen, text, xy, font, color):
+def show_text(screen, text, xy, font, color) -> None:
+    """
+    Muestra texto en la pantalla del simulador de batallas.
+    Args:
+        screen: Superficie de la pantalla.
+        text: Texto a mostrar.
+        xy: Coordenadas donde se mostrará el texto.
+        font: Fuente del texto.
+        color: Color del texto.
+    """
     text_surface = font.render(text, True, color)
     screen.blit(text_surface, xy)
 
-def wait():
+def wait() -> None:
+    """
+    Espera a que el usuario presione una tecla para continuar la simulación.
+    Al presionar una tecla se avanza al siguiente moviemiento.
+    """
     flag = True
     while flag:
         for event in pygame.event.get():
@@ -54,7 +67,15 @@ def wait():
             if event.type == pygame.KEYDOWN:
                 flag = False
 
-def barra_vida(screen:pygame.Surface, n_team:int, current_hp:int, max_hp:int)->None:
+def barra_vida(screen:pygame.Surface, n_team:int, current_hp:int, max_hp:int) -> None:
+    """
+    Dibuja la barra de vida de un pokemon en la pantalla.
+    Args:
+        screen: Superficie de la pantalla.
+        n_team: Número del equipo.
+        current_hp: Vida actual del pokemon.
+        max_hp: Vida máxima del pokemon.
+    """
     barra_largo = 178  
     YELLOW = (255,255,0)
     GREEN = (0, 255, 0)
@@ -74,9 +95,18 @@ def barra_vida(screen:pygame.Surface, n_team:int, current_hp:int, max_hp:int)->N
     else:
         pygame.draw.rect(screen, RED, (barra_x, barra_y, tamaño_barra, 12))#barra 
 
-def show_action(action_1, target_1, first, second, effectiveness,old_pokemon, old_hp):
-
-    #print action
+def show_action(action_1, target_1, first, second, effectiveness,old_pokemon, old_hp) -> None:
+    """
+    Muestra la acción realizada por un equipo en la simulación de batallas.
+    Args:
+        action_1: Acción realizada por el equipo.
+        target_1: Objetivo de la acción.
+        first: Equipo que realizó la acción.
+        second: Equipo que recibió la acción.
+        effectiveness: Efectividad de los tipos de un pokemon contra otro.
+        old_pokemon: Pokemon que fue cambiado.
+        old_hp: Vida del pokemon que fue cambiado.
+    """
     if action_1 == 'attack':
         print(f"{first.get_current_pokemon().name} utiliza {target_1.name}")
         print(f"Causo {target_1.get_damage(first.get_current_pokemon(), second.get_current_pokemon(), effectiveness):.2f} de daño")
