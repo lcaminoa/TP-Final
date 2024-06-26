@@ -11,17 +11,17 @@ def main():
 
     efectividades = efectividad()
 
-    inicio = time.time()
+    #inicio = time.time()
 
-    ult_gen, lista_epochs, lista_teams = algoritmo_genetico(cant_equipos,cant_adversarios,cant_generaciones)
+    #ult_gen, lista_epochs, lista_teams = algoritmo_genetico(cant_equipos,cant_adversarios,cant_generaciones)
 
-    csv_epochs(lista_epochs)
-    csv_best_team(lista_teams)
-
-    mejor_equipo_ult_gen = lista_teams[-1][1][0][1] # Ultima generacion, mejor equipo
-
-    fin = time.time()
-    print(f"La función tardó {fin - inicio} segundos en ejecutarse.")
+    #csv_epochs(lista_epochs)
+    #csv_best_team(lista_teams)
+    mejor_equipo_ult_gen = crear_equipo_personalizado("Alvi", [373, 445, 149, 6, 334, 130])
+    #mejor_equipo_ult_gen = lista_teams[-1][1][0][1] # Ultima generacion, mejor equipo
+    #mejor_equipo_ult_gen.name = "Best team"
+    #fin = time.time()
+    #print(f"La función tardó {fin - inicio} segundos en ejecutarse.")
     k = ""
     while k != "0":
         print("\nOpciones:")
@@ -88,6 +88,8 @@ def main():
         elif k!= "1" and k!= "2" and k!= "0":
             print("\nopcion no valida\n")
 
+        for pokemon in mejor_equipo_ult_gen.pokemons:
+            pokemon.current_hp = pokemon.max_hp
 if __name__ == "__main__":
     main()
     
