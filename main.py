@@ -1,4 +1,4 @@
-from graphs import grafico_epochs, grafico_aptitud, graph_distribution_last_epoch, types_distribution_last_epoch
+from graphs import grafico_epochs, grafico_aptitud, graph_distribution_last_epoch, types_distribution_last_epoch, best_team_stats_graph, get_best_team_stats
 from funcs import algoritmo_genetico, efectividad
 from archivos_csv import csv_epochs, csv_best_team
 from peleas import simulacion_pelea,crear_equipo_personalizado
@@ -36,7 +36,8 @@ def main():
             print("2-grafico_aptitud")
             print("3-graph_distribution_last_epoch")
             print("4-types_distribution_last_epoch")
-            print("5-Todos los graficos")
+            print("5-best_team_stats")
+            print("6-todos los graficos")
             print("0-exit")
             k = input(">")
             if k == "1":
@@ -48,10 +49,13 @@ def main():
             elif k == "4":
                 types_distribution_last_epoch(cant_generaciones)
             elif k == "5":
+                best_team_stats_graph(cant_generaciones)
+            elif k == "6":
                 grafico_epochs()
                 grafico_aptitud()
                 graph_distribution_last_epoch()
                 types_distribution_last_epoch(cant_generaciones)
+                best_team_stats_graph(cant_generaciones)
             elif k == "0":
                 break
             else:
