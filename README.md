@@ -482,14 +482,11 @@ Ordena los equipos por aptitud de mayor a menor.
 * `list`: Lista de equipos ordenados por aptitud.
 
 ## graphs.py
+Contiene las funciones necesarias para generar los gráficos de salida.
 
 ### Funciones
 
 ---
-
-### graphs.py
-
-Contiene las funciones necesarias para generar los gráficos de salida.
 
 ### `grafico_aptitud() -> None`
 
@@ -503,6 +500,8 @@ Grafica la aptitud promedio por época.
 
 * `None`
 
+---
+
 ### `grafico_epochs() -> None`
 
 Crea un gráfico de la diversidad de pokémons por cada epoch.
@@ -514,6 +513,8 @@ Crea un gráfico de la diversidad de pokémons por cada epoch.
 #### Returns:
 
 * `None`
+
+---
 
 ### `graph_distribution_last_epoch() -> None`
 
@@ -527,6 +528,8 @@ Crea un gráfico de barras que muestra la distribución de los Pokémon en los e
 
 * `None`
 
+---
+
 ### `get_types(pokemon: str) -> list[str]`
 
 Devuelve los tipos de un Pokémon.
@@ -539,6 +542,8 @@ Devuelve los tipos de un Pokémon.
 
 * `list[str]`: Lista con los tipos del Pokémon.
 
+---
+
 ### `types_distribution_last_epoch(cant_generaciones: int) -> None`
 
 Crea un gráfico de barras que muestra la distribución de los tipos de Pokémon en la última época.
@@ -550,6 +555,77 @@ Crea un gráfico de barras que muestra la distribución de los tipos de Pokémon
 #### Returns:
 
 * `None`
+
+## peleas.py
+
+Contiene las funciones necesarias para simular las peleas entre equipos de pokémon.
+
+### Funciones
+
+---
+
+### `crear_equipo_personalizado(nombre_equipo: str, pokedex_nums: list[int]) -> object`
+
+Crea un equipo personalizado de Pokémon a partir de una lista de números de la Pokédex.
+
+**Parámetros:**
+- `nombre_equipo` (str): Nombre del equipo.
+- `pokedex_nums` (list[int]): Lista de números de la Pokédex de los Pokémon que formarán parte del equipo.
+
+**Retorna:**
+- `object`: Objeto `Team` con los Pokémon seleccionados.
+
+### `show_text(screen, text, xy, font, color) -> None`
+
+Muestra texto en la pantalla del simulador de batallas.
+
+**Parámetros:**
+- `screen`: Superficie de la pantalla.
+- `text`: Texto a mostrar.
+- `xy`: Coordenadas donde se mostrará el texto.
+- `font`: Fuente del texto.
+- `color`: Color del texto.
+
+### `wait() -> None`
+
+Espera a que el usuario presione una tecla para continuar la simulación. Al presionar una tecla se avanza al siguiente movimiento.
+
+### `barra_vida(screen: pygame.Surface, n_team: int, current_hp: int, max_hp: int) -> None`
+
+Dibuja la barra de vida de un Pokémon en la pantalla.
+
+**Parámetros:**
+- `screen`: Superficie de la pantalla.
+- `n_team`: Número del equipo.
+- `current_hp`: Vida actual del Pokémon.
+- `max_hp`: Vida máxima del Pokémon.
+
+### `show_action(screen, action_1, target_1, first, second, effectiveness, old_pokemon, old_hp, contMuertes1, contMuertes2)`
+
+Muestra la acción realizada por un equipo en la simulación de batallas.
+
+**Parámetros:**
+- `action_1`: Acción realizada por el equipo.
+- `target_1`: Objetivo de la acción.
+- `first`: Equipo que realizó la acción.
+- `second`: Equipo que recibió la acción.
+- `effectiveness`: Efectividad de los tipos de un Pokémon contra otro.
+- `old_pokemon`: Pokémon que fue cambiado.
+- `old_hp`: Vida del Pokémon que fue cambiado.
+- `contMuertes1`: Cantidad de Pokémon derrotados del equipo 1.
+- `contMuertes2`: Cantidad de Pokémon derrotados del equipo 2.
+
+### `simulacion_pelea(team1: Team, team2: Team, effectiveness: dict[str, dict[str, float]]) -> Team`
+
+Simula una pelea entre dos equipos. La pelea finaliza cuando todos los Pokémon de un equipo han sido derrotados.
+
+**Parámetros:**
+- `team1` (Team): Uno de los equipos.
+- `team2` (Team): El otro equipo.
+- `effectiveness` (dict[str, dict[str, float]]): Un diccionario que contiene la efectividad de los tipos de un Pokémon contra otro.
+
+**Retorna:**
+- `Team`: El equipo ganador.
 
 ## main.py
 Archivo principal para ejecutar el programa.
