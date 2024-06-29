@@ -556,6 +556,25 @@ Crea un gráfico de barras que muestra la distribución de los tipos de Pokémon
 
 * `None`
 
+---
+
+### `get_best_team_stats(pokemon: str) -> dict`
+
+Esta función devuelve las estadísticas base de un Pokémon.
+
+#### Args:
+- `pokemon` (str): Nombre del Pokémon.
+
+#### Returns:
+- `dict`: Diccionario con las estadísticas base del Pokémon.
+
+### `best_team_stats_graph`
+
+Esta función grafica las estadísticas del mejor equipo de Pokémon de la última generación.
+
+#### Args:
+- `cant_generaciones` (int): Número de generaciones a considerar.
+
 ## peleas.py
 
 Contiene las funciones necesarias para simular las peleas entre equipos de pokémon.

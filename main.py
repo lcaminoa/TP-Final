@@ -5,9 +5,9 @@ from peleas import simulacion_pelea,crear_equipo_personalizado
 import time
 
 def main():
-    cant_equipos = 10
-    cant_adversarios = 100
-    cant_generaciones = 10
+    cant_equipos = 50
+    cant_adversarios = 400
+    cant_generaciones = 50
 
     efectividades = efectividad()
 
