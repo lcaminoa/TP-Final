@@ -93,7 +93,7 @@ def barra_vida(screen:pygame.Surface, n_team:int, current_hp:int, max_hp:int) ->
     else:
         pygame.draw.rect(screen, RED, (barra_x, barra_y, tamaño_barra, 12))#barra 
 
-def show_action(screen, action_1, target_1, first, second, effectiveness,old_pokemon, old_hp):
+def show_action(screen, action_1, target_1, first, second, effectiveness,old_pokemon, old_hp,contMuertes1,contMuertes2):
     """
     Muestra la acción realizada por un equipo en la simulación de batallas.
     Args:
@@ -104,6 +104,8 @@ def show_action(screen, action_1, target_1, first, second, effectiveness,old_pok
         effectiveness: Efectividad de los tipos de un pokemon contra otro.
         old_pokemon: Pokemon que fue cambiado.
         old_hp: Vida del pokemon que fue cambiado.
+        contMuertes1: cantidad de pokemons derrotados team 1
+        contMuertes2: cantidad de pokemons derrotados team 2
     """
     font_path = "data/Pokemon_GB.ttf"
     font_size = 15
@@ -113,6 +115,10 @@ def show_action(screen, action_1, target_1, first, second, effectiveness,old_pok
     interlineado = 30
     text_position_1 = (x,y)
     text_position_2 = (x,y+interlineado)
+    if contMuertes1 == 0:
+        show_text(screen,"Team 1 fue derrotado" , text_position_1, font, COLOUR)
+    elif contMuertes2 == 0:
+        show_text(screen,"Team 2 fue derrotado" , text_position_1, font, COLOUR)
     if any(pokemon.current_hp > 0 for pokemon in first.pokemons):
         if action_1 == 'attack':
             show_text(screen,f"{first.get_current_pokemon().name} utiliza {target_1.name}" , text_position_1, font, COLOUR)
@@ -230,7 +236,7 @@ def simulacion_pelea(team1: Team, team2: Team, effectiveness: dict[str, dict[str
         
         #actualiza todo
         screen.blit(background, (0, 0))
-        show_action(screen, action_1,target_1,first,second,effectiveness,old_pokemon,old_hp)
+        show_action(screen, action_1,target_1,first,second,effectiveness,old_pokemon,old_hp,contador_muertes_team1,contador_muertes_team2)
         barra_vida(screen, 1, team1.get_current_pokemon().current_hp, team1.get_current_pokemon().max_hp)#barra 1
         barra_vida(screen, 2, team2.get_current_pokemon().current_hp, team2.get_current_pokemon().max_hp)#barra 2
         show_text(screen, f"{team1.get_current_pokemon().name}", name_position_1, font, BLACK)#nombre1
@@ -264,7 +270,7 @@ def simulacion_pelea(team1: Team, team2: Team, effectiveness: dict[str, dict[str
             
             #actualiza todo
             screen.blit(background, (0, 0))
-            show_action(screen, action_1,target_1,fainted_team,other_team,effectiveness,old_pokemon,old_hp)
+            show_action(screen, action_1,target_1,fainted_team,other_team,effectiveness,old_pokemon,old_hp,contador_muertes_team1,contador_muertes_team2)
             barra_vida(screen, 1, team1.get_current_pokemon().current_hp, team1.get_current_pokemon().max_hp)#barra 1
             barra_vida(screen, 2, team2.get_current_pokemon().current_hp, team2.get_current_pokemon().max_hp)#barra 2
             show_text(screen, f"{team1.get_current_pokemon().name}", name_position_1, font, BLACK)#nombre1
@@ -285,7 +291,7 @@ def simulacion_pelea(team1: Team, team2: Team, effectiveness: dict[str, dict[str
 
                 #actualiza todo
                 screen.blit(background, (0, 0))
-                show_action(screen, action_2,target_2,other_team,fainted_team,effectiveness,old_pokemon,old_hp)
+                show_action(screen, action_2,target_2,other_team,fainted_team,effectiveness,old_pokemon,old_hp,contador_muertes_team1,contador_muertes_team2)
                 barra_vida(screen, 1, team1.get_current_pokemon().current_hp, team1.get_current_pokemon().max_hp)#barra 1
                 barra_vida(screen, 2, team2.get_current_pokemon().current_hp, team2.get_current_pokemon().max_hp)#barra 2
                 show_text(screen, f"{team1.get_current_pokemon().name}", name_position_1, font, BLACK)#nombre1
@@ -307,7 +313,7 @@ def simulacion_pelea(team1: Team, team2: Team, effectiveness: dict[str, dict[str
 
             #actualiza todo
             screen.blit(background, (0, 0))
-            show_action(screen, action_2,target_2,second,first,effectiveness,old_pokemon,old_hp)
+            show_action(screen, action_2,target_2,second,first,effectiveness,old_pokemon,old_hp,contador_muertes_team1,contador_muertes_team2)
             barra_vida(screen, 1, team1.get_current_pokemon().current_hp, team1.get_current_pokemon().max_hp)#barra 1
             barra_vida(screen, 2, team2.get_current_pokemon().current_hp, team2.get_current_pokemon().max_hp)#barra 2
             show_text(screen, f"{team1.get_current_pokemon().name}", name_position_1, font, BLACK)#nombre1
@@ -337,7 +343,7 @@ def simulacion_pelea(team1: Team, team2: Team, effectiveness: dict[str, dict[str
 
                 #actualiza todo
                 screen.blit(background, (0, 0))
-                show_action(screen, action_1,target_1,fainted_team,other_team,effectiveness,old_pokemon,old_hp)                
+                show_action(screen, action_1,target_1,fainted_team,other_team,effectiveness,old_pokemon,old_hp,contador_muertes_team1,contador_muertes_team2)                
                 barra_vida(screen, 1, team1.get_current_pokemon().current_hp, team1.get_current_pokemon().max_hp)#barra 1
                 barra_vida(screen, 2, team2.get_current_pokemon().current_hp, team2.get_current_pokemon().max_hp)#barra 2
                 show_text(screen, f"{team1.get_current_pokemon().name}", name_position_1, font, BLACK)#nombre1
@@ -359,7 +365,7 @@ def simulacion_pelea(team1: Team, team2: Team, effectiveness: dict[str, dict[str
                     
                     #actualiza todo
                     screen.blit(background, (0, 0))
-                    show_action(screen, action_2,target_2,other_team,fainted_team,effectiveness,old_pokemon,old_hp)
+                    show_action(screen, action_2,target_2,other_team,fainted_team,effectiveness,old_pokemon,old_hp,contador_muertes_team1,contador_muertes_team2)
                     barra_vida(screen, 1, team1.get_current_pokemon().current_hp, team1.get_current_pokemon().max_hp)#barra 1
                     barra_vida(screen, 2, team2.get_current_pokemon().current_hp, team2.get_current_pokemon().max_hp)#barra 2
                     show_text(screen, f"{team1.get_current_pokemon().name}", name_position_1, font, BLACK)#nombre1
@@ -385,7 +391,7 @@ def simulacion_pelea(team1: Team, team2: Team, effectiveness: dict[str, dict[str
                 
                 #actualiza todo
                 screen.blit(background, (0, 0))
-                show_action(screen, action_1,target_1,fainted_team,other_team,effectiveness,old_pokemon,old_hp)
+                show_action(screen, action_1,target_1,fainted_team,other_team,effectiveness,old_pokemon,old_hp,contador_muertes_team1,contador_muertes_team2)
                 barra_vida(screen, 1, team1.get_current_pokemon().current_hp, team1.get_current_pokemon().max_hp)#barra 1
                 barra_vida(screen, 2, team2.get_current_pokemon().current_hp, team2.get_current_pokemon().max_hp)#barra 2
                 show_text(screen, f"{team1.get_current_pokemon().name}", name_position_1, font, BLACK)#nombre1
@@ -407,7 +413,7 @@ def simulacion_pelea(team1: Team, team2: Team, effectiveness: dict[str, dict[str
                     
                     #actualiza todo
                     screen.blit(background, (0, 0))
-                    show_action(screen, action_2,target_2,other_team,fainted_team,effectiveness,old_pokemon,old_hp)
+                    show_action(screen, action_2,target_2,other_team,fainted_team,effectiveness,old_pokemon,old_hp,contador_muertes_team1,contador_muertes_team2)
                     barra_vida(screen, 1, team1.get_current_pokemon().current_hp, team1.get_current_pokemon().max_hp)#barra 1
                     barra_vida(screen, 2, team2.get_current_pokemon().current_hp, team2.get_current_pokemon().max_hp)#barra 2
                     show_text(screen, f"{team1.get_current_pokemon().name}", name_position_1, font, BLACK)#nombre1
@@ -423,9 +429,6 @@ def simulacion_pelea(team1: Team, team2: Team, effectiveness: dict[str, dict[str
 
         turn += 1
         clock.tick(30)
-    print("salgo")
-    show_text(screen,f"Gano {team1.name}" , (40,510), font, (255,255,255)) if any(pokemon.current_hp > 0 for pokemon in team1.pokemons) else show_text(screen,f"Gano {team2.name}" , (40,510), font, (255,255,255))
-    print("a")
     wait()
     pygame.quit()
 
