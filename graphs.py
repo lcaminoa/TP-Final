@@ -163,7 +163,7 @@ def get_best_team_stats(pokemon: str) -> dict:
 
 def best_team_stats_graph(cant_generaciones) -> None:
     """
-    Grafica las estadísticas base del mejor equipo de Pokémon de la última generación.
+    Grafica las estadísticas del mejor equipo de Pokémon de la última generación.
     Args:
         cant_generaciones: Número de generaciones a considerar.
     """

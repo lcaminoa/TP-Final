@@ -1,4 +1,4 @@
-from graphs import grafico_epochs, grafico_aptitud, graph_distribution_last_epoch, types_distribution_last_epoch, best_team_stats_graph, get_best_team_stats
+from graphs import grafico_epochs, grafico_aptitud, graph_distribution_last_epoch, types_distribution_last_epoch, best_team_stats_graph
 from funcs import algoritmo_genetico, efectividad
 from archivos_csv import csv_epochs, csv_best_team
 from peleas import simulacion_pelea,crear_equipo_personalizado
